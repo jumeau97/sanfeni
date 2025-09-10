@@ -1,0 +1,490 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello HomeController!{% endblock %}
+
+{% block body %}
+    <!--------------- header-section --------------->
+    {{ render(controller(
+        'App\\Controller\\HeaderController::indexCartPreview'
+    )) }}
+    <!--------------- header-section-end --------------->
+
+    <!--------------- products-info-section--------------->
+    <section class="product product-info">
+        <div class="container">
+{#            <div class="blog-bradcrum">#}
+{#                <span><a href="">Accueil</a></span>#}
+{#                <span class="devider">/</span>#}
+{#                <span><a href="#">Details</a></span>#}
+{#            </div>#}
+            <div class="product-info-section">
+                <div class="row ">
+                    <div class="col-md-6">
+                        <div class="product-info-img" data-aos="fade-right">
+                            <div class="swiper product-top">
+                                <div class="product-discount-content">
+                                    <h4>-50%</h4>
+                                </div>
+                                <div class="swiper-wrapper">
+                                    <div class="swiper-slide slider-top-img">
+                                        <img src="{{ asset('images/products/' ~ product.illustration) }}"
+                                             alt="img">
+                                    </div>
+                                    {% for item in product.albums %}
+                                        <div class="swiper-slide slider-top-img">
+                                            <img src="{{ asset('images/products/' ~ item.illustration) }}"
+                                                 alt="img">
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="swiper product-bottom">
+                                <div class="swiper-wrapper">
+                                    <div class="swiper-slide slider-bottom-img">
+                                        <img src="{{ asset('images/products/' ~ product.illustration) }}"
+                                             alt="img">
+                                    </div>
+                                    {% for photo in product.albums %}
+                                        <div class="swiper-slide slider-bottom-img">
+                                            <img src="{{ asset('images/products/' ~ photo.illustration) }}"
+                                                 alt="img">
+                                        </div>
+                                    {% endfor %}
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="product-info-content" data-aos="fade-left">
+                            <span class="wrapper-subtitle">BOY'S FASHION</span>
+                            <h5>{{ product.getName() }}
+                            </h5>
+                            <div class="ratings">
+                                <span>
+                                    <svg width="75" height="15" viewBox="0 0 75 15" fill="none"
+                                         xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M7.5 0L9.18386 5.18237H14.6329L10.2245 8.38525L11.9084 13.5676L7.5 10.3647L3.09161 13.5676L4.77547 8.38525L0.367076 5.18237H5.81614L7.5 0Z"
+                                            fill="#FFA800"/>
+                                        <path
+                                            d="M22.5 0L24.1839 5.18237H29.6329L25.2245 8.38525L26.9084 13.5676L22.5 10.3647L18.0916 13.5676L19.7755 8.38525L15.3671 5.18237H20.8161L22.5 0Z"
+                                            fill="#FFA800"/>
+                                        <path
+                                            d="M37.5 0L39.1839 5.18237H44.6329L40.2245 8.38525L41.9084 13.5676L37.5 10.3647L33.0916 13.5676L34.7755 8.38525L30.3671 5.18237H35.8161L37.5 0Z"
+                                            fill="#FFA800"/>
+                                        <path
+                                            d="M52.5 0L54.1839 5.18237H59.6329L55.2245 8.38525L56.9084 13.5676L52.5 10.3647L48.0916 13.5676L49.7755 8.38525L45.3671 5.18237H50.8161L52.5 0Z"
+                                            fill="#FFA800"/>
+                                        <path
+                                            d="M67.5 0L69.1839 5.18237H74.6329L70.2245 8.38525L71.9084 13.5676L67.5 10.3647L63.0916 13.5676L64.7755 8.38525L60.3671 5.18237H65.8161L67.5 0Z"
+                                            fill="#FFA800"/>
+                                    </svg>
+                                </span>
+                                <span class="text">6 Reviews</span>
+                            </div>
+                            <div class="price">
+                                <span class="price-cut">$9.99</span>
+                                <span class="new-price">$6.99</span>
+                            </div>
+                            <p class="content-paragraph">{{ product.description|raw }}</p>
+                            <hr>
+{#                            <div class="product-availability">#}
+{#                                <span>Availabillity : </span>#}
+{#                                <span class="inner-text">132 Products Available</span>#}
+{#                            </div>#}
+                            <div class="product-size">
+                                <P class="size-title">Size</P>
+                                <div class="size-section">
+                                    <span class="size-text">Select your size</span>
+                                    <div class="toggle-btn">
+                                        <span class="toggle-btn2"></span>
+                                        <span class="chevron">
+                                            <svg width="11" height="7" viewBox="0 0 11 7" fill="none"
+                                                 xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M5.4 6.8L0 1.4L1.4 0L5.4 4L9.4 0L10.8 1.4L5.4 6.8Z"
+                                                      fill="#222222"/>
+                                            </svg>
+                                        </span>
+                                    </div>
+                                </div>
+                                <ul class="size-option">
+                                    <li class="option">
+                                        <span class="option-text">Small</span>
+                                        <span class="option-measure">3”W x 3”D x 5”H</span>
+                                    </li>
+                                    <li class="option">
+                                        <span class="option-text">Medium</span>
+                                        <span class="option-measure">3”W x 3”D x 6”H</span>
+                                    </li>
+                                    <li class="option">
+                                        <span class="option-text">Large</span>
+                                        <span class="option-measure">6”W x 3”D x 7”H</span>
+                                    </li>
+                                    <li class="option">
+                                        <span class="option-text">Extra Large</span>
+                                        <span class="option-measure">8”W x 4”D x 8”H</span>
+                                    </li>
+                                    <li class="option">
+                                        <span class="option-text">2XL</span>
+                                        <span class="option-measure">10”W x 5”D x 9”H</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="product-quantity">
+                                <div class="quantity-wrapper">
+                                    <div class="quantity">
+                                        <span class="minus">
+                                            -
+                                        </span>
+                                        <span class="number">1</span>
+                                        <span class="plus">
+                                            +
+                                        </span>
+                                    </div>
+                                    <div class="wishlist">
+                                        <span>
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                 xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M17 1C14.9 1 13.1 2.1 12 3.7C10.9 2.1 9.1 1 7 1C3.7 1 1 3.7 1 7C1 13 12 22 12 22C12 22 23 13 23 7C23 3.7 20.3 1 17 1Z"
+                                                    stroke="#797979" stroke-width="2" stroke-miterlimit="10"
+                                                    stroke-linecap="square"/>
+                                            </svg>
+                                        </span>
+                                    </div>
+                                </div>
+                                <a href="#" class="shop-btn">
+                                    <span>
+                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"
+                                             xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M8.25357 3.32575C8.25357 4.00929 8.25193 4.69283 8.25467 5.37583C8.25576 5.68424 8.31536 5.74439 8.62431 5.74439C9.964 5.74603 11.3031 5.74275 12.6428 5.74603C13.2728 5.74767 13.7397 6.05663 13.9246 6.58104C14.2209 7.42098 13.614 8.24232 12.6762 8.25052C11.5919 8.25982 10.5075 8.25271 9.4232 8.25271C9.17714 8.25271 8.93107 8.25216 8.68501 8.25271C8.2913 8.2538 8.25412 8.29154 8.25412 8.69838C8.25357 10.0195 8.25686 11.3412 8.25248 12.6624C8.25029 13.2836 7.92603 13.7544 7.39891 13.9305C6.56448 14.2088 5.75848 13.6062 5.74863 12.6821C5.73824 11.7251 5.74645 10.7687 5.7459 9.81173C5.7459 9.41965 5.74754 9.02812 5.74535 8.63604C5.74371 8.30849 5.69012 8.2538 5.36204 8.25326C4.02235 8.25162 2.68321 8.25545 1.34352 8.25107C0.719613 8.24943 0.249902 7.93008 0.0710952 7.40348C-0.212153 6.57065 0.388245 5.75916 1.31017 5.74658C2.14843 5.73564 2.98669 5.74384 3.82495 5.74384C4.30779 5.74384 4.79062 5.74384 5.274 5.74384C5.72184 5.7433 5.7459 5.71869 5.7459 5.25716C5.7459 3.95406 5.74317 2.65096 5.74699 1.34786C5.74863 0.720643 6.0625 0.253102 6.58799 0.0704598C7.40875 -0.213893 8.21803 0.370671 8.25248 1.27349C8.25303 1.29154 8.25303 1.31013 8.25303 1.32817C8.25357 1.99531 8.25357 2.66026 8.25357 3.32575Z"
+                                                fill="white"/>
+                                        </svg>
+                                    </span>
+                                    <span>Add to Cart</span>
+                                </a>
+                            </div>
+                            <hr>
+                            <div class="product-details">
+                                <p class="category">Category : <span class="inner-text">Kitchen</span></p>
+                                <p class="tags">Tags : <span class="inner-text">Beer, Foamer</span></p>
+                                <p class="sku">SKU : <span class="inner-text">KE-91039</span></p>
+                            </div>
+                            <hr>
+                            <div class="product-report">
+                                <a href="#" class="report" onclick="modalAction('.action')">
+                                    <span>
+                                        <svg width="15" height="16" viewBox="0 0 15 16" fill="none"
+                                             xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M0 0C0.30478 0 0.585152 0 0.897442 0C0.908707 0.197137 0.919972 0.389267 0.932488 0.607056C1.30235 0.482516 1.64781 0.347336 2.00391 0.250332C3.83134 -0.247829 5.5555 0.0450599 7.19017 0.959399C7.97121 1.39686 8.7898 1.71165 9.68599 1.81178C10.9308 1.95072 12.0873 1.6716 13.1813 1.08832C13.4566 0.941876 13.7257 0.783541 14.0443 0.604553C14.0505 0.745991 14.0599 0.853634 14.0599 0.960651C14.0605 3.92396 14.058 6.88665 14.0662 9.84996C14.0668 10.079 13.9961 10.2042 13.7964 10.3143C11.4702 11.5973 9.14277 11.6123 6.82531 10.3106C4.99976 9.28546 3.14292 9.1484 1.22162 10.0164C0.990065 10.1209 0.908081 10.2524 0.909958 10.5096C0.921849 12.21 0.916217 13.911 0.916217 15.6114C0.916217 15.7353 0.916217 15.8586 0.916217 16C0.600172 16 0.312916 16 0 16C0 10.6779 0 5.35336 0 0Z"
+                                                fill="#EB5757"/>
+                                        </svg>
+                                    </span>
+                                    <span>Report This Item</span>
+                                </a>
+                                <!-- modal -->
+                                <div class="modal-wrapper action">
+                                    <div onclick="modalAction('.action')" class="anywhere-away"></div>
+
+                                    <!-- change this -->
+                                    <div class="login-section account-section modal-main">
+                                        <div class="review-form">
+                                            <div class="review-content">
+                                                <h5 class="comment-title">Report Products</h5>
+                                                <div class="close-btn">
+                                                    <img src="{{ asset('assets/images/homepage-one/close-btn.png') }}"
+                                                         onclick="modalAction('.action')" alt="close-btn">
+                                                </div>
+                                            </div>
+                                            <div class="review-form-name address-form">
+                                                <label for="reporttitle" class="form-label">Enter Report Ttile*</label>
+                                                <input type="text" id="reporttitle" class="form-control"
+                                                       placeholder="Reports Headline here">
+                                            </div>
+                                            <div class="review-form-name address-form">
+                                                <label for="reportnote" class="form-label">Enter Report Note*</label>
+                                                <textarea name="ticketmassage" id="reportnote" cols="40" rows="3"
+                                                          class="form-control" placeholder="Type Here"></textarea>
+                                            </div>
+                                            <div class="login-btn text-center">
+                                                <a href="#" onclick="modalAction('.action')" class="shop-btn">Submit
+                                                    Report</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- change this -->
+
+                                </div>
+                            </div>
+                            <div class="product-share">
+                                <p>Share This:</p>
+                                <div class="social-icons">
+                                    <a href="#">
+                                        <span class="facebook">
+                                            <svg width="10" height="16" viewBox="0 0 10 16" fill="none"
+                                                 xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M3 16V9H0V6H3V4C3 1.3 4.7 0 7.1 0C8.3 0 9.2 0.1 9.5 0.1V2.9H7.8C6.5 2.9 6.2 3.5 6.2 4.4V6H10L9 9H6.3V16H3Z"
+                                                    fill="#3E75B2"/>
+                                            </svg>
+                                        </span>
+                                    </a>
+                                    <a href="#">
+                                        <span class="pinterest">
+                                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
+                                                 xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M8 0C3.6 0 0 3.6 0 8C0 11.4 2.1 14.3 5.1 15.4C5 14.8 5 13.8 5.1 13.1C5.2 12.5 6 9.1 6 9.1C6 9.1 5.8 8.7 5.8 8C5.8 6.9 6.5 6 7.3 6C8 6 8.3 6.5 8.3 7.1C8.3 7.8 7.9 8.8 7.6 9.8C7.4 10.6 8 11.2 8.8 11.2C10.2 11.2 11.3 9.7 11.3 7.5C11.3 5.6 9.9 4.2 8 4.2C5.7 4.2 4.4 5.9 4.4 7.7C4.4 8.4 4.7 9.1 5 9.5C5 9.7 5 9.8 5 9.9C4.9 10.2 4.8 10.7 4.8 10.8C4.8 10.9 4.7 11 4.5 10.9C3.5 10.4 2.9 9 2.9 7.8C2.9 5.3 4.7 3 8.2 3C11 3 13.1 5 13.1 7.6C13.1 10.4 11.4 12.6 8.9 12.6C8.1 12.6 7.3 12.2 7.1 11.7C7.1 11.7 6.7 13.2 6.6 13.6C6.4 14.3 5.9 15.2 5.6 15.7C6.4 15.9 7.2 16 8 16C12.4 16 16 12.4 16 8C16 3.6 12.4 0 8 0Z"
+                                                    fill="#E12828"/>
+                                            </svg>
+                                        </span>
+                                    </a>
+                                    <a href="#">
+                                        <span class="twitter">
+                                            <svg width="18" height="14" viewBox="0 0 18 14" fill="none"
+                                                 xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M17.0722 1.60052C16.432 1.88505 15.7562 2.06289 15.0448 2.16959C15.7562 1.74278 16.3253 1.06701 16.5742 0.248969C15.8985 0.640206 15.1515 0.924742 14.3335 1.10258C13.6933 0.426804 12.7686 0 11.7727 0C9.85206 0 8.28711 1.56495 8.28711 3.48557C8.28711 3.7701 8.32268 4.01907 8.39382 4.26804C5.51289 4.12577 2.9165 2.73866 1.17371 0.604639C0.889175 1.13814 0.71134 1.70722 0.71134 2.34742C0.71134 3.5567 1.31598 4.62371 2.27629 5.26392C1.70722 5.22835 1.17371 5.08608 0.675773 4.83711V4.87268C0.675773 6.5799 1.88505 8.00258 3.48557 8.32268C3.20103 8.39382 2.88093 8.42938 2.56082 8.42938C2.34742 8.42938 2.09845 8.39382 1.88505 8.35825C2.34742 9.74536 3.62784 10.7768 5.15722 10.7768C3.94794 11.7015 2.45412 12.2706 0.818041 12.2706C0.533505 12.2706 0.248969 12.2706 0 12.2351C1.56495 13.2309 3.37887 13.8 5.37062 13.8C11.8082 13.8 15.3294 8.46495 15.3294 3.84124C15.3294 3.69897 15.3294 3.52113 15.3294 3.37887C16.0052 2.9165 16.6098 2.31186 17.0722 1.60052Z"
+                                                    fill="#3FD1FF"/>
+                                            </svg>
+                                        </span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--------------- products-info-end--------------->
+
+
+    <!--------------- footer-section--------------->
+    <section class="product footer">
+        <div class="container">
+            <div class="footer-service-section">
+                <div class="row gy-4">
+                    <div class="col-lg-3  col-sm-6">
+                        <div class="service-wrapper free-shipping">
+                            <div class="service-img">
+                                <span>
+                                    <svg width="32" height="37" viewBox="0 0 36 37" fill="none"
+                                         xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M1 1H5.63636V24.1818H35" stroke="#F9FFFB" stroke-width="2"
+                                              stroke-miterlimit="10" stroke-linecap="square"/>
+                                        <path
+                                            d="M8.72763 35.0021C10.4347 35.0021 11.8185 33.6183 11.8185 31.9112C11.8185 30.2042 10.4347 28.8203 8.72763 28.8203C7.02057 28.8203 5.63672 30.2042 5.63672 31.9112C5.63672 33.6183 7.02057 35.0021 8.72763 35.0021Z"
+                                            stroke="#F9FFFB" stroke-width="2" stroke-miterlimit="10"
+                                            stroke-linecap="square"/>
+                                        <path
+                                            d="M31.9073 35.0021C33.6144 35.0021 34.9982 33.6183 34.9982 31.9112C34.9982 30.2042 33.6144 28.8203 31.9073 28.8203C30.2003 28.8203 28.8164 30.2042 28.8164 31.9112C28.8164 33.6183 30.2003 35.0021 31.9073 35.0021Z"
+                                            stroke="#F9FFFB" stroke-width="2" stroke-miterlimit="10"
+                                            stroke-linecap="square"/>
+                                        <path d="M34.9982 1H11.8164V18H34.9982V1Z" stroke="#F9FFFB" stroke-width="2"
+                                              stroke-miterlimit="10" stroke-linecap="square"/>
+                                        <path d="M11.8164 7.17969H34.9982" stroke="#F9FFFB" stroke-width="2"
+                                              stroke-miterlimit="10" stroke-linecap="square"/>
+                                    </svg>
+
+                                </span>
+                            </div>
+                            <div class="service-content">
+                                <h5 class="service-info service-title">Free Shipping</h5>
+                                <p class="service-info service-details">When ordering over $100</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="service-wrapper free-shipping">
+                            <div class="service-img">
+                                <span>
+                                    <svg width="32" height="37" viewBox="0 0 32 34" fill="none"
+                                         xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M31 17.4492C31 25.6992 24.25 32.4492 16 32.4492C7.75 32.4492 1 25.6992 1 17.4492C1 9.19922 7.75 2.44922 16 2.44922C21.85 2.44922 26.95 5.74922 29.35 10.6992"
+                                            stroke="#F9FFFB" stroke-width="2" stroke-miterlimit="10"/>
+                                        <path d="M30.7 2L29.5 10.85L20.5 9.65" stroke="#F9FFFB" stroke-width="2"
+                                              stroke-miterlimit="10" stroke-linecap="square"/>
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="service-content">
+                                <h5 class="service-info service-title">Free Return</h5>
+                                <p class="service-info service-details">Get Return within 30 days</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="service-wrapper free-shipping">
+                            <div class="service-img">
+                                <span>
+                                    <svg width="32" height="37" viewBox="0 0 32 38" fill="none"
+                                         xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M22.6654 18.668H9.33203V27.0013H22.6654V18.668Z" stroke="#F9FFFB"
+                                              stroke-width="2" stroke-miterlimit="10" stroke-linecap="square"/>
+                                        <path
+                                            d="M12.668 18.6654V13.6654C12.668 11.832 14.168 10.332 16.0013 10.332C17.8346 10.332 19.3346 11.832 19.3346 13.6654V18.6654"
+                                            stroke="#F9FFFB" stroke-width="2" stroke-miterlimit="10"
+                                            stroke-linecap="square"/>
+                                        <path
+                                            d="M31 22C31 30.3333 24.3333 37 16 37C7.66667 37 1 30.3333 1 22V5.33333L16 2L31 5.33333V22Z"
+                                            stroke="#F9FFFB" stroke-width="2" stroke-miterlimit="10"
+                                            stroke-linecap="square"/>
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="service-content">
+                                <h5 class="service-info service-title">Secure Payment</h5>
+                                <p class="service-info service-details">100% Secure Online Payment</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="service-wrapper free-shipping">
+                            <div class="service-img">
+                                <span>
+                                    <svg width="32" height="37" viewBox="0 0 32 35" fill="none"
+                                         xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M7 13H5.5C2.95 13 1 11.05 1 8.5V1H7" stroke="#F9FFFB" stroke-width="2"
+                                              stroke-miterlimit="10"/>
+                                        <path d="M25 13H26.5C29.05 13 31 11.05 31 8.5V1H25" stroke="#F9FFFB"
+                                              stroke-width="2" stroke-miterlimit="10"/>
+                                        <path d="M16 28V22" stroke="#F9FFFB" stroke-width="2" stroke-miterlimit="10"/>
+                                        <path d="M16 22C11.05 22 7 17.95 7 13V1H25V13C25 17.95 20.95 22 16 22Z"
+                                              stroke="#F9FFFB" stroke-width="2" stroke-miterlimit="10"
+                                              stroke-linecap="square"/>
+                                        <path d="M25 34H7C7 30.7 9.7 28 13 28H19C22.3 28 25 30.7 25 34Z"
+                                              stroke="#F9FFFB" stroke-width="2" stroke-miterlimit="10"
+                                              stroke-linecap="square"/>
+                                    </svg>
+                                </span>
+                            </div>
+                            <div class="service-content">
+                                <h5 class="service-info service-title">Best Quality</h5>
+                                <p class="service-info service-details">Original Product Guarenteed</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-section">
+                <div class="row gy-5">
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="footer-order">
+                            <div class="logo">
+                                <img src="{{ asset('assets/images/logos/footer-logo.webp') }}" alt="logo">
+                            </div>
+                            <div class="footer-link order-link">
+                                <ul>
+                                    <li><a href="order.html">Track Order</a></li>
+                                    <li><a href="cart.html">Delivery & Returns</a></li>
+                                    <li><a href="about.html">Warranty</a></li>
+                                </ul>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="about-us">
+                            <h4 class="footer-heading footer-title">
+                                About Us
+                            </h4>
+                            <div class="footer-link about-link">
+                                <ul>
+                                    <li><a href="about.html">Rave’s Story</a></li>
+                                    <li><a href="about.html">Work With Us</a></li>
+                                    <li><a href="about.html">Coporate News</a></li>
+                                    <li><a href="about.html">Investors</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="links">
+                            <h4 class="footer-heading footer-title">
+                                Useful Links
+                            </h4>
+                            <div class="footer-link useful-link">
+                                <ul>
+                                    <li><a href="about.html">Secure Payment</a></li>
+                                    <li><a href="privacy.html">Privacy Policy</a></li>
+                                    <li><a href="terms.html">Terms of Use</a></li>
+                                    <li><a href="product-sidebar.html">Archived Products</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="contact-info">
+                            <h4 class="footer-heading footer-title">
+                                Contact Info
+                            </h4>
+                            <div class="footer-link contact-link">
+                                <div class="address">
+                                    <div class="icon">
+                                        <span>
+                                            <svg width="44" height="45" viewBox="0 0 44 45" fill="none"
+                                                 xmlns="http://www.w3.org/2000/svg">
+                                                <circle cx="21.9995" cy="22.9961" r="21.5" stroke="#424242"></circle>
+                                                <g clip-path="url(#clip0_2343_13859)">
+                                                    <path
+                                                        d="M22.0218 13.9961C26.4153 14.0049 29.7134 17.7202 28.8665 21.6964C28.4484 23.66 27.5123 25.4261 26.3138 27.0614C25.1774 28.6116 23.9185 30.0879 22.6867 31.5779C22.2178 32.1454 21.804 32.1262 21.3001 31.5795C19.1664 29.2642 17.2295 26.8278 15.9102 24.0253C15.3696 22.8757 14.9978 21.6836 14.9995 20.4176C15.003 16.8701 18.1568 13.9881 22.0218 13.9961ZM22.0297 30.36C22.9045 29.2763 23.7479 28.3049 24.5037 27.2782C25.8116 25.5008 26.9568 23.6407 27.4616 21.5142C28.0739 18.934 26.466 16.3499 23.7566 15.5367C21.0149 14.713 18.0326 15.9324 16.8743 18.344C16.1858 19.777 16.3188 21.2091 16.8647 22.6413C17.6756 24.7695 18.9512 26.6632 20.399 28.4655C20.8889 29.0764 21.4226 29.6576 22.0297 30.36Z"
+                                                        fill="white"></path>
+                                                    <path
+                                                        d="M24.7977 20.4357C24.7916 21.8486 23.5204 22.9982 21.9728 22.9886C20.4567 22.9797 19.2005 21.8197 19.1987 20.4253C19.1961 19.0148 20.4664 17.85 22.0043 17.8516C23.5432 17.8532 24.8029 19.0188 24.7977 20.4357ZM23.3953 20.4213C23.3953 19.7156 22.7873 19.1481 22.021 19.1384C21.2371 19.128 20.6011 19.702 20.6011 20.4213C20.6011 21.1253 21.2109 21.6937 21.9772 21.7033C22.7663 21.7121 23.3953 21.143 23.3953 20.4213Z"
+                                                        fill="white"></path>
+                                                </g>
+                                                <defs>
+                                                    <clipPath id="clip0_2343_13859">
+                                                        <rect width="14" height="18" fill="white"
+                                                              transform="translate(14.9995 13.9961)"></rect>
+                                                    </clipPath>
+                                                </defs>
+                                            </svg>
+                                        </span>
+                                    </div>
+                                    <div class="details">
+                                        <h4 class="footer-heading">Address:</h4>
+                                        <p>4517 Washington Ave. Manchester, Kentucky 39495</p>
+                                    </div>
+                                </div>
+                                <div class="phone address">
+                                    <div class="icon">
+                                        <span>
+                                            <svg width="44" height="45" viewBox="0 0 44 45" fill="none"
+                                                 xmlns="http://www.w3.org/2000/svg">
+                                                <circle cx="21.9995" cy="22.9961" r="21.5" stroke="#424242"></circle>
+                                                <g clip-path="url(#clip0_56_7)">
+                                                    <path
+                                                        d="M26.9779 30.9959C25.7937 30.9581 24.6221 30.5625 23.5005 30.0096C19.5679 28.0716 16.6582 25.1275 14.8109 21.1599C14.2944 20.0502 13.9265 18.8947 14.0112 17.6423C14.0558 16.9879 14.2937 16.4177 14.7489 15.9459C15.1954 15.4839 15.6439 15.0233 16.1124 14.5833C16.9448 13.8008 17.8545 13.7981 18.6795 14.5866C19.3846 15.2596 20.075 15.9492 20.7514 16.6514C21.5858 17.5175 21.5732 18.3743 20.7348 19.2431C20.3969 19.5935 20.051 19.9387 19.6925 20.2685C19.5419 20.4072 19.5299 20.5161 19.6205 20.692C20.257 21.9198 21.1526 22.9459 22.1916 23.8359C22.8434 24.3941 23.5884 24.8434 24.2909 25.3425C24.4555 25.46 24.5754 25.4295 24.7174 25.2814C25.1092 24.8753 25.5058 24.4704 25.9276 24.0954C26.6407 23.4616 27.5164 23.4689 28.2035 24.1259C28.9725 24.8607 29.7269 25.6113 30.4647 26.3772C31.1558 27.0953 31.1784 27.9907 30.5187 28.7333C30.0415 29.2709 29.5317 29.782 29.0105 30.2784C28.4727 30.7915 27.8003 30.9952 26.9779 30.9959ZM27.0239 30.1377C27.6637 30.1616 28.1902 29.9307 28.6247 29.4647C28.9645 29.1004 29.3198 28.7499 29.6703 28.3962C30.2688 27.7922 30.2734 27.4119 29.6796 26.8199C29.0365 26.1781 28.3921 25.5376 27.7463 24.8985C27.2265 24.3841 26.8546 24.3848 26.3241 24.9045C25.9203 25.3 25.5244 25.7036 25.1206 26.0985C24.7974 26.415 24.5148 26.4774 24.1316 26.2418C23.4165 25.8011 22.6768 25.3823 22.0303 24.8534C20.6835 23.7523 19.5132 22.4853 18.7561 20.8917C18.5062 20.3661 18.5576 20.1597 18.9861 19.7502C19.3706 19.3825 19.7545 19.0141 20.1243 18.6325C20.6122 18.1301 20.6115 17.7518 20.1237 17.2586C19.4472 16.5724 18.7641 15.8921 18.0764 15.2171C17.5952 14.7446 17.1827 14.7512 16.6922 15.2284C16.311 15.5994 15.9478 15.989 15.5586 16.3507C15.0221 16.8491 14.8255 17.4597 14.8695 18.1739C14.9275 19.117 15.2221 19.9964 15.6179 20.838C17.3853 24.5985 20.1457 27.402 23.8823 29.2424C24.8707 29.7302 25.9036 30.0959 27.0239 30.1377Z"
+                                                        fill="white"></path>
+                                                </g>
+                                                <defs>
+                                                    <clipPath id="clip0_56_7">
+                                                        <rect width="17" height="17" fill="white"
+                                                              transform="translate(13.9995 13.9961)"></rect>
+                                                    </clipPath>
+                                                </defs>
+                                            </svg>
+                                        </span>
+                                    </div>
+                                    <div class="details">
+                                        <h4 class="footer-heading">Phone:</h4>
+                                        <p>+880171889547</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr>
+        </div>
+    </section>
+    <!--------------- footer-section-end--------------->
+{% endblock %}

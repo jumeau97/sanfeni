@@ -1,0 +1,24 @@
+<?php
+
+namespace App\Controller\Admin\Field;
+
+use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
+use EasyCorp\Bundle\EasyAdminBundle\Field\FieldTrait;
+use Vich\UploaderBundle\Form\Type\VichImageType;
+
+class VichFileFieldMultiple implements FieldInterface
+{
+
+    use FieldTrait;
+
+    public static function new(string $propertyName, ?string $label = null)
+    {
+        return (new self())
+            ->setProperty($propertyName)
+            ->setTemplatePath('')
+            ->setLabel($label)
+            ->setFormType(VichImageType::class);
+    }
+
+
+}

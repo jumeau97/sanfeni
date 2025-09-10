@@ -1,4 +1,6 @@
 import './bootstrap.js';
+
+// import '/assets/js/shopus.js';
 /*
  * Welcome to your app's main JavaScript file!
  *

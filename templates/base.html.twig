@@ -25,13 +25,93 @@
     <!--------------- additional-css ---------------->
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     {% block stylesheets %}
+        {{ encore_entry_link_tags('app') }}
     {% endblock %}
 
-    {% block javascripts %}
-        {% block importmap %}{{ importmap('app') }}{% endblock %}
-    {% endblock %}
+    <style>
+
+        .search-section .shop-btn {
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+            padding: 2rem 3rem;
+        }
+
+        .shop-btn {
+            /*padding: 1.2rem 3.4rem;*/
+            margin: 4rem 0;
+            text-align: center;
+            border-radius: 3rem;
+            display: inline-block;
+            background: #d0cb69;
+            font-size: 1.4rem;
+            font-weight: 500;
+            position: relative;
+            color: #FFFFFF;
+            font-family: "Inter", sans-serif;
+            transition: all 0.3s;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .search-section button {
+            border: none;
+            outline: none;
+            background: transparent;
+            height: 100%;
+            padding: 0 2rem;
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: #ffffff;
+            flex: 1 1 0%;
+        }
+
+
+        .search-section input {
+            border: none;
+            outline: none;
+            /*background: transparent;*/
+            height: 100%;
+            padding: 0 2rem;
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: #ae1c9a;
+            flex: 1 1 0%;
+        }
+
+        .search-section {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0px;
+            width: 100%;
+            height: 100%;
+        }
+
+        .search-content {
+            width: 62rem;
+            height: 6rem;
+            border-radius: 3rem;
+            border: 1px solid #ffffff;
+            overflow: hidden;
+        }
+
+        .search-content .divider {
+            height: 3rem;
+            width: 1px;
+            background: #e8e8e8;
+        }
+
+
+
+
+
+    </style>
+
+
 </head>
 <body>
+{% block header %}{% endblock %}
 {% block body %}{% endblock %}
 
 
@@ -52,5 +132,19 @@
 
 <!--------------- additional-js ---------------->
 <script src="{{ asset('assets/js/shopus.js') }}"></script>
+
+<!-- Swiper JS -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+<script>
+    var swiper = new Swiper(".hero", {
+        slidesPerView: 3,
+        spaceBetween: 30,
+        pagination: {
+            el: ".swiper-pagination",
+            clickable: true,
+        },
+    });
+</script>
 </body>
 </html>

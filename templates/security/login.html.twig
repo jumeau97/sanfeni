@@ -1,0 +1,91 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Log in!{% endblock %}
+
+{% block body %}
+
+    {{ render(controller(
+        'App\\Controller\\HeaderController::indexCartPreview'
+    )) }}
+
+    <form method="post">
+        <!--------------- login-section --------------->
+        <section class="login footer-padding">
+            <div class="container">
+                <div class="login-section">
+                    <div class="review-form">
+                        <h5 class="comment-title">Se connecter</h5>
+                        {% if error %}
+                            <div
+                                class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                        {% endif %}
+
+                        {% if app.user %}
+                            <div class="mb-3">
+                                You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
+                            </div>
+                        {% endif %}
+                        <div class="review-inner-form ">
+                            <div class="review-form-name">
+                                {#                                <label for="email" class="form-label">Adresse e-mail</label> #}
+                                <input type="email" value="{{ last_username }}" name="_username" id="username"
+                                       class="form-control" placeholder="Entrez votre adresse e-mail"
+                                       autocomplete="email" required autofocus>
+                            </div>
+                            <div class="review-form-name">
+                                {#                                <label for="password" class="form-label">Mot de passe</label> #}
+                                <input type="password" name="_password" id="password" class="form-control"
+                                       placeholder="Entrez votre mot de passe" autocomplete="current-password"
+                                       required>
+                            </div>
+                            <input type="hidden" name="_csrf_token" data-controller="csrf-protection"
+                                   value="{{ csrf_token('authenticate') }}">
+                            <div class="review-form-name checkbox">
+                                <div class="checkbox-item">
+                                    <input type="checkbox">
+                                    <span class="address">
+                                                            Se rappeler de moi</span>
+                                </div>
+                                <div class="forget-pass">
+                                    <p>Mot de passe oublié?</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="login-btn text-center">
+                            {#                            <a href="#" class="shop-btn">Se connecter</a> #}
+                            <button class="shop-btn btn btn-lg " type="submit">
+                                Se connecter
+                            </button>
+                            <span class="shop-account">Vous n'avez pas de compte ?<a href="create-account.html">Creer un compte gratuitement</a></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!--------------- login-section-end --------------->
+
+        {#        <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1> #}
+        {#        <label for="username">Email</label> #}
+        {#        <input type="email" value="{{ last_username }}" name="_username" id="username" class="form-control" #}
+        {#               autocomplete="email" required autofocus> #}
+        {#        <label for="password">Password</label> #}
+        {#        <input type="password" name="_password" id="password" class="form-control" autocomplete="current-password" #}
+        {#               required> #}
+        {#        <input type="hidden" name="_csrf_token" data-controller="csrf-protection" #}
+        {#               value="{{ csrf_token('authenticate') }}"> #}
+
+        {#
+        Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
+        See https://symfony.com/doc/current/security/remember_me.html
+
+        <div class="checkbox mb-3">
+            <input type="checkbox" name="_remember_me" id="_remember_me">
+            <label for="_remember_me">Remember me</label>
+        </div>
+        #}
+
+        {#        <button class="btn btn-lg btn-primary" type="submit"> #}
+        {#            Sign in #}
+        {#        </button> #}
+    </form>
+{% endblock %}

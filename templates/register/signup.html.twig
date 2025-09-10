@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {{ render(controller(
+        'App\\Controller\\HeaderController::indexCartPreview'
+    )) }}
+    <!--------------- login-section--------------->
+
+    {{ form_start(form) }}
+    <section class="login account footer-padding">
+        <div class="container">
+            <div class="login-section account-section">
+                <div class="review-form">
+                    <h5 class="comment-title">Créez votre compte</h5>
+                    <div class=" account-inner-form">
+                        <div class="review-form-name">
+                            {{ form_widget(form.firstName) }}
+                        </div>
+                        <div class="review-form-name">
+                            {#                            <input type="text" id="lname" class="form-control" placeholder="Nom"> #}
+                            {{ form_widget(form.lastName) }}
+                        </div>
+                    </div>
+                    <div class=" account-inner-form">
+                        <div class="review-form-name">
+                            {{ form_widget(form.email) }}
+                        </div>
+                        <div class="review-form-name">
+                            <input type="tel" id="phone" class="form-control" placeholder="Numéro portable">
+                        </div>
+                    </div>
+                    <div class=" account-inner-form">
+                        <div class="review-form-name">
+                            {{ form_widget(form.password) }}
+                        </div>
+                    </div>
+
+                    <div class="login-btn text-center">
+                        {{ form_widget(form.save, { 'label': 'Créer un compte' }) }}
+                        <span class="shop-account">J'ai dejà un compte ?<a
+                                href="{{ path('app_login') }}">Se connecter</a></span>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+    {{ form_end(form) }}
+    <!--------------- login-section-end --------------->
+{% endblock %}

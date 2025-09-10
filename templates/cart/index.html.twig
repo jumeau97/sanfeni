@@ -1,0 +1,185 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello CartController!{% endblock %}
+
+{% block body %}
+    {{ render(controller(
+        'App\\Controller\\HeaderController::indexCartPreview'
+    )) }}
+    <!--------------- blog-tittle-section---------------->
+    {#    <section class="blog about-blog"> #}
+    {#        <div class="container"> #}
+    {#            <div class="blog-bradcrum"> #}
+    {#                <span><a href="index.html">Accueil</a></span> #}
+    {#                <span class="devider">/</span> #}
+    {#                <span><a href="#">Panier</a></span> #}
+    {#            </div> #}
+    {#            <div class="blog-heading about-heading"> #}
+    {#                <h1 class="heading">Mon Panier</h1> #}
+    {#            </div> #}
+    {#        </div> #}
+    {#    </section> #}
+    <!--------------- blog-tittle-section-end---------------->
+    <div class="row d-flex justify-content-center">
+{#        <div class="col-md-10">#}
+            <div class="col-md-5">
+                <!--------------- cart-section---------------->
+                <section class="product-cart product footer-padding">
+                    <div class="container">
+                        <div class="cart-section">
+                            <table>
+                                <tbody>
+                                <tr class="table-row table-top-row">
+                                    <td class="table-wrapper wrapper-product">
+                                        <h5 class="table-heading">PRODUIT</h5>
+                                    </td>
+                                    <td class="table-wrapper">
+                                        <div class="table-wrapper-center">
+                                            <h5 class="table-heading">PRIX</h5>
+                                        </div>
+                                    </td>
+                                    <td class="table-wrapper">
+                                        <div class="table-wrapper-center">
+                                            <h5 class="table-heading">QUANTITÉ</h5>
+                                        </div>
+                                    </td>
+                                    <td class="table-wrapper wrapper-total">
+                                        <div class="table-wrapper-center">
+                                            <h5 class="table-heading">TOTAL</h5>
+                                        </div>
+                                    </td>
+                                    <td class="table-wrapper">
+                                        <div class="table-wrapper-center">
+                                            <h5 class="table-heading">ACTION</h5>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% set total = null %}
+                                {% for cart in cart %}
+                                    <tr class="table-row ticket-row">
+                                        <td class="table-wrapper wrapper-product">
+                                            <div class="wrapper">
+                                                <div class="wrapper-img">
+                                                    <img
+                                                        src="{{ asset('images/products/')~ cart.product.illustration }}"
+                                                        alt="img">
+                                                </div>
+                                                <div class="wrapper-content">
+                                                    <h5 class="heading">{{ cart.product.name }}</h5>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="table-wrapper">
+                                            <div class="table-wrapper-center">
+                                                <h5 class="heading">{{ cart.product.price / 100 }}</h5>
+                                            </div>
+                                        </td>
+                                        <td class="table-wrapper">
+                                            <div class="table-wrapper-center">
+                                                <div class="quantity">
+                                                    <a class="btn btn-primary"
+                                                       href="{{ path('decrease_to_cart', {'id':cart.product.id}) }}">   <span
+                                                            class="minus">
+                                            -
+                                        </span></a>
+                                                    <span class="number">{{ cart.quantity }}</span>
+                                                    <a href="{{ path('add_to_cart', {'id':cart.product.id}) }}"
+                                                       class="btn btn-primary">    <span class="plus">
+                                            +
+                                        </span></a>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="table-wrapper wrapper-total">
+                                            <div class="table-wrapper-center">
+                                                <h5 class="heading">{{ (cart.product.price/100)*cart.quantity }}</h5>
+                                            </div>
+                                        </td>
+                                        <td class="table-wrapper">
+                                            <div class="table-wrapper-center">
+                                              <a href="{{ path('delete_to_cart', {'id':cart.product.id}) }}" class="btn btn-dark">  <span >x</span></a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% set total = total + (cart.product.price * cart.quantity) %}
+                                {% endfor %}
+
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </section>
+                <!--------------- cart-section-end---------------->
+            </div>
+            <div class="col-md-3">
+                <div class="checkout-wrapper">
+                    <div class="account-section billing-section">
+                        <h5 class="wrapper-heading">Récapitulatif de la commande</h5>
+                        <div class="order-summery">
+                            <div class="subtotal product-total">
+                                <h5 class="wrapper-heading">SOUS TOTAL</h5>
+                                <h5 class="wrapper-heading">{{ (total/100) | number_format('0', ',', '.') }}
+                                    F.cfa</h5>
+                            </div>
+                            <div class="subtotal product-total">
+                                <ul class="product-list">
+                                    <li>
+                                        <div class="product-info">
+                                            <p class="paragraph">Livraison</p>
+                                            {#                                        <h5 class="wrapper-heading">Free Shipping</h5> #}
+
+                                        </div>
+                                        <div class="price">
+                                            <h5 class="wrapper-heading">0 F.cfa</h5>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                            <hr>
+                            <div class="subtotal total">
+                                <h5 class="wrapper-heading">TOTAL</h5>
+                                <h5 class="wrapper-heading price">{{ (total/100) | number_format('0', ',', '.') }}
+                                    F.cfa</h5>
+                            </div>
+                            {#                        <div class="subtotal payment-type"> #}
+                            {#                            <div class="checkbox-item"> #}
+                            {#                                <input type="radio" id="bank" name="bank"> #}
+                            {#                                <div class="bank"> #}
+                            {#                                    <h5 class="wrapper-heading">Direct Bank Transfer</h5> #}
+                            {#                                    <p class="paragraph">Make your payment directly into our bank account. #}
+                            {#                                        Please use #}
+                            {#                                        <span class="inner-text"> #}
+                            {#                                                        your Order ID as the payment reference. #}
+                            {#                                                    </span> #}
+                            {#                                    </p> #}
+                            {#                                </div> #}
+                            {#                            </div> #}
+                            {#                            <div class="checkbox-item"> #}
+                            {#                                <input type="radio" id="cash" name="bank"> #}
+                            {#                                <div class="cash"> #}
+                            {#                                    <h5 class="wrapper-heading">Cash on Delivery</h5> #}
+                            {#                                </div> #}
+                            {#                            </div> #}
+                            {#                            <div class="checkbox-item"> #}
+                            {#                                <input type="radio" id="credit" name="bank"> #}
+                            {#                                <div class="credit"> #}
+                            {#                                    <h5 class="wrapper-heading">Credit/Debit Cards or Paypal</h5> #}
+
+                            {#                                </div> #}
+                            {#                            </div> #}
+                            {#                        </div> #}
+                            <a href="#" class="shop-btn">Entrez le Code Coupon</a>
+                            <div class="wishlist-btn cart-btn">
+                                <a href="empty-cart.html" class="clean-btn">Supprimer le panier</a>
+                                <a href="#" class="shop-btn update-btn">Update Cart</a>
+                                <a href="checkout.html" class="shop-btn">Proceed to Checkout</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+{#        </div>#}
+    </div>
+
+{% endblock %}
