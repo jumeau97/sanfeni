@@ -9,7 +9,7 @@
     )) }}
 
     <!--------------- hero-section --------------->
-    <section class="hero" >
+    <section class="hero">
         <div class="swiper hero-swiper">
             <div class="swiper-wrapper hero-wrapper">
                 <div class="swiper-slide hero-slider-one">
@@ -227,10 +227,19 @@
                                         <div class="product-description">
                                             <a href="product-info.html" class="product-details">{{ product.name }}
                                             </a>
+
                                             <div class="price">
-                                                <span class="price-cut">$25.99</span>
-                                                <span class="new-price">$13.99</span>
+                                                {% if(product.isPromotion) %}
+                                                    <span
+                                                        class="price-cut">{{ (product.price/100)|format_currency('XOF') }}</span>
+                                                    <span
+                                                        class="new-price"> {{ ((product.price/100) * (1 - (product.offPercent/100)/ 100)) | format_currency('XOF') }}</span>
+                                                {% else %}
+                                                    <span
+                                                        class="new-price">{{ (product.price/100)|format_currency('XOF') }}</span>
+                                                {% endif %}
                                             </div>
+
                                         </div>
                                     </div>
                                     <div class="product-cart-btn">

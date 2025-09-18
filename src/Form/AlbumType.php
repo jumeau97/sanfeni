@@ -15,7 +15,13 @@ class AlbumType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('imageFile', VichImageType::class)
+            ->add('imageFile', VichImageType::class,[
+                'label' => false,
+                'required' => false,
+                'allow_delete' => true,
+                'download_uri' => true,
+                'asset_helper' => true,
+            ])
 //            ->add('illustration')
 //            ->add('imageSize')
 //            ->add('updatedAt', null, [

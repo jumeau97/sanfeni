@@ -22,7 +22,6 @@ class Product
     public const TYPE_GROUPED = 'grouped';
 
 
-
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -85,6 +84,14 @@ class Product
 
     #[ORM\Column(length: 255)]
     private ?string $type = self::TYPE_SIMPLE;
+
+    #[ORM\Column]
+    #[Groups(['getProducts'])]
+    private ?bool $isPromotion = null;
+
+    #[ORM\Column(nullable: true)]
+    #[Groups(['getProducts'])]
+    private ?int $offPercent = null;
 
     public function __construct()
     {
@@ -180,6 +187,7 @@ class Product
 
         return $this;
     }
+
     /**
      * If manually uploading a file (i.e. not using Symfony Form) ensure an instance
      * of 'UploadedFile' is injected into this setter to trigger the update. If this
@@ -308,4 +316,38 @@ class Product
 
         return $this;
     }
+
+    public function isPromotion(): ?bool
+    {
+        return $this->isPromotion;
+    }
+
+    public function setIsPromotion(bool $isPromotion): static
+    {
+        $this->isPromotion = $isPromotion;
+
+        return $this;
+    }
+
+    public function getOffPercent(): ?int
+    {
+        return $this->offPercent;
+    }
+
+    public function setOffPercent(int $offPercent): static
+    {
+        $this->offPercent = $offPercent;
+
+        return $this;
+    }
+
+    public function getPromoPrice(): ?int
+    {
+        if ($this->offPercent) {
+            return ($this->price - ($this->price * $this->offPercent) / 100);
+        }
+        return 0;
+    }
+
+
 }
