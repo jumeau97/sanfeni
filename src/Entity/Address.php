@@ -40,6 +40,10 @@ class Address
 
     #[ORM\Column(length: 255)]
     private ?string $phone = null;
+    public function __toString(): string
+    {
+        return $this->getAddress().'[br]'.$this->getCity().'[br]'.$this->getCountry();
+    }
 
     public function getId(): ?int
     {

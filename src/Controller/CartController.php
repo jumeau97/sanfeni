@@ -24,8 +24,18 @@ final class CartController extends AbstractController
     public function add(Cart $cart, $id, Request $request): Response
     {
         $cart->add($id);
-//        dd($cart->get());
-        return $this->redirectToRoute('cart');
+        $cartConplete = [];
+        if ($cart->get()) {
+            foreach ($cart->get() as $id => $quantity) {
+                $cartConplete[] = [
+                    'product' => $this -> entityManager->getrepository(Product::class)->findOneById($id),
+                    'quantity' => $quantity,
+                ];
+            }
+        }
+        return $this->render('cart/index.html.twig', [
+            'cart' =>$cartConplete
+        ]);
     }
 
     #[Route('panier/remove', name: 'remove_my_cart')]
@@ -40,14 +50,38 @@ final class CartController extends AbstractController
     public function delete(Cart $cart, $id): Response
     {
         $cart ->delete($id);
-        return $this->redirectToRoute('cart');
+        $cartConplete = [];
+        if ($cart->get()) {
+            foreach ($cart->get() as $id => $quantity) {
+                $cartConplete[] = [
+                    'product' => $this -> entityManager->getrepository(Product::class)->findOneById($id),
+                    'quantity' => $quantity,
+                ];
+            }
+        }
+//        return $this->redirectToRoute('cart');
+        return $this->render('cart/index.html.twig', [
+            'cart' =>$cartConplete
+        ]);
     }
 
     #[Route('/panier/decrease/{id}', name: 'decrease_to_cart')]
     public function decrease(Cart $cart, $id): Response
     {
         $cart ->decrease($id);
-        return $this->redirectToRoute('cart');
+        $cartConplete = [];
+        if ($cart->get()) {
+            foreach ($cart->get() as $id => $quantity) {
+                $cartConplete[] = [
+                    'product' => $this -> entityManager->getrepository(Product::class)->findOneById($id),
+                    'quantity' => $quantity,
+                ];
+            }
+        }
+//        return $this->redirectToRoute('cart');
+        return $this->render('cart/index.html.twig', [
+            'cart' =>$cartConplete
+        ]);
     }
 
     #[Route('/mon-panier', name: 'cart')]
@@ -63,7 +97,6 @@ final class CartController extends AbstractController
             }
         }
 
-        // dd($cartConplete);
         return $this->render('cart/index.html.twig', [
             'cart' =>$cartConplete
         ]);

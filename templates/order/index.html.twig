@@ -1,0 +1,94 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello OrderController!{% endblock %}
+
+{% block body %}
+
+    {{ render(controller(
+        'App\\Controller\\HeaderController::indexCartPreview'
+    )) }}
+
+
+    <!--------------- checkout-section---------------->
+    <section class="checkout product footer-padding">
+        <div class="container">
+            <div class="checkout-section">
+                {{ form_start(form,{action:path('app_order_recap')}) }}
+                <div class="row gy-5">
+
+                    <div class="col-lg-6">
+                        <div class="checkout-wrapper">
+                            <div class="account-section billing-section " style="font-size: 12px;">
+                                {% set formHtml %}
+                                    <h5 class="wrapper-heading"> {{ form_label(form.adresses, 'Choisissez votre adresse de livraison') }}</h5>
+
+                                    <a href="{{ path('app_account_address') }}" class="text text-sm-start text-primary">Ajouter
+                                        une
+                                        nouvelle adresse</a>
+                                    {{ form_widget(form.adresses) }}
+                                {% endset %}
+
+                                {{ formHtml|replace({'[br]': "<br>"})|raw }}
+                            </div>
+                        </div>
+
+                        <div class="checkout-wrapper">
+                            <div class="account-section billing-section" style="font-size: 12px;">
+                                {% set formHtml %}
+                                    {{ form_widget(form.carriers) }}
+                                {% endset %}
+
+                                {{ formHtml|replace({'[br]': "<br>"})|raw }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="checkout-wrapper">
+                            <div class="account-section billing-section">
+                                <h5 class="wrapper-heading">Recapitulatif</h5>
+                                <div class="order-summery">
+                                    <div class="subtotal product-total">
+                                        <h5 class="wrapper-heading">PRODUIT</h5>
+                                        <h5 class="wrapper-heading">TOTAL</h5>
+                                    </div>
+                                    <hr>
+                                    <div class="subtotal product-total">
+                                        <ul class="product-list">
+                                            {% set total = null %}
+                                            {% for product in cart %}
+                                                <li>
+                                                    <div class="product-info">
+                                                        <h5 class="wrapper-heading">{{ product.product.name }}
+                                                            X{{ product.quantity }}</h5>
+                                                        {#                                                    <p class="paragraph">64GB, Black, 44mm, Chain Belt</p> #}
+                                                    </div>
+                                                    <div class="price">
+                                                        <h5 class="wrapper-heading">{{ ((product.product.price * product.quantity) / 100) | number_format('0', ',', '.') }}
+                                                            F cfa</h5>
+                                                    </div>
+                                                </li>
+                                                {% set total = total + (product.product.price * product.quantity) %}
+                                            {% endfor %}
+
+                                        </ul>
+                                    </div>
+
+                                    <hr>
+
+                                    {#                                    <a href="#" class="shop-btn">Place Order Now</a> #}
+                                    <button type="submit" class="btn shop-btn" id="{{ field_id(form.submit) }}"
+                                            name="{{ field_name(form.submit) }}">Valider la commande
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </section>
+    <!--------------- checkout-section-end---------------->
+{% endblock %}

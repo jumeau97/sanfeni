@@ -1,0 +1,108 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello AccountController!{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        /*.account-section .review-form {*/
+        /*    width: 57.2rem;*/
+        /*    height: 79.1rem;*/
+        /*}*/
+
+        .user-dashboard .nav-content .modal-main .review-form {
+            width: 57.2rem;
+            height: 79.1rem;
+            margin-top: 0;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+
+    {{ render(controller(
+        'App\\Controller\\HeaderController::indexCartPreview'
+    )) }}
+
+    <!---------------user-profile-section---------------->
+    <section class="user-profile footer-padding">
+        <div class="container">
+            <h2>Mes commandes</h2>
+            <a href="{{ path('app_account') }}" class="view">Retourner à mon compte</a>
+            <div class="user-profile-section">
+                {% if orders|length==0 %}
+                    <p>Vous n'avez pas encore passé de commande.</p>
+                {% else %}
+
+                    <div class="cart-section">
+                        <table>
+                            <tbody>
+                            <tr class="table-row table-top-row">
+                                <td class="table-wrapper wrapper-product">
+                                    <h5 class="table-heading">Passé le</h5>
+                                </td>
+                                <td class="table-wrapper">
+                                    <div class="table-wrapper-center">
+                                        <h5 class="table-heading">Référence</h5>
+                                    </div>
+                                </td>
+                                <td class="table-wrapper">
+                                    <div class="table-wrapper-center">
+                                        <h5 class="table-heading">Produit</h5>
+                                    </div>
+                                </td>
+                                <td class="table-wrapper wrapper-total">
+                                    <div class="table-wrapper-center">
+                                        <h5 class="table-heading">TOTAL</h5>
+                                    </div>
+                                </td>
+                                <td class="table-wrapper">
+                                    <div class="table-wrapper-center">
+                                        <h5 class="table-heading">ACTION</h5>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% for order in orders %}
+                                <tr class="table-row ticket-row">
+                                    <td class="table-wrapper wrapper-product">
+                                        <div class="wrapper">
+                                            <div class="wrapper-content">
+                                                <h5 class="heading">{{ order.createdAt|date('d/m/Y') }}</h5>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="table-wrapper">
+                                        <div class="wrapper-content">
+                                            <h5 class="heading">{{ order.reference }}</h5>
+                                        </div>
+
+                                    </td>
+
+                                    <td class="table-wrapper wrapper-total">
+                                        <div class="table-wrapper-center">
+                                            <h5 class="heading">{{ order.orderDetails|length }}</h5>
+                                        </div>
+                                    </td>
+                                    <td class="table-wrapper wrapper-total">
+                                        <div class="table-wrapper-center">
+                                            <h5 class="heading">{{ ((order.carrierPrice+order.getTotal)/100)|number_format(0,',','.') }} F cfa</h5>
+                                        </div>
+                                    </td>
+                                    <td class="table-wrapper wrapper-total">
+                                        <div class="table-wrapper-center">
+                                            <h5 class="heading"><a href="{{ path('account_order_show',{'reference':order.reference}) }}">Voir ma commande</a> </h5>
+                                        </div>
+                                    </td>
+
+                                </tr>
+
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                {% endif %}
+            </div>
+        </div>
+    </section>
+    <!--------------- user-profile-section-end --------------->
+{% endblock %}
