@@ -87,15 +87,20 @@ final class CartController extends AbstractController
     #[Route('/mon-panier', name: 'cart')]
     public function index(Cart $cart): Response
     {
-        $cartConplete = [];
-        if ($cart->get()) {
-            foreach ($cart->get() as $id => $quantity) {
-                $cartConplete[] = [
-                    'product' => $this -> entityManager->getrepository(Product::class)->findOneById($id),
-                    'quantity' => $quantity,
-                ];
-            }
-        }
+//        $cartConplete = [];
+//        if ($cart->get()) {
+//            foreach ($cart->get() as $id => $quantity) {
+//                $cartConplete[] = [
+//                    'product' => $this -> entityManager->getrepository(Product::class)->findOneById($id),
+//                    'quantity' => $quantity,
+//                ];
+//            }
+//        }
+
+
+
+        $cartConplete = $cart->getFull();
+//        dd($cartConplete);
 
         return $this->render('cart/index.html.twig', [
             'cart' =>$cartConplete

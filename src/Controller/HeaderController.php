@@ -32,9 +32,11 @@ final class HeaderController extends AbstractController
                 ];
             }
         }
+
+
         return $this->render('menus/header.html.twig', [
             'previewCart' => $cartComplete,
-            'currentCart' => $cart->get() ?? [],
+            'currentCart' => count($cart->get()??[]),
             'categories' => $categories
         ]);
 

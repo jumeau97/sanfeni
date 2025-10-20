@@ -153,7 +153,11 @@
 </head>
 <body>
 {% block header %}{% endblock %}
-{% block body %}{% endblock %}
+{{ render(controller(
+    'App\\Controller\\HeaderController::indexCartPreview'
+)) }}
+{% block body %}
+{% endblock %}
 
 
 <!--------------- jQuery ---------------->

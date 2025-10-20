@@ -4,16 +4,12 @@
 
 {% block body %}
 
-    {{ render(controller(
-        'App\\Controller\\HeaderController::indexCartPreview'
-    )) }}
-
 
     <!--------------- checkout-section---------------->
     <section class="checkout product footer-padding">
         <div class="container">
             <div class="checkout-section">
-                {{ form_start(form,{action:path('app_order_recap')}) }}
+                {{ form_start(form,{action:path('app_order_recap'), 'attr': { 'data-turbo': 'false' }}) }}
                 <div class="row gy-5">
 
                     <div class="col-lg-6">

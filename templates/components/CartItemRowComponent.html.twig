@@ -1,0 +1,89 @@
+{% set product = this.productEntity %}
+<tr {{ attributes }} class="table-row ticket-row" style="border-bottom: 1px solid #eee;">
+
+    {# 1. Colonne Produit et Image #}
+    <td class="table-wrapper wrapper-product" style="padding: 15px 0;">
+        <div class="wrapper" style="display: flex; align-items: center;">
+            <div class="wrapper-img" style="margin-right: 15px;">
+                {# ANCIEN : cartItemData.product.illustration #}
+                <img src="{{ asset('images/products/')~ product.illustration }}" alt="Produit"
+                     style="width: 60px; height: 60px; object-fit: cover; border-radius: 4px;">
+            </div>
+            <div class="wrapper-content">
+                {# ANCIEN : cartItemData.product.name #}
+                <h5 class="heading" style="font-size: 1rem; margin: 0;">{{ product.name }}</h5>
+            </div>
+        </div>
+    </td>
+
+    {# 2. Colonne Prix Unitaire #}
+    <td class="table-wrapper">
+        <div class="table-wrapper-center">
+            <div class="price">
+                {% if product.isPromotion %}
+                    <span class="price-cut"
+                          style="text-decoration: line-through; color: #999; margin-right: 8px;">{{ (product.price/100)|format_currency('XOF') }}</span>
+                    {# this.finalUnitPrice utilise déjà l'objet product chargé #}
+                    <span class="new-price"
+                          style="font-weight: bold; color: #d9534f;">{{ this.finalUnitPrice|format_currency('XOF') }}</span>
+                {% else %}
+                    <span class="new-price"
+                          style="font-weight: bold;">{{ this.finalUnitPrice|format_currency('XOF') }}</span>
+                {% endif %}
+            </div>
+        </div>
+    </td>
+
+    {# 3. Colonne QUANTITÉ (Boutons +/-) #}
+    <td class="table-wrapper">
+        <div class="table-wrapper-center">
+            <div class="quantity flex items-center space-x-2"
+                 style="display: flex; align-items: center; justify-content: center;">
+
+                {# Bouton Diminuer #}
+                <button data-action="live#action"
+                        data-live-action-param="decreaseQuantity"
+                        class="btn btn-primary"
+                        style="background-color: #4f46e5; color: white; border: none; padding: 8px 12px; border-radius: 5px 0 0 5px; cursor: pointer; font-weight: bold;"
+                    {% if quantity <= 1 %} disabled style="opacity: 0.5; cursor: not-allowed;" {% endif %}>
+                    -
+                </button>
+
+                {# Affichage de la Quantité (Utilisation de la LiveProp 'quantity') #}
+                <span
+                    style="display: inline-block; padding: 8px 12px; border: 1px solid #ccc; text-align: center; width: 40px; background-color: white;">
+                    {{ quantity }}
+                </span>
+
+                {# Bouton Augmenter #}
+                <button data-action="live#action"
+                        data-live-action-param="increaseQuantity"
+                        class="btn btn-primary"
+                        style="background-color: #4f46e5; color: white; border: none; padding: 8px 12px; border-radius: 0 5px 5px 0; cursor: pointer; font-weight: bold;">
+                    +
+                </button>
+            </div>
+        </div>
+    </td>
+
+    {# 4. Colonne TOTAL de la ligne (Utilisation de l'accesseur this.lineTotal) #}
+    <td class="table-wrapper wrapper-total">
+        <div class="table-wrapper-center">
+            <h5 class="heading" style="font-size: 1.1rem; font-weight: bold;">
+                {{ this.lineTotal|format_currency('XOF') }}
+            </h5>
+        </div>
+    </td>
+
+    {# 5. Colonne ACTION (Bouton X) #}
+    <td class="table-wrapper">
+        <div class="table-wrapper-center">
+            <button data-action="live#action"
+                    data-live-action-param="removeItem"
+                    class="btn btn-dark"
+                    style="background-color: #212529; color: white; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer; font-weight: bold;">
+                <span>X</span>
+            </button>
+        </div>
+    </td>
+</tr>

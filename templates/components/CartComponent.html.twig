@@ -1,0 +1,37 @@
+{# Le 'attributes' doit englober toute la zone à rafraîchir (le tableau et les totaux) #}
+<div {{ attributes }}>
+
+    <div class="cart-section">
+        <table>
+            <tbody>
+            <tr class="table-row table-top-row">
+                {# ... En-têtes du tableau ... #}
+            </tr>
+
+            {% for cartItem in cartItems %}
+                {# Inclusion du composant enfant pour chaque ligne #}
+                {{ component('CartItemRowComponent', {
+                    productId: cartItem.product.id,
+                    quantity: cartItem.quantity,
+                    key: cartItem.product.id,
+                }) }}
+            {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+
+    {# Affichage du Total Général #}
+    <div class="cart-summary" style="text-align: right; margin-top: 20px;">
+        <h3>Total Général :
+            <span id="grand-total-amount">
+                {{ this.grandTotal|format_currency('XOF') }}
+            </span>
+        </h3>
+    </div>
+
+    <div class="wishlist-btn cart-btn">
+        <a href="{{ path('app_order') }}" class="shop-btn">Passer à la caisse</a>
+    </div>
+
+</div>

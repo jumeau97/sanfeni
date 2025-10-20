@@ -42,6 +42,7 @@ final class HomeController extends AbstractController
 //        dd($this->indexCartPreview($cart));
 
 
+
         return $this->render('home/index.html.twig', [
             'products' => $products,
         ]);

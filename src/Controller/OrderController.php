@@ -41,9 +41,11 @@ final class OrderController extends AbstractController
     public function add(Cart $cart, Request $request): Response
     {
 
+
         $form = $this->createForm(OrderType::class, null, [
             'user' => $this->getUser()
         ]);
+
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $date = new \DateTimeImmutable();
@@ -90,8 +92,9 @@ final class OrderController extends AbstractController
 
             }
 
-            $this->entityManager->flush();
 
+            $this->entityManager->flush();
+//            dd($order->getReference());
 
             return $this->render('order/add.html.twig', [
                 'cart' => $cart->getFull(),

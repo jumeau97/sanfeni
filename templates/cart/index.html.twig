@@ -3,9 +3,6 @@
 {% block title %}Hello CartController!{% endblock %}
 
 {% block body %}
-    {{ render(controller(
-        'App\\Controller\\HeaderController::indexCartPreview'
-    )) }}
     <!--------------- blog-tittle-section---------------->
     {#    <section class="blog about-blog"> #}
     {#        <div class="container"> #}
@@ -19,6 +16,7 @@
     {#            </div> #}
     {#        </div> #}
     {#    </section> #}
+
     <!--------------- blog-tittle-section-end---------------->
     <div class="row d-flex justify-content-center">
         {#        <div class="col-md-10"> #}
@@ -26,111 +24,124 @@
             <!--------------- cart-section---------------->
             <section class="product-cart product footer-padding">
                 <div class="container">
-                    <div class="cart-section">
-                        <table>
-                            <tbody>
-                            <tr class="table-row table-top-row">
-                                <td class="table-wrapper wrapper-product">
-                                    <h5 class="table-heading">PRODUIT</h5>
-                                </td>
-                                <td class="table-wrapper">
-                                    <div class="table-wrapper-center">
-                                        <h5 class="table-heading">PRIX</h5>
-                                    </div>
-                                </td>
-                                <td class="table-wrapper">
-                                    <div class="table-wrapper-center">
-                                        <h5 class="table-heading">QUANTITÉ</h5>
-                                    </div>
-                                </td>
-                                <td class="table-wrapper wrapper-total">
-                                    <div class="table-wrapper-center">
-                                        <h5 class="table-heading">TOTAL</h5>
-                                    </div>
-                                </td>
-                                <td class="table-wrapper">
-                                    <div class="table-wrapper-center">
-                                        <h5 class="table-heading">ACTION</h5>
-                                    </div>
-                                </td>
-                            </tr>
-                            <turbo-frame id="cart-content">
-                                {% set total = null %}
-                                {% for cart in cart %}
-                                    <tr class="table-row ticket-row">
-                                        <td class="table-wrapper wrapper-product">
-                                            <div class="wrapper">
-                                                <div class="wrapper-img">
-                                                    <img
-                                                        src="{{ asset('images/products/')~ cart.product.illustration }}"
-                                                        alt="img">
-                                                </div>
-                                                <div class="wrapper-content">
-                                                    <h5 class="heading">{{ cart.product.name }}</h5>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="table-wrapper">
-                                            <div class="table-wrapper-center">
-                                                <div class="price">
-                                                    {% if cart.product.isPromotion %}
-                                                        <span
-                                                            class="price-cut">{{ (cart.product.price/100)|format_currency('XOF') }}</span>
-                                                        <span
-                                                            class="new-price">{{ ((cart.product.price/100) * (1 - (cart.product.offPercent / 100))) | format_currency('XOF') }}</span>
-                                                    {% else %}
-                                                        <span
-                                                            class="new-price">{{ (cart.product.price/100)|format_currency('XOF') }}</span>
-                                                    {% endif %}
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="table-wrapper">
-                                            <div class="table-wrapper-center">
-                                                <div class="quantity">
-                                                    {# Les liens doivent être à l'intérieur du frame #}
-                                                    <a class="btn btn-primary"
-                                                       href="{{ path('decrease_to_cart', {'id':cart.product.id}) }}"
-                                                        data-turbo-frame="cart-content">
-                                                        <span class="minus">-</span>
-                                                    </a>
-                                                    <span class="number">{{ cart.quantity }}</span>
-                                                    <a href="{{ path('add_to_cart', {'id':cart.product.id}) }}"
-                                                       class="btn btn-primary"
-                                                       data-turbo-frame="cart-content">
-                                                        <span class="plus">+</span>
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="table-wrapper wrapper-total">
-                                            <div class="table-wrapper-center">
-                                                <h5 class="heading">
-                                                    {% if cart.product.isPromotion %}
-                                                        {{ ((cart.product.price/100) * (1 - (cart.product.offPercent / 100)))*cart.quantity }}
-                                                    {% else %}
-                                                        {{ (cart.product.price/100)*cart.quantity }}
-                                                    {% endif %}
-                                                </h5>
-                                            </div>
-                                        </td>
-                                        <td class="table-wrapper">
-                                            <div class="table-wrapper-center">
-                                                <a href="{{ path('delete_to_cart', {'id':cart.product.id}) }}"
-                                                   class="btn btn-dark"> <span>x</span></a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    {% set total = total + (cart.product.price * cart.quantity) %}
-                                {% endfor %}
-                            </turbo-frame>
+                    {# templates/cart/index.html.twig #}
 
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="wishlist-btn cart-btn">
-                        <a href="{{ path('app_order') }}" class="shop-btn">Passer à la caisse</a>
-                    </div>
+                    <section class="product-cart product footer-padding">
+                        <div class="container">
+
+                            {# Inclure le composant parent, en lui passant les données initiales #}
+                            {{ component('CartComponent', {
+                                cartItems: cart
+                            }) }}
+
+                        </div>
+                    </section>
+
+{#                    <div class="cart-section">#}
+{#                        {{ component('RamdomNumber') }}#}
+{#                        <table>#}
+{#                            <tbody>#}
+{#                            <tr class="table-row table-top-row">#}
+{#                                <td class="table-wrapper wrapper-product">#}
+{#                                    <h5 class="table-heading">PRODUIT</h5>#}
+{#                                </td>#}
+{#                                <td class="table-wrapper">#}
+{#                                    <div class="table-wrapper-center">#}
+{#                                        <h5 class="table-heading">PRIX</h5>#}
+{#                                    </div>#}
+{#                                </td>#}
+{#                                <td class="table-wrapper">#}
+{#                                    <div class="table-wrapper-center">#}
+{#                                        <h5 class="table-heading">QUANTITÉ</h5>#}
+{#                                    </div>#}
+{#                                </td>#}
+{#                                <td class="table-wrapper wrapper-total">#}
+{#                                    <div class="table-wrapper-center">#}
+{#                                        <h5 class="table-heading">TOTAL</h5>#}
+{#                                    </div>#}
+{#                                </td>#}
+{#                                <td class="table-wrapper">#}
+{#                                    <div class="table-wrapper-center">#}
+{#                                        <h5 class="table-heading">ACTION</h5>#}
+{#                                    </div>#}
+{#                                </td>#}
+{#                            </tr>#}
+{#                            <turbo-frame id="cart-content">#}
+{#                                {% set total = null %}#}
+{#                                {% for cart in cart %}#}
+{#                                    <tr class="table-row ticket-row">#}
+{#                                        <td class="table-wrapper wrapper-product">#}
+{#                                            <div class="wrapper">#}
+{#                                                <div class="wrapper-img">#}
+{#                                                    <img#}
+{#                                                        src="{{ asset('images/products/')~ cart.product.illustration }}"#}
+{#                                                        alt="img">#}
+{#                                                </div>#}
+{#                                                <div class="wrapper-content">#}
+{#                                                    <h5 class="heading">{{ cart.product.name }}</h5>#}
+{#                                                </div>#}
+{#                                            </div>#}
+{#                                        </td>#}
+{#                                        <td class="table-wrapper">#}
+{#                                            <div class="table-wrapper-center">#}
+{#                                                <div class="price">#}
+{#                                                    {% if cart.product.isPromotion %}#}
+{#                                                        <span#}
+{#                                                            class="price-cut">{{ (cart.product.price/100)|format_currency('XOF') }}</span>#}
+{#                                                        <span#}
+{#                                                            class="new-price">{{ ((cart.product.price/100) * (1 - (cart.product.offPercent / 100))) | format_currency('XOF') }}</span>#}
+{#                                                    {% else %}#}
+{#                                                        <span#}
+{#                                                            class="new-price">{{ (cart.product.price/100)|format_currency('XOF') }}</span>#}
+{#                                                    {% endif %}#}
+{#                                                </div>#}
+{#                                            </div>#}
+{#                                        </td>#}
+{#                                        <td class="table-wrapper">#}
+{#                                            <div class="table-wrapper-center">#}
+{#                                                <div class="quantity">#}
+{#                                                    <a class="btn btn-primary"#}
+{#                                                       href="{{ path('decrease_to_cart', {'id':cart.product.id}) }}"#}
+{#                                                       data-turbo-frame="cart-content">#}
+{#                                                        <span class="minus">-</span>#}
+{#                                                    </a>#}
+{#                                                    <span class="number">{{ cart.quantity }}</span>#}
+{#                                                    <a href="{{ path('add_to_cart', {'id':cart.product.id}) }}"#}
+{#                                                       class="btn btn-primary"#}
+{#                                                       data-turbo-frame="cart-content">#}
+{#                                                        <span class="plus">+</span>#}
+{#                                                    </a>#}
+{#                                                </div>#}
+{#                                            </div>#}
+{#                                        </td>#}
+{#                                        <td class="table-wrapper wrapper-total">#}
+{#                                            <div class="table-wrapper-center">#}
+{#                                                <h5 class="heading">#}
+{#                                                    {% if cart.product.isPromotion %}#}
+{#                                                        {{ ((cart.product.price/100) * (1 - (cart.product.offPercent / 100)))*cart.quantity }}#}
+{#                                                    {% else %}#}
+{#                                                        {{ (cart.product.price/100)*cart.quantity }}#}
+{#                                                    {% endif %}#}
+{#                                                </h5>#}
+{#                                            </div>#}
+{#                                        </td>#}
+{#                                        <td class="table-wrapper">#}
+{#                                            <div class="table-wrapper-center">#}
+{#                                                <a href="{{ path('delete_to_cart', {'id':cart.product.id}) }}"#}
+{#                                                   class="btn btn-dark"> <span>x</span></a>#}
+{#                                            </div>#}
+{#                                        </td>#}
+{#                                    </tr>#}
+{#                                    {% set total = total + (cart.product.price * cart.quantity) %}#}
+{#                                {% endfor %}#}
+{#                            </turbo-frame>#}
+
+{#                            </tbody>#}
+{#                        </table>#}
+{#                    </div>#}
+{#                    <div class="wishlist-btn cart-btn">#}
+{#                        <a href="{{ path('app_order') }}" class="shop-btn">Passer à la caisse</a>#}
+{#                    </div>#}
 
                 </div>
             </section>
