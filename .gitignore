@@ -6,7 +6,6 @@
 /public/bundles/
 /var/
 /vendor/
-/src/Controller/StripeController.php
 ###< symfony/framework-bundle ###
 
 ###> phpunit/phpunit ###
