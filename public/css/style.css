@@ -32,7 +32,7 @@ body {
     box-sizing: border-box;
     font-family: "Poppins", sans-serif;
     background: #F8F8F8;
-    overflow-x: hidden;
+    overflow-x: visible;
 }
 
 h1,
@@ -676,6 +676,11 @@ button {
 }
 
 .header-center .header-cart-items .header-cart:hover .cart-submenu {
+    opacity: 1;
+    visibility: visible;
+}
+
+.header-center .header-cart-items .header-cart.isVisible .cart-submenu {
     opacity: 1;
     visibility: visible;
 }

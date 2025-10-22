@@ -2,7 +2,6 @@
 
 namespace App\Twig\Components;
 
-use App\Entity\Product;
 use App\Model\Cart;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
@@ -34,11 +33,11 @@ final class ProductItem
     public function addToCart(): void
     {
 //        dd($this->product['id']);
-//        if ($this->product->getValues()) {
-        $this->cartService->add($this->product['id']);
-        $this->liveResponder->emit('headerCartUpdated', componentName: 'HeaderCartComponent');
+        if ($this->product['id']) {
+            $this->cartService->add($this->product['id']);
+            $this->liveResponder->emit('headerCartUpdated', componentName: 'HeaderCartComponent');
 
-//        }
+        }
     }
 
     // Méthodes pour calculer le prix promo, etc., peuvent être ajoutées ici

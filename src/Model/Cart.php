@@ -63,7 +63,7 @@ class Cart
     public function delete($id)
     {
         $session = $this->requestStack->getSession();
-        $cart =$session->get('cart', []);
+        $cart = $session->get('cart', []);
         unset($cart[$id]);
         return $session->set('cart', $cart);
     }
@@ -88,7 +88,7 @@ class Cart
         $session = $this->requestStack->getSession();
         $cart = $session->get('cart', []);
 
-        $newQuantity = (int) $newQuantity;
+        $newQuantity = (int)$newQuantity;
 
         if ($newQuantity > 0) {
             $cart[$id] = $newQuantity;

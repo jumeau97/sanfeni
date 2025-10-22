@@ -32,6 +32,10 @@ final class HeaderController extends AbstractController
                 ];
             }
         }
+//        $cart->remove();
+//        dd($cartComplete);
+
+
 
 
         return $this->render('menus/header.html.twig', [

@@ -7,13 +7,12 @@ use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveListener;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
-use Symfony\UX\LiveComponent\ValidatableComponentTrait;
+
 
 #[AsLiveComponent]
 final class CartComponent
 {
     use DefaultActionTrait;
-    use ValidatableComponentTrait;
 
     // Initialisé avec les données complètes du panier depuis le contrôleur
 
@@ -37,6 +36,7 @@ final class CartComponent
 
         // 2. Incrémente le compteur pour garantir que le composant se rafraîchit
         $this->refreshCounter++;
+
     }
 
 

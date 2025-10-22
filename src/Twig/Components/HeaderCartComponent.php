@@ -6,12 +6,19 @@ use App\Model\Cart;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveListener;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
+use Symfony\UX\LiveComponent\ComponentToolsTrait;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
+use Symfony\UX\LiveComponent\LiveResponder;
 
 #[AsLiveComponent]
 final class HeaderCartComponent
 {
     use DefaultActionTrait;
+//    use ComponentToolsTrait;
+
+    public function __construct(private LiveResponder $liveResponder)
+    {
+    }
 
 
     public array $previewCart = [];
@@ -25,6 +32,8 @@ final class HeaderCartComponent
         $this->previewCart = $cartService->getFull();
 
         $this->currentCart = count($cartService->get());
+//        $this->dispatchBrowserEvent('modal:open', []);
+        $this->liveResponder->dispatchBrowserEvent('modal:open', []);
 
     }
 }

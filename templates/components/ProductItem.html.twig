@@ -1,8 +1,9 @@
 {# <div{{ attributes }}> #}
 
 <div {{ attributes }} class="col-xl-2 col-md-4">
+
     {#                            <a href="{{ path('product-details', {'slug' : product.slug} ) }}"> #}
-    <div class="product-wrapper" data-aos="fade-up">
+    <div class="product-wrapper">
         <div class="product-img">
             <img src="{{ asset('images/products/')~ product.illustration }}"
                  alt="product-img">

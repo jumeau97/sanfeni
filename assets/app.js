@@ -12,9 +12,19 @@ import './bootstrap.js';
 //     $('[data-toggle="popover"]').popover();
 // });
 
-document.addEventListener('DOMContentLoaded', function() {
+const headerCart = document.getElementById('header-cart');
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function (event) {
+    console.log("loren header", event.target);
+    // if (event.target === headerCart) {
+        headerCart.classList.remove('isVisible');
+    // }
+}
+
+document.addEventListener('DOMContentLoaded', function () {
     const promoCheckbox = document.getElementById('Product_isPromotion');
     const promoPriceField = document.getElementById('Product_offPercent');
+
 
     // Cible le parent du champ pour cacher tout le bloc du formulaire
     const promoPriceFieldContainer = promoPriceField.closest('.promotion');

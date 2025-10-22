@@ -1,5 +1,31 @@
-<div{{ attributes }}>
-    <a href="{{ path('cart') }}" class="cart-item">
+<div {{ attributes }} >
+    <!-- Modal -->
+    {#    <div > #}
+    {#        <button type="button" data-action="modal#openModal">Open Modal</button> #}
+
+    {#    <div {{ stimulus_controller('modal') }} style="display: none;" id="modal" class="modal"> #}
+
+    {#        <!-- Modal content --> #}
+    {#        <div class="modal-content" data-modal-target="modalElement"> #}
+    {#            <span class="close">&times;</span> #}
+    {#            <p>Some text in the Modal..</p> #}
+    {#        </div> #}
+
+    {#    </div> #}
+
+    {#        <div class="modal fade" tabindex="-1" role="dialog" > #}
+    {#            <div class="modal-dialog" role="document"> #}
+    {#                <div class="modal-content"> #}
+    {#                    <div class="modal-header"> #}
+    {#                        <h5 class="modal-title">Modal Title</h5> #}
+    {#                        <button type="button" class="btn-close" data-action="modal#closeModal"></button> #}
+    {#                    </div> #}
+    {#                </div> #}
+    {#            </div> #}
+    {#        </div> #}
+    {#    </div> #}
+    <div class="header-cart" id="header-cart" {{ stimulus_controller('modal') }} >
+        <a href="{{ path('cart') }}" class="cart-item">
                                 <span>
                                     <svg width="35" height="28" viewBox="0 0 35 28" fill="none"
                                          xmlns="http://www.w3.org/2000/svg">
@@ -21,31 +47,45 @@
                                     </svg>
 
                                 </span>
-        <span class="cart-text">
+            <span class="cart-text">
                                     Panier
                                 </span>
-    </a>
-    <div class="cart-submenu">
-        <div class="cart-wrapper-item">
-            {% set total = null %}
-            {% for c in previewCart %}
-                <div class="wrapper">
-                    <div class="wrapper-item">
-                        <div class="wrapper-img">
-                            <img
-                                src="{{ asset('images/products/'~ c.product.illustration) }}"
-                                alt="img">
-                        </div>
-                        <div class="wrapper-content">
-                            <h5 class="wrapper-title">{{ c.product.name }} <span
-                                    class="text-primary">x</span>
-                                {{ c.quantity }}</h5>
-                            <div class="price">
-                                <p class="new-price">{{ ((c.product.price * c.quantity) / 100) | number_format('0', ',', '.') }}</p>
+        </a>
+        <div class="cart-submenu">
+            <div class="cart-wrapper-item">
+                {% set total = null %}
+                {% for c in previewCart %}
+                    <div class="wrapper">
+                        <div class="wrapper-item">
+                            <div class="wrapper-img">
+                                <img
+                                    src="{{ asset('images/products/'~ c.product.illustration) }}"
+                                    alt="img">
+                            </div>
+                            <div class="wrapper-content">
+                                <h5 class="wrapper-title">{{ c.product.name }} <span
+                                        class="text-primary">x</span>
+                                    {{ c.quantity }}</h5>
+                                {#                                <div class="price"> #}
+                                {#                                    <p class="new-price">{{ ((c.product.price * c.quantity) / 100) | number_format('0', ',', '.') }}</p> #}
+                                {#                                </div> #}
+                                <div class="price">
+                                    {% if c.product.isPromotion %}
+                                        <span class="price-cut">
+            {{ (c.product.price/100)|format_currency('XOF') }}
+        </span>
+                                        <span class="new-price">
+            {{ ((c.product.price/100) * (1 - (c.product.offPercent / 100))) | format_currency('XOF') }}
+        </span>
+                                    {% else %}
+                                        <span class="new-price">
+            {{ (c.product.price/100)|format_currency('XOF') }}
+        </span>
+                                    {% endif %}
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <span class="close-btn">
+                        <span class="close-btn">
                                             <svg viewBox="0 0 10 10" fill="none" class="fill-current"
                                                  xmlns="http://www.w3.org/2000/svg">
                                                 <path
@@ -53,21 +93,22 @@
                                                 </path>
                                             </svg>
                                         </span>
-                </div>
-                {% set total = total + (c.product.price * c.quantity) %}
-            {% endfor %}
+                    </div>
+                    {% set total = total + (c.product.price * c.quantity) %}
+                {% endfor %}
 
-        </div>
-        <div class="cart-wrapper-section">
-            <div class="wrapper-line"></div>
-            <div class="wrapper-subtotal">
-                <h5 class="wrapper-title">Total</h5>
-                <h5 class="wrapper-title">{{ (total/100) | number_format('0', ',', '.') }}
-                    F.cfa</h5>
             </div>
-            <div class="cart-btn">
-                <a href="cart.html" class="shop-btn view-btn">Voir le panier</a>
-                <a href="checkout.html" class="shop-btn checkout-btn">Commander maintenant</a>
+            <div class="cart-wrapper-section">
+                <div class="wrapper-line"></div>
+                <div class="wrapper-subtotal">
+                    <h5 class="wrapper-title">Total</h5>
+                    <h5 class="wrapper-title">{{ (total/100) | number_format('0', ',', '.') }}
+                        F.cfa</h5>
+                </div>
+                <div class="cart-btn">
+                    <a href="cart.html" class="shop-btn view-btn">Voir le panier</a>
+                    <a href="checkout.html" class="shop-btn checkout-btn">Commander maintenant</a>
+                </div>
             </div>
         </div>
     </div>
