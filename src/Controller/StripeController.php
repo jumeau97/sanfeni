@@ -55,7 +55,7 @@ final class StripeController extends AbstractController
             'quantity' => 1,
         ];
 //        dd($product_for_stripe);
-        $stripeSecretKey = getenv('STRIPE_SECRET_KEY');
+        $stripeSecretKey = $_ENV['STRIPE_SECRET_KEY'];
 
         Stripe::setApiKey($stripeSecretKey);
 

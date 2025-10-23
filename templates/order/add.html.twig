@@ -68,13 +68,13 @@
                                                         <h5 class="wrapper-heading">
                                                             {% if product.product.isPromotion %}
 
-                                                                {{ (((product.product.price / 100) * (1 - (product.product.offPercent / 100))) * product.quantity) | number_format(0, ',', '.') }}
+                                                                {{ (((product.product.price / 100) * (1 - (product.product.offPercent / 100))) * product.quantity) |format_currency('XOF') }}
 
                                                             {% else %}
-                                                                {{ ((product.product.price * product.quantity) / 100) | number_format('0', ',', '.') }}
+                                                                {{ ((product.product.price * product.quantity) / 100) |format_currency('XOF') }}
                                                             {% endif %}
 
-                                                            F cfa</h5>
+                                                          </h5>
                                                     </div>
                                                 </li>
                                                 {#                                                {% set total = total + (product.product.price * product.quantity) %} #}
@@ -95,8 +95,7 @@
                                     <hr>
                                     <div class="subtotal product-total">
                                         <h5 class="wrapper-heading">SOUS TOTAL</h5>
-                                        <h5 class="wrapper-heading">{{ total | number_format('0', ',', '.') }} F
-                                            cfa</h5>
+                                        <h5 class="wrapper-heading">{{ total |format_currency('XOF') }} </h5>
                                     </div>
                                     <div class="subtotal product-total">
                                         <ul class="product-list">
@@ -107,8 +106,8 @@
 
                                                 </div>
                                                 <div class="price">
-                                                    <h5 class="wrapper-heading">{{ carrier.price| number_format('0', ',', '.') }}
-                                                        F cfa</h5>
+                                                    <h5 class="wrapper-heading">{{ carrier.price|format_currency('XOF') }}
+                                                      </h5>
                                                 </div>
                                             </li>
                                         </ul>
@@ -116,8 +115,8 @@
                                     <hr>
                                     <div class="subtotal total">
                                         <h5 class="wrapper-heading">TOTAL</h5>
-                                        <h5 class="wrapper-heading price">{{ ((total) + carrier.price)| number_format('0', ',', '.') }}
-                                            F cfa
+                                        <h5 class="wrapper-heading price">{{ ((total) + carrier.price)|format_currency('XOF') }}
+
                                         </h5>
                                     </div>
                                     <div class="subtotal payment-type">

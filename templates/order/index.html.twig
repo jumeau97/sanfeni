@@ -59,8 +59,15 @@
                                                         {#                                                    <p class="paragraph">64GB, Black, 44mm, Chain Belt</p> #}
                                                     </div>
                                                     <div class="price">
-                                                        <h5 class="wrapper-heading">{{ ((product.product.price * product.quantity) / 100) | number_format('0', ',', '.') }}
-                                                            F cfa</h5>
+                                                        <h5 class="wrapper-heading">
+                                                            {% if product.product.isPromotion %}
+
+                                                                {{ (((product.product.price / 100) * (1 - (product.product.offPercent / 100))) * product.quantity) |format_currency('XOF') }}
+
+                                                            {% else %}
+                                                                {{ ((product.product.price * product.quantity) / 100) |format_currency('XOF')  }}
+                                                            {% endif %}
+                                                          </h5>
                                                     </div>
                                                 </li>
                                                 {% set total = total + (product.product.price * product.quantity) %}

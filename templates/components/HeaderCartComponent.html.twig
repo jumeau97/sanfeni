@@ -94,7 +94,17 @@
                                             </svg>
                                         </span>
                     </div>
-                    {% set total = total + (c.product.price * c.quantity) %}
+                    {#                    {% set total = total + (c.product.price * c.quantity) %} #}
+                    {% if c.product.offPercent is defined and c.product.offPercent > 0 %}
+                        {# Produit en promotion #}
+                        {% set price = (c.product.price / 100) * (1 - (c.product.offPercent / 100)) %}
+                    {% else %}
+                        {# Produit sans promotion #}
+                        {% set price = (c.product.price / 100) %}
+                    {% endif %}
+
+                    {# Ajout au total #}
+                    {% set total = total + (price * c.quantity) %}
                 {% endfor %}
 
             </div>
@@ -102,8 +112,8 @@
                 <div class="wrapper-line"></div>
                 <div class="wrapper-subtotal">
                     <h5 class="wrapper-title">Total</h5>
-                    <h5 class="wrapper-title">{{ (total/100) | number_format('0', ',', '.') }}
-                        F.cfa</h5>
+                    <h5 class="wrapper-title">{{ total | format_currency('XOF') }}
+                    </h5>
                 </div>
                 <div class="cart-btn">
                     <a href="cart.html" class="shop-btn view-btn">Voir le panier</a>
