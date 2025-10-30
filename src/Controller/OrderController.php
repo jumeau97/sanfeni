@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Order;
 use App\Entity\OrderDetails;
 use App\Form\OrderType;
+use App\Form\PaymentMethodType;
 use App\Model\Cart;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -41,7 +42,6 @@ final class OrderController extends AbstractController
     public function add(Cart $cart, Request $request): Response
     {
 
-
         $form = $this->createForm(OrderType::class, null, [
             'user' => $this->getUser()
         ]);
@@ -70,8 +70,8 @@ final class OrderController extends AbstractController
             $order->setCarrierName($carriers->getName());
             $order->setCarrierPrice($carriers->getPrice());
             $order->setDelivery($delivery_content);
-            $order->setIsPaid(false);
-
+//            $order->setIsPaid(false);
+            $order->setState(0);
             $this->entityManager->persist($order);
 
 
@@ -79,6 +79,7 @@ final class OrderController extends AbstractController
                 $orderDetails = new OrderDetails();
                 $orderDetails->setCommande($order);
                 $orderDetails->setProduct($product['product']->getName());
+                $orderDetails->setProduit($product['product']);
                 $orderDetails->setQuantity($product['quantity']);
                 $price = $product['product']->getPrice(); // Prix brut (en centimes ?)
 
@@ -100,7 +101,8 @@ final class OrderController extends AbstractController
                 'cart' => $cart->getFull(),
                 'carrier' => $carriers,
                 'delivery' => $delivery_content,
-                'reference' => $order->getReference()
+                'reference' => $order->getReference(),
+                'form' => $this->createForm(PaymentMethodType::class)->createView()
             ]);
 
         }

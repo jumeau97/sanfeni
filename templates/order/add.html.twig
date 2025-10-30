@@ -74,7 +74,7 @@
                                                                 {{ ((product.product.price * product.quantity) / 100) |format_currency('XOF') }}
                                                             {% endif %}
 
-                                                          </h5>
+                                                        </h5>
                                                     </div>
                                                 </li>
                                                 {#                                                {% set total = total + (product.product.price * product.quantity) %} #}
@@ -107,7 +107,7 @@
                                                 </div>
                                                 <div class="price">
                                                     <h5 class="wrapper-heading">{{ carrier.price|format_currency('XOF') }}
-                                                      </h5>
+                                                    </h5>
                                                 </div>
                                             </li>
                                         </ul>
@@ -119,24 +119,30 @@
 
                                         </h5>
                                     </div>
+                                    {{ form_start(form, {'action': path('stripe_create_session', {'reference':reference}),'attr': { 'data-turbo': 'false' }}) }}
                                     <div class="subtotal payment-type">
-                                        <div class="checkbox-item">
-                                            <input type="radio" id="cash" name="bank">
-                                            <div class="cash">
-                                                <h5 class="wrapper-heading">Payer à la livraion</h5>
+                                        {% for label, value in field_choices(form.payMethod) %}
+                                            {% set inputId = field_id(form.payMethod) ~ '_' ~ loop.index %}
+                                            <div class="checkbox-item">
+                                                <input type="radio" name="{{ field_name(form.payMethod) }}"
+                                                       id="{{ inputId }}" value="{{ value }}">
+                                                <div class="cash">
+                                                    <h5 class="wrapper-heading" id="{{ inputId }}">{{ label }}</h5>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="checkbox-item">
-                                            <input type="radio" id="credit" name="bank">
-                                            <div class="credit">
-                                                <h5 class="wrapper-heading">Carte de Credit/Debit ou Paypal</h5>
-                                            </div>
-                                        </div>
+                                        {% endfor %}
                                     </div>
+
+                                    {#                                            {{ form_widget(form.payMethod, {'attr': {'class': 'form-control'}}) }} #}
+
                                     {#                                    <a href="#" class="shop-btn">Place Order Now</a> #}
-                                    <a href="{{ path('stripe_create_session', {'reference':reference}) }}"
-                                       class="btn shop-btn" id="checkout-button">Payer la commande
-                                    </a>
+                                    {#                                    <a href="{{ path('stripe_create_session', {'reference':reference}) }}" #}
+                                    {#                                       class="btn shop-btn" id="checkout-button">Payer la commande #}
+                                    {#                                    </a> #}
+                                    <button type="submit" class="btn shop-btn" id="{{ field_id(form.submit) }}"
+                                            name="{{ field_name(form.submit) }}">Payer la commande
+                                    </button>
+                                    {{ form_end(form) }}
                                 </div>
                             </div>
                         </div>

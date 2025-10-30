@@ -12,6 +12,7 @@ import './bootstrap.js';
 //     $('[data-toggle="popover"]').popover();
 // });
 
+
 const headerCart = document.getElementById('header-cart');
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function (event) {

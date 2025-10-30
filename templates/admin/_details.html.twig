@@ -1,0 +1,36 @@
+<div>
+    {% if field.value is not empty %}
+
+        <table class="table table-striped table-sm">
+            <thead>
+            <tr>
+                <th>Produit</th>
+                <th>Quantité</th>
+                <th>Prix</th>
+                <th>Etat</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for detail in field.value %}
+                {#            {{ dump(detail.state ) }} #}
+                <tr>
+                    <td>{{ detail.product }}</td>
+                    <td>{{ detail.quantity }}</td>
+                    <td>{{ detail.price|number_format(2, ',', ' ') }} €</td>
+                    <td>{{ detail.state }} </td>
+                    <td>
+                        <div {{ stimulus_controller('details') }} data-turbo="false">
+                            <button class="btn btn-primary" {{ stimulus_action('details', 'toggleState', 'click') }}>Etat
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <em>Aucun article dans cette commande</em>
+    {% endif %}
+</div>
+

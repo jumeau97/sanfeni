@@ -31,12 +31,38 @@ final class OrderSuccesController extends AbstractController
         if (!$order->isPaid()) {
             //vider la session
 
-            $order->setIsPaid(1);
+//            $order->setIsPaid(1);
+            $order->setState(1); //paiement effectué
             $this->entityManager->flush();
 
             //envoyer un email au client
         }
         return $this->render('order_success/index.html.twig', [
+                'order' => $order
+            ]
+        );
+    }
+
+
+    #[Route('/commande/pay-on-delivery/{reference}', name: 'app_order_pay_on_delivery')]
+    public function payOnDelivery(Cart $cart, $reference): Response
+    {
+        $order = $this->entityManager->getRepository(Order::class)->findOneBy(['reference' => $reference]);
+        if (!$order || $order->getUser() != $this->getUser()) {
+            return $this->redirectToRoute('app_home');
+        }
+//        vider le panier
+        $cart->remove();
+
+        if (!$order->isPaid()) {
+            //vider la session
+
+            $order->setIsPaid(1);
+            $this->entityManager->flush();
+
+            //envoyer un email au client
+        }
+        return $this->render('order_success/pay_on_delivery.html.twig', [
                 'order' => $order
             ]
         );

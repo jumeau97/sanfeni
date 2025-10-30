@@ -28,10 +28,16 @@ class OrderDetails
     #[ORM\Column]
     private ?float $total = null;
 
-    public function __toString(): string
-    {
-        return $this->getProduct()." x ".$this->getQuantity();
-    }
+    #[ORM\ManyToOne(inversedBy: 'orderDetails')]
+    private ?Product $produit = null;
+
+    #[ORM\Column]
+    private ?bool $state = null;
+
+//    public function __toString(): string
+//    {
+//        return $this->getProduct()." x ".$this->getQuantity();
+//    }
 
     public function getId(): ?int
     {
@@ -94,6 +100,30 @@ class OrderDetails
     public function setTotal(float $total): static
     {
         $this->total = $total;
+
+        return $this;
+    }
+
+    public function getProduit(): ?Product
+    {
+        return $this->produit;
+    }
+
+    public function setProduit(?Product $produit): static
+    {
+        $this->produit = $produit;
+
+        return $this;
+    }
+
+    public function isState(): ?bool
+    {
+        return $this->state;
+    }
+
+    public function setState(bool $state): static
+    {
+        $this->state = $state;
 
         return $this;
     }

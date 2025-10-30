@@ -49,6 +49,9 @@ class Order
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $stripeSessionId = null;
 
+    #[ORM\Column]
+    private ?int $state = null;
+
     public function getTotal()
     {
         $total = null;
@@ -191,6 +194,18 @@ class Order
     public function setStripeSessionId(string $stripeSessionId): static
     {
         $this->stripeSessionId = $stripeSessionId;
+
+        return $this;
+    }
+
+    public function getState(): ?int
+    {
+        return $this->state;
+    }
+
+    public function setState(int $state): static
+    {
+        $this->state = $state;
 
         return $this;
     }

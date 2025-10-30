@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Confirmation de commande{% endblock %}
+
+{% block body %}
+    <!--------------- terms-section --------------->
+    <section class="product privacy footer-padding">
+        <div class="container">
+            <div class="privacy-section">
+                <div class="policy">
+                    <h1 class="intro-heading">Confirmation de commande</h1>
+                    <p class="policy-details">
+                        Nous vous remercions pour votre commande n {{ order.reference }}. <br>
+                        Une confirmation vient de vous être envoyeée par email à l'adresse {{ order.user.email }}.
+                    </p>
+
+                    <div>
+                        Pour suivre votre commande, rendez-vous dans votre <a href="{{ path('app_account') }}">Compte</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--------------- terms-section-end --------------->
+{% endblock %}

@@ -93,11 +93,18 @@ class Product
     #[Groups(['getProducts'])]
     private ?int $offPercent = null;
 
+    /**
+     * @var Collection<int, OrderDetails>
+     */
+    #[ORM\OneToMany(targetEntity: OrderDetails::class, mappedBy: 'produit')]
+    private Collection $orderDetails;
+
     public function __construct()
     {
         $this->categories = new ArrayCollection();
         $this->albums = new ArrayCollection();
         $this->productVariations = new ArrayCollection();
+        $this->orderDetails = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -347,6 +354,36 @@ class Product
             return ($this->price - ($this->price * $this->offPercent) / 100);
         }
         return 0;
+    }
+
+    /**
+     * @return Collection<int, OrderDetails>
+     */
+    public function getOrderDetails(): Collection
+    {
+        return $this->orderDetails;
+    }
+
+    public function addOrderDetail(OrderDetails $orderDetail): static
+    {
+        if (!$this->orderDetails->contains($orderDetail)) {
+            $this->orderDetails->add($orderDetail);
+            $orderDetail->setProduit($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrderDetail(OrderDetails $orderDetail): static
+    {
+        if ($this->orderDetails->removeElement($orderDetail)) {
+            // set the owning side to null (unless already changed)
+            if ($orderDetail->getProduit() === $this) {
+                $orderDetail->setProduit(null);
+            }
+        }
+
+        return $this;
     }
 
 

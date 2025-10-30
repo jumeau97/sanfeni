@@ -3,12 +3,19 @@
 {% block title %}Erreur de paiement{% endblock %}
 
 {% block body %}
-    <h2>Erreur de paiement</h2>
-    Bonjour {{ order.user.firstname }} {{ order.user.lastname }}, <br><br>
-    Il semblerait que votre paiement est échoueé pour votre commande n {{ order.reference }}. <br>
-    Une confirmation vient de vous être envoyeée par email à l'adresse {{ order.user.email }}.
-{#    <a href="{{ path('order') }}">Réessayer le paiement</a>#}
-    </p>
+    <div class="privacy-section">
+        <div class="policy">
+            <h1 class="intro-heading">Erreur de paiement</h1>
+            <p class="policy-details">
+                Bonjour {{ order.user.firstname }} {{ order.user.lastname }}, <br><br>
+                Il semblerait que votre paiement est échoueé pour votre commande n {{ order.reference }}. <br>
+                Une confirmation vient de vous être envoyeée par email à l'adresse {{ order.user.email }}.
+            </p>
 
+            <div>
+                Pour suivre votre commande, rendez-vous dans votre <a href="{{ path('app_account') }}">Compte</a>
+            </div>
+        </div>
+    </div>
 
 {% endblock %}
