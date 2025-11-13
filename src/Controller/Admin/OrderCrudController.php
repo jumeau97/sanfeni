@@ -52,7 +52,7 @@ class OrderCrudController extends AbstractCrudController
     {
 
         $order = $context->getEntity()->getInstance();
-        $order->setState(2);
+//        $order->setState(2);
 
         $url = $this->adminUrlGenerator->setController(OrderCrudController::class)
             ->setAction('index')
@@ -116,6 +116,11 @@ class OrderCrudController extends AbstractCrudController
     }
 
 
+    public function configureAssets(Assets $assets): Assets
+    {
+        return $assets
+           ->addWebpackEncoreEntry('app');
+    }
 
 
 }

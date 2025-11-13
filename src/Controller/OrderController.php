@@ -71,7 +71,8 @@ final class OrderController extends AbstractController
             $order->setCarrierPrice($carriers->getPrice());
             $order->setDelivery($delivery_content);
 //            $order->setIsPaid(false);
-            $order->setState(0);
+            $order->setState(1);
+//            dd($order);
             $this->entityManager->persist($order);
 
 
@@ -81,6 +82,7 @@ final class OrderController extends AbstractController
                 $orderDetails->setProduct($product['product']->getName());
                 $orderDetails->setProduit($product['product']);
                 $orderDetails->setQuantity($product['quantity']);
+                $orderDetails->setState(0);
                 $price = $product['product']->getPrice(); // Prix brut (en centimes ?)
 
                 if ($product['product']->getOffPercent() > 0) {

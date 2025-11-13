@@ -40,7 +40,7 @@ class Order
     #[ORM\OneToMany(targetEntity: OrderDetails::class, mappedBy: 'commande')]
     private Collection $orderDetails;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: true)]
     private ?bool $isPaid = null;
 
     #[ORM\Column(length: 255)]
@@ -50,7 +50,7 @@ class Order
     private ?string $stripeSessionId = null;
 
     #[ORM\Column]
-    private ?int $state = null;
+    private ?int $state = 0;
 
     public function getTotal()
     {

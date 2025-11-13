@@ -15,7 +15,6 @@ final class CartComponent
     use DefaultActionTrait;
 
     // Initialisé avec les données complètes du panier depuis le contrôleur
-
     public array $cartItems = [];
 
     // Pour forcer le rafraîchissement en cas de besoin

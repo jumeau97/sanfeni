@@ -1,8 +1,15 @@
 import { Controller } from '@hotwired/stimulus';
 
 export default class extends Controller {
+    next(event) {
+        console.log("lorem");
+    }
+
     connect() {
         this.element.textContent = 'Hello details';
+        window.addEventListener('toggle:status', (event) => {
+            console.log("ooohps")
+        });
     }
 
      toggleState(event) {
