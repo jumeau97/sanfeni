@@ -19,7 +19,6 @@
         "stripe/stripe-php": "^18.0",
         "symfony/apache-pack": "*",
         "symfony/asset": "7.3.*",
-        "symfony/asset-mapper": "7.3.*",
         "symfony/console": "7.3.*",
         "symfony/doctrine-messenger": "7.3.*",
         "symfony/dotenv": "7.3.*",
@@ -36,16 +35,17 @@
         "symfony/process": "7.3.*",
         "symfony/property-access": "7.3.*",
         "symfony/property-info": "7.3.*",
+        "symfony/requirements-checker": "^2.0",
         "symfony/runtime": "7.3.*",
         "symfony/security-bundle": "7.3.*",
         "symfony/serializer": "7.3.*",
-        "symfony/stimulus-bundle": "^2.30",
+        "symfony/stimulus-bundle": "^2.31",
         "symfony/string": "7.3.*",
         "symfony/translation": "7.3.*",
         "symfony/twig-bundle": "7.3.*",
         "symfony/ux-chartjs": "^2.29",
         "symfony/ux-live-component": "^2.30",
-        "symfony/ux-turbo": "^2.30",
+        "symfony/ux-turbo": "^2.31",
         "symfony/validator": "7.3.*",
         "symfony/web-link": "7.3.*",
         "symfony/webpack-encore-bundle": "^2.3",
@@ -88,7 +88,7 @@
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
             "assets:install %PUBLIC_DIR%": "symfony-cmd",
-            "importmap:install": "symfony-cmd"
+            "requirements-checker": "script"
         },
         "post-install-cmd": [
             "@auto-scripts"

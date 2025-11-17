@@ -130,7 +130,7 @@ input {
 }
 
 input[type=checkbox] {
-    accent-color: #AE1C9A;
+    accent-color: #082C6A;
 }
 
 button {
@@ -145,7 +145,7 @@ button {
     text-align: center;
     border-radius: 3rem;
     display: inline-block;
-    background: #AE1C9A;
+    background: #082C6A;
     font-size: 1.4rem;
     font-weight: 500;
     position: relative;
@@ -183,7 +183,7 @@ button {
 
 .shop-btn:hover {
     color: #FFFFFF;
-    background-color: #AE1C9A;
+    background-color: #082C6A;
 }
 
 .shop-btn:hover::after {
@@ -266,7 +266,7 @@ button {
 
 .product-wrapper .product-img .product-cart-items .cart-item:hover svg rect {
     fill: currentColor;
-    fill: #AE1C9A;
+    fill: #082C6A;
 }
 
 .product-wrapper .product-img .product-cart-items .cart-item:hover svg path {
@@ -300,7 +300,7 @@ button {
 }
 
 .product-wrapper:hover {
-    border: 1px solid #AE1C9A;
+    border: 1px solid #082C6A;
 }
 
 .product-wrapper:hover .product-cart-items {
@@ -355,7 +355,7 @@ button {
 }
 
 .price .new-price {
-    color: #AE1C9A;
+    color: #082C6A;
 }
 
 .price span {
@@ -368,13 +368,13 @@ button {
     padding: 1.2rem 1.6rem 1.2rem 2.5rem;
     border-top-left-radius: 3rem;
     background: rgba(174, 28, 154, 0.1882352941);
-    color: #AE1C9A;
+    color: #082C6A;
     font-size: 1.6rem;
     transition: all 0.4s;
 }
 
 .product-btn:hover {
-    background-color: #AE1C9A;
+    background-color: #082C6A;
     color: #FFFFFF;
 }
 
@@ -495,7 +495,7 @@ button {
 }
 
 .header-top-section {
-    border-bottom: 1px solid #AE1C9A;
+    border-bottom: 1px solid #082C6A;
     background: rgba(174, 28, 154, 0.08);
 }
 
@@ -517,7 +517,7 @@ button {
 }
 
 .header-top .header-contact .contact-number {
-    color: #AE1C9A;
+    color: #082C6A;
     font-weight: 700;
 }
 
@@ -562,7 +562,7 @@ button {
     z-index: 2;
     left: -15rem;
     top: 5rem;
-    border-top: 3px solid #AE1C9A;
+    border-top: 3px solid #082C6A;
     border-radius: 0.5rem;
     opacity: 0;
     visibility: hidden;
@@ -671,7 +671,7 @@ button {
 }
 
 .header-center .header-cart-items .header-cart .cart-submenu .cart-wrapper-section .cart-btn .checkout-btn {
-    background: #AE1C9A;
+    background: #082C6A;
     color: #FFFFFF;
 }
 
@@ -705,7 +705,7 @@ button {
     width: 62rem;
     height: 6rem;
     border-radius: 3rem;
-    border: 1px solid #AE1C9A;
+    border: 1px solid #082C6A;
     overflow: hidden;
 }
 
@@ -733,7 +733,7 @@ button {
 }
 
 .header-center .header-cart-items .header-search .modal-main .search-section input {
-    color: #AE1C9A;
+    color: #082C6A;
 }
 
 .header-center .header-cart-items .header-search .modal-main .search-section .shop-btn {
@@ -859,11 +859,11 @@ button {
 .offcanvas-body .category-dropdown .category-list .dropdown-item .drop-down-list-icon span svg,
 .offcanvas-body .category-dropdown .category-list .dropdown-item .drop-down-list-icon span rect {
     fill: currentColor;
-    fill: #AE1C9A;
+    fill: #082C6A;
 }
 
 .header-bottom {
-    background: #AE1C9A;
+    background: #082C6A;
     padding: 10px 0;
 }
 
@@ -943,7 +943,7 @@ button {
 }
 
 .header-nav .category-menu-section .category-dropdown .category-list-item:hover {
-    background-color: #AE1C9A;
+    background-color: #082C6A;
 }
 
 .header-nav .category-menu-section .category-dropdown .category-list-item:hover .dropdown-text {
@@ -1058,7 +1058,7 @@ button {
 
 .header-nav .header-nav-menu .menu-list .header-sub-menu a:hover,
 .header-nav .header-nav-menu .menu-list .shop-menu a:hover {
-    color: #AE1C9A;
+    color: #082C6A;
 }
 
 .header-nav .header-nav-menu .menu-list .mega-menu {
@@ -1286,7 +1286,7 @@ button {
 }
 
 .swiper-pagination-bullet-active {
-    background-color: #AE1C9A;
+    background-color: #082C6A;
 }
 
 .wrapper-section .wrapper-subtitle {
@@ -1296,7 +1296,7 @@ button {
 
 .wrapper-section .wrapper-subtitle .wrapper-inner-title {
     font-size: 4rem;
-    color: #AE1C9A;
+    color: #082C6A;
 }
 
 .wrapper-section .shop-btn {
@@ -1305,7 +1305,7 @@ button {
     text-align: center;
     border-radius: 3rem;
     display: inline-block;
-    background: #AE1C9A;
+    background: #082C6A;
     font-size: 1.6rem;
     font-weight: 500;
     position: relative;
@@ -1342,7 +1342,7 @@ button {
 
 .wrapper-section .shop-btn:hover {
     color: #FFFFFF;
-    background-color: #AE1C9A;
+    background-color: #082C6A;
 }
 
 .wrapper-section .shop-btn:hover::after {
@@ -1480,7 +1480,7 @@ button {
     text-align: center;
     border-radius: 3rem;
     display: inline-block;
-    background: #AE1C9A;
+    background: #082C6A;
     font-size: 1.4rem;
     font-weight: 500;
     position: relative;
@@ -1517,7 +1517,7 @@ button {
 
 .wrapper-two .shop-btn:hover {
     color: #FFFFFF;
-    background-color: #AE1C9A;
+    background-color: #082C6A;
 }
 
 .wrapper-two .shop-btn:hover::after {
@@ -1578,7 +1578,7 @@ button {
 }
 
 .category-section .product-wrapper:hover {
-    border: 1px solid #AE1C9A;
+    border: 1px solid #082C6A;
 }
 
 .category-section .product-wrapper:hover .wrapper-img img {
@@ -1944,7 +1944,7 @@ button {
 }
 
 .footer-service-section {
-    background-color: #AE1C9A;
+    background-color: #082C6A;
     padding: 2.8rem;
     margin-top: -11rem;
     border-radius: 4px;
@@ -2009,7 +2009,7 @@ button {
 }
 
 .footer-section .footer-link a:hover {
-    color: #AE1C9A;
+    color: #082C6A;
     text-decoration: underline;
 }
 
@@ -2194,7 +2194,7 @@ button {
 }
 
 .product-info-content .product-availability .inner-text {
-    color: #AE1C9A;
+    color: #082C6A;
 }
 
 .product-info-content .product-size {
@@ -2204,7 +2204,7 @@ button {
 }
 
 .product-info-content .product-size .size-title {
-    color: #AE1C9A;
+    color: #082C6A;
     margin-bottom: 1rem;
 }
 
@@ -2255,7 +2255,7 @@ button {
 }
 
 .product-info-content .product-size .size-option .option:hover {
-    background: #AE1C9A;
+    background: #082C6A;
     color: #FFFFFF;
 }
 
@@ -2278,7 +2278,7 @@ button {
 }
 
 .product-info-content .product-size.active .size-option .option:hover {
-    background-color: #AE1C9A;
+    background-color: #082C6A;
 }
 
 .product-info-content .product-size.active .chevron {
@@ -2339,7 +2339,7 @@ button {
 }
 
 .product-info-content .product-details .inner-text {
-    color: #AE1C9A;
+    color: #082C6A;
 }
 
 .product-info-content .product-report {
@@ -2416,7 +2416,7 @@ hr {
     padding: 1rem 2.4rem;
     border-top-left-radius: 2rem;
     border-top-right-radius: 2rem;
-    color: #AE1C9A;
+    color: #082C6A;
     font-weight: 600;
 }
 
@@ -2425,7 +2425,7 @@ hr {
 }
 
 .product-description .nav-item .nav-link.active {
-    background: #AE1C9A;
+    background: #082C6A;
     color: #FFFFFF;
 }
 
@@ -2570,7 +2570,7 @@ hr {
 }
 
 .sidebar-section .sidebar-range .noUi-connect {
-    background: #AE1C9A;
+    background: #082C6A;
 }
 
 .sidebar-section .sidebar-range .example-val {
@@ -2605,7 +2605,7 @@ hr {
 
 .deal-btn::after {
     padding: 0;
-    background: #AE1C9A;
+    background: #082C6A;
     width: 0;
     height: 2px;
     top: 2rem;
@@ -2759,7 +2759,7 @@ hr {
     font-size: 1.8rem;
     font-weight: 500;
     position: relative;
-    color: #AE1C9A;
+    color: #082C6A;
     font-family: "Inter", sans-serif;
     transition: all 0.3s;
     overflow: hidden;
@@ -2813,7 +2813,7 @@ hr {
 }
 
 .blogs-wrapper .shop-btn:hover {
-    color: #AE1C9A;
+    color: #082C6A;
 }
 
 .blogs-wrapper .shop-btn::after {
@@ -2862,9 +2862,9 @@ hr {
     width: 3.5rem;
     height: 3.5rem;
     border-radius: 50%;
-    background: #AE1C9A;
+    background: #082C6A;
     transition: all 0.2s;
-    border: 1px solid #AE1C9A;
+    border: 1px solid #082C6A;
 }
 
 .blog-details .blogs-form-section .social-item a svg {
@@ -2878,7 +2878,7 @@ hr {
 }
 
 .blog-details .blogs-form-section .social-item a:hover svg {
-    fill: #AE1C9A;
+    fill: #082C6A;
 }
 
 @media (max-width: 767px) {
@@ -3056,7 +3056,7 @@ hr {
 
 .blog-post-section .blog-post .blogs-wrapper .wrapper-info svg {
     fill: currentColor;
-    fill: #AE1C9A;
+    fill: #082C6A;
 }
 
 .blog-post-section .blog-post .category-list {
@@ -3074,7 +3074,7 @@ hr {
 }
 
 .blog-post-section .blog-post .category-list a:hover {
-    color: #AE1C9A;
+    color: #082C6A;
 }
 
 .blog-post-section .newsletter {
@@ -3156,7 +3156,7 @@ hr {
 }
 
 .cart-section .table-row .table-wrapper .heading:hover {
-    color: #AE1C9A;
+    color: #082C6A;
 }
 
 .cart-section .table-row .wrapper-product {
@@ -3231,7 +3231,7 @@ table .ticket-row:hover {
 }
 
 .table-row .table-wrapper .heading:hover {
-    color: #AE1C9A;
+    color: #082C6A;
 }
 
 .table-row .table-wrapper .table-heading {
@@ -3277,7 +3277,7 @@ table .ticket-row:hover {
 }
 
 .table-row .table-wrapper-center path:hover {
-    fill: #AE1C9A;
+    fill: #082C6A;
 }
 
 .table-row .table-wrapper-img {
@@ -3468,7 +3468,7 @@ table .ticket-row:hover {
 }
 
 .order-summery .total .price {
-    color: #AE1C9A;
+    color: #082C6A;
 }
 
 .order-summery .payment-type {
@@ -3492,7 +3492,7 @@ table .ticket-row:hover {
 }
 
 .order-summery .payment-type .checkbox-item input {
-    accent-color: #AE1C9A;
+    accent-color: #082C6A;
 }
 
 .order-summery .payment-type .checkbox-item:hover {
@@ -3592,7 +3592,7 @@ table .ticket-row:hover {
 }
 
 .checkbox .forget-pass p {
-    color: #AE1C9A;
+    color: #082C6A;
 }
 
 .checkbox-item {
@@ -3700,7 +3700,7 @@ table .ticket-row:hover {
 }
 
 .faq-accordion .faq-item .faq-button:not(.collapsed) {
-    background: #AE1C9A;
+    background: #082C6A;
     border-bottom: 1px solid rgba(255, 255, 255, 0.3764705882);
 }
 
@@ -3727,7 +3727,7 @@ table .ticket-row:hover {
 }
 
 .faq-accordion .faq-item .accordion-collapse {
-    background-color: #AE1C9A;
+    background-color: #082C6A;
 }
 
 .faq-accordion .faq-item .accordion-collapse .paragraph {
@@ -3923,7 +3923,7 @@ table .ticket-row:hover {
 }
 
 .img-upload-section .logo-wrapper label {
-    background: #AE1C9A;
+    background: #082C6A;
     border-radius: 50%;
     cursor: pointer;
 }
@@ -3959,7 +3959,7 @@ table .ticket-row:hover {
     height: 17rem;
     border-radius: 50%;
     object-fit: cover;
-    border: 1px solid #AE1C9A;
+    border: 1px solid #082C6A;
 }
 
 .img-upload-section .logo-wrapper .logo-upload .upload-input {
@@ -3973,7 +3973,7 @@ table .ticket-row:hover {
     width: 100%;
     height: 15rem;
     border-radius: 0.5rem;
-    border: 1px solid #AE1C9A;
+    border: 1px solid #082C6A;
 }
 
 .img-upload-section .logo-wrapper .cover-upload .cover-input {
@@ -4046,7 +4046,7 @@ table .ticket-row:hover {
     justify-content: center;
     gap: 2rem;
     width: 100%;
-    border: 1px solid #AE1C9A;
+    border: 1px solid #082C6A;
     height: 19.6rem;
     border-radius: 0.5rem;
 }
@@ -4148,7 +4148,7 @@ table .ticket-row:hover {
 .product-compair .cart-center .search input {
     border: none;
     outline: none;
-    color: #AE1C9A;
+    color: #082C6A;
     flex: 1 1 0%;
 }
 
@@ -4157,7 +4157,7 @@ table .ticket-row:hover {
     height: 2rem;
     object-fit: cover;
     fill: currentColor;
-    fill: #AE1C9A;
+    fill: #082C6A;
 }
 
 .product-compair .cart-center .wrapper .wrapper-img {
@@ -4346,7 +4346,7 @@ table .ticket-row:hover {
 }
 
 .about-details:hover {
-    color: #AE1C9A;
+    color: #082C6A;
 }
 
 @media (max-width: 767px) {
@@ -4372,7 +4372,7 @@ table .ticket-row:hover {
     position: absolute;
     width: 100%;
     height: 100%;
-    background: #AE1C9A;
+    background: #082C6A;
     z-index: 10;
     opacity: 0.6;
 }
@@ -4514,7 +4514,7 @@ table .ticket-row:hover {
 }
 
 .testimonial-wrapper .testimonial-info .title-inner {
-    color: #AE1C9A;
+    color: #082C6A;
 }
 
 @media (max-width: 1023px) {
@@ -4608,7 +4608,7 @@ table .ticket-row:hover {
 }
 
 .user-profile-section .dashboard-heading .dashboard-switch .switch-icon.active {
-    background: #AE1C9A;
+    background: #082C6A;
 }
 
 .user-profile-section .dashboard-heading .dashboard-switch .switch-icon.active::before {
@@ -4826,13 +4826,13 @@ table .ticket-row:hover {
 }
 
 .user-dashboard .nav-item .nav-link.active svg {
-    fill: #AE1C9A;
+    fill: #082C6A;
     transform: scale(1.1);
 }
 
 .user-dashboard .nav-item .nav-link.active .text {
     transform: translateX(5px);
-    color: #AE1C9A;
+    color: #082C6A;
     font-weight: 600;
 }
 
@@ -4869,7 +4869,7 @@ table .ticket-row:hover {
 .user-dashboard .nav-content .profile-section .product-wrapper svg,
 .user-dashboard .nav-content .profile-section .product-wrapper path {
     fill: currentColor;
-    fill: #AE1C9A;
+    fill: #082C6A;
 }
 
 .user-dashboard .nav-content .profile-section .product-wrapper rect {
@@ -4886,7 +4886,7 @@ table .ticket-row:hover {
 }
 
 .user-dashboard .nav-content .profile-section .product-wrapper:hover {
-    background: #AE1C9A;
+    background: #082C6A;
 }
 
 .user-dashboard .nav-content .profile-section .product-wrapper:hover .paragraph,
@@ -5026,7 +5026,7 @@ table .ticket-row:hover {
 
 .user-dashboard .nav-content .payment-section .shop-btn {
     margin: 0;
-    border: 1px solid #AE1C9A;
+    border: 1px solid #082C6A;
 }
 
 .user-dashboard .nav-content .payment-section .shop-btn::after {

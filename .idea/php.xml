@@ -146,8 +146,8 @@
       <path value="$PROJECT_DIR$/vendor/twig/intl-extra" />
       <path value="$PROJECT_DIR$/vendor/stripe/stripe-php" />
       <path value="$PROJECT_DIR$/vendor/symfony/ux-live-component" />
+      <path value="$PROJECT_DIR$/vendor/symfony/requirements-checker" />
       <path value="$PROJECT_DIR$/vendor/symfony/ux-turbo" />
-      <path value="$PROJECT_DIR$/vendor/symfony/asset-mapper" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.2" />
