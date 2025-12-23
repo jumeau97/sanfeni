@@ -22,15 +22,67 @@
     <!---------------user-profile-section---------------->
     <section class="user-profile footer-padding">
         <div class="container">
-            <h1>Mon compte</h1>
-            <p>
-                Bienvenue {{ app.user.firstname }} dans votre compte.<br>
-                C'est dans cet espace que vous allez pouvoir gérer toutes vos informations perssonelles
-            </p>
-<hr/>
-            <a href="{{ path('account_password') }}">-Modifier mon mot de passe</a><br/>
-            <a href="{{ path('app_account_address') }}">-Ajouter mes adresses</a><br/>
-            <a href="{{ path('account_order') }}">-Mes commandes</a><br/>
+            <!--------------- contact-section---------------->
+            <section class="contact product footer-padding">
+                <div class="container">
+                    <div class="contact-section">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="contact-info-section">
+                                    <div class="contact-information">
+                                        <h5 class="wrapper-heading">Mon compte</h5>
+                                        <p class="paragraph"> Bienvenue {{ app.user.firstname }} dans votre compte.<br>
+                                            C'est dans cet espace que vous allez pouvoir gérer toutes vos informations
+                                            perssonelles</p>
+                                        <div class="contact-wrapper">
+                                            <div class="row gy-5">
+
+                                                <div class="col-sm-3">
+                                                    <a href="{{ path('account_password') }}" >
+                                                        <div class="wrapper phone bg-primary">
+{#                                                            <div class="wrapper-img">#}
+{#                                                    <span>#}
+
+{#                                                    </span>#}
+{#                                                            </div>#}
+                                                            <div class="wrapper-content">
+                                                                <h5 class="wrapper-heading text-white">Modifier mon mot de
+                                                                    passe</h5>
+                                                                {#                                                            <p class="paragraph">+1347-430-9510</p> #}
+                                                            </div>
+                                                        </div>
+                                                    </a>
+                                                </div>
+
+                                                <div class="col-sm-3">
+                                                    <a href="{{ path('app_account_address') }}">
+                                                        <div class="wrapper phone">
+                                                            <div class="wrapper-content">
+                                                                <h5 class="wrapper-heading">Ajouter mes adresses</h5>
+                                                            </div>
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    <a href="{{ path('account_order') }}">
+                                                        <div class="wrapper phone">
+                                                            <div class="wrapper-content">
+                                                                <h5 class="wrapper-heading">Mes commandes</h5>
+                                                            </div>
+                                                        </div>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!--------------- contact-section-end---------------->
 
         </div>
     </section>

@@ -8,6 +8,10 @@
                 {# ... En-têtes du tableau ... #}
             </tr>
 
+{#            {{ cartItems }}#}
+
+
+
             {% for cartItem in cartItems %}
                 {# Inclusion du composant enfant pour chaque ligne #}
                 {{ component('CartItemRowComponent', {

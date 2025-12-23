@@ -1,0 +1,102 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello AccountController!{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        /*.account-section .review-form {*/
+        /*    width: 57.2rem;*/
+        /*    height: 79.1rem;*/
+        /*}*/
+
+        .user-dashboard .nav-content .modal-main .review-form {
+            width: 57.2rem;
+            height: 79.1rem;
+            margin-top: 0;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+
+    <!---------------user-profile-section---------------->
+    <section class="user-profile footer-padding">
+        <div class="container">
+            <h2>Mes adresses</h2>
+            <a href="{{ path('app_account') }}" class="view">Retourner à mon compte</a>
+            <div class="user-profile-section">
+                <div class="user-dashboard">
+                    <!-- nav-content -->
+                    <div class="tab-content nav-content" id="v-pills-tabContent" style="flex: 1 0%;">
+
+                        <div class="tab-pane fade show active" id="v-pills-address" role="tabpanel"
+                             aria-labelledby="v-pills-address-tab" tabindex="0">
+                            <div class="profile-section address-section addresses ">
+                                <div class="row gy-md-0 g-5">
+                                    <!-- change this -->
+                                    <div class="login-section account-section modal-main">
+                                        <div class="review-form">
+                                            <div class="review-content">
+                                                <h5 class="comment-title">Add Your Address</h5>
+                                                <div class="close-btn">
+                                                    <img src="./assets/images/homepage-one/close-btn.png"
+                                                         onclick="modalAction('.submit')" alt="close-btn">
+                                                </div>
+                                            </div>
+                                            {{ form_start(form) }}
+                                            <div class="account-inner-form">
+                                                <div class="review-form-name">
+                                                    {{ form_widget(form.firstName) }}
+                                                </div>
+                                                <div class="review-form-name">
+                                                    {{ form_widget(form.lastName) }}
+                                                </div>
+                                            </div>
+                                            <div class="account-inner-form">
+                                                <div class="review-form-name">
+                                                    {{ form_widget(form.phone) }}
+                                                </div>
+                                            </div>
+                                            <div class="account-inner-form">
+                                                <div class="review-form-name">
+                                                    {{ form_widget(form.company) }}
+                                                </div>
+                                            </div>
+                                            <div class="account-inner-form">
+                                                <div class="review-form-name">
+                                                    {{ form_widget(form.address) }}
+                                                </div>
+                                            </div>
+                                            <div class="account-inner-form">
+                                                <div class="review-form-name">
+                                                    {{ form_widget(form.city) }}
+                                                </div>
+                                                <div class="review-form-name">
+                                                    {{ form_widget(form.country) }}
+                                                </div>
+                                            </div>
+                                            <div class="login-btn text-center">
+                                                <button type="submit" id="{{ field_id(form.submit) }}"
+                                                        name="{{ field_name(form.submit) }}"
+                                                        class="btn shop-btn">
+                                                    Ajouter l'adresse
+                                                </button>
+
+                                            </div>
+                                            {{ form_end(form) }}
+
+                                        </div>
+                                    </div>
+                                    <!-- change this -->
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--------------- user-profile-section-end --------------->
+{% endblock %}

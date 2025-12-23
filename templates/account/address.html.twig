@@ -32,7 +32,7 @@
                         <div class="tab-pane fade show active" id="v-pills-address" role="tabpanel"
                              aria-labelledby="v-pills-address-tab" tabindex="0">
                             <div class="profile-section address-section addresses ">
-                                <a href="#" class="shop-btn" onclick="modalAction('.submit')">Ajouter une nouvelle
+                                <a href="{{ path('account_add_address') }}" class="shop-btn">Ajouter une nouvelle
                                     adresse</a>
                                 <div class="row gy-md-0 g-5">
                                     {% for address in addresses %}
@@ -59,69 +59,6 @@
                                             </div>
                                         </div>
                                     {% endfor %}
-                                    <div class="col-lg-6">
-                                        <!-- modal -->
-                                        <div class="modal-wrapper submit">
-                                            <div onclick="modalAction('.submit')" class="anywhere-away"></div>
-
-                                            <!-- change this -->
-                                            <div class="login-section account-section modal-main">
-                                                <div class="review-form">
-                                                    <div class="review-content">
-                                                        <h5 class="comment-title">Add Your Address</h5>
-                                                        <div class="close-btn">
-                                                            <img src="./assets/images/homepage-one/close-btn.png"
-                                                                 onclick="modalAction('.submit')" alt="close-btn">
-                                                        </div>
-                                                    </div>
-                                                    {{ form_start(form) }}
-                                                    <div class="account-inner-form">
-                                                        <div class="review-form-name">
-                                                            {{ form_widget(form.firstName) }}
-                                                        </div>
-                                                        <div class="review-form-name">
-                                                            {{ form_widget(form.lastName) }}
-                                                        </div>
-                                                    </div>
-                                                    <div class="account-inner-form">
-                                                        <div class="review-form-name">
-                                                            {{ form_widget(form.phone) }}
-                                                        </div>
-                                                    </div>
-                                                    <div class="account-inner-form">
-                                                        <div class="review-form-name">
-                                                            {{ form_widget(form.company) }}
-                                                        </div>
-                                                    </div>
-                                                    <div class="account-inner-form">
-                                                        <div class="review-form-name">
-                                                            {{ form_widget(form.address) }}
-                                                        </div>
-                                                    </div>
-                                                    <div class="account-inner-form">
-                                                        <div class="review-form-name">
-                                                            {{ form_widget(form.city) }}
-                                                        </div>
-                                                        <div class="review-form-name">
-                                                            {{ form_widget(form.country) }}
-                                                        </div>
-                                                    </div>
-                                                    <div class="login-btn text-center">
-                                                        <button type="submit" id="{{ field_id(form.submit) }}"
-                                                                name="{{ field_name(form.submit) }}"
-                                                                class="btn shop-btn">
-                                                            Ajouter l'adresse
-                                                        </button>
-
-                                                    </div>
-                                                    {{ form_end(form) }}
-
-                                                </div>
-                                            </div>
-                                            <!-- change this -->
-
-                                        </div>
-                                    </div>
                                 </div>
                             </div>
                         </div>

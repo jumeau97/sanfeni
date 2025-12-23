@@ -917,7 +917,7 @@ button {
 
 .header-nav .category-menu-section .category-dropdown {
     overflow: hidden;
-    width: 100%;
+    /*width: 100%;*/
     max-height: 0;
     transition: all 0.3s;
     left: 0;
@@ -1256,7 +1256,7 @@ button {
     align-items: center;
     justify-content: center;
     gap: 0px;
-    padding: 10px;
+    /*padding: 10px;*/
 }
 
 .hero-slider-one {
@@ -2009,7 +2009,7 @@ button {
 }
 
 .footer-section .footer-link a:hover {
-    color: #082C6A;
+    color: #d0cb68;
     text-decoration: underline;
 }
 

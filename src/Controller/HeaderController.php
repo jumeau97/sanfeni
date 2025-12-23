@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Category;
 use App\Entity\Product;
 use App\Model\Cart;
+use App\Repository\CategoryRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,7 +14,8 @@ use Symfony\Component\Routing\Attribute\Route;
 final class HeaderController extends AbstractController
 {
     public function __construct(
-        private EntityManagerInterface $entityManager
+        private EntityManagerInterface $entityManager,
+        private CategoryRepository $categoryRepository
     )
     {
     }
@@ -21,7 +23,7 @@ final class HeaderController extends AbstractController
 
     public function indexCartPreview(Cart $cart)
     {
-        $categories = $this->entityManager->getRepository(Category::class)->findAll();
+//        $categories = $this->entityManager->getRepository(Category::class)->findAll();
 
         $cartComplete = [];
         if ($cart->get()) {
@@ -29,6 +31,7 @@ final class HeaderController extends AbstractController
                 $cartComplete[] = [
                     'product' => $this->entityManager->getrepository(Product::class)->findOneById($id),
                     'quantity' => $quantity,
+//                    'categories' => $this->categoryRepository->findCategoryTree()
                 ];
             }
         }
@@ -36,12 +39,10 @@ final class HeaderController extends AbstractController
 //        dd($cartComplete);
 
 
-
-
         return $this->render('menus/header.html.twig', [
             'previewCart' => $cartComplete,
-            'currentCart' => count($cart->get()??[]),
-            'categories' => $categories
+            'currentCart' => count($cart->get() ?? []),
+            'categories' => $this->categoryRepository->findCategoryTree()
         ]);
 
 

@@ -3,6 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\Category;
+use App\Payload\SearchRequest\SearchProduct;
+use App\Request\Search\SearchCategory;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -15,6 +17,52 @@ class CategoryRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Category::class);
     }
+
+    public function findAllByCriteria(SearchCategory $data, $pageNumber, $limit)
+    {
+        $qb = $this->createQueryBuilder('c');
+
+
+        $qb->setFirstResult($pageNumber - 1)->setMaxResults($limit);
+        return $qb;
+    }
+
+    public function findCategoryTree(): array
+    {
+        $categories = $this->createQueryBuilder('c')
+            ->leftJoin('c.parentCateg', 'p')
+            ->addSelect('p')
+            ->orderBy('c.name', 'ASC')
+            ->getQuery()
+            ->getResult();
+
+        $map = [];
+        $tree = [];
+
+        /** @var Category $cat */
+        foreach ($categories as $cat) {
+            // on vide les enfants pour éviter doublons
+            $cat->getCategories()->clear();
+            $map[$cat->getId()] = $cat;
+        }
+
+        foreach ($categories as $cat) {
+
+            // ✅ catégorie racine
+            if ($cat->getParentCateg() === null) {
+                $tree[] = $cat;
+            } else {
+                $parentId = $cat->getParentCateg()->getId();
+
+                if (isset($map[$parentId])) {
+                    $map[$parentId]->getCategories()->add($cat);
+                }
+            }
+        }
+
+        return $tree;
+    }
+
 
     //    /**
     //     * @return Category[] Returns an array of Category objects

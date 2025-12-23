@@ -27,6 +27,8 @@
 
     <!--------------- additional-css ---------------->
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('dist/css/adminlte.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('plugins/fontawesome-free/css/all.min.css') }}">
     {% block stylesheets %}
         {{ encore_entry_link_tags('app') }}
     {% endblock %}
@@ -148,6 +150,43 @@
         .swiper-slide:nth-child(3n) {
             width: 20%;
         }
+
+        /*!* Niveau 1 *!*/
+        /*.dropdown:hover > .dropdown-menu {*/
+        /*    display: block;*/
+        /*    margin-top: .125em;*/
+        /*}*/
+
+        /*!* Niveaux suivants (dropend) *!*/
+        /*.dropend {*/
+        /*    position: relative;*/
+        /*}*/
+
+        /*.dropend:hover > .dropdown-menu {*/
+        /*    display: block;*/
+        /*    position: absolute;*/
+        /*    top: 0;*/
+        /*    left: 100%;*/
+        /*    margin-left: .125em;*/
+        /*}*/
+
+
+
+        /*.dropdown:active > .dropdown-menu, .dropend:active > .dropdown-menu {*/
+        /*    display: block;*/
+        /*    margin-top: .125em;*/
+        /*}*/
+
+        /*.dropend:active > .dropdown-menu {*/
+        /*    position: absolute;*/
+        /*    top: 0;*/
+        /*    left: 100%;*/
+        /*    margin-left: .125em;*/
+        /*}*/
+
+        /*.dropdown > .dropdown-menu {*/
+        /*    display: none;*/
+        /*}*/
     </style>
 
 </head>
@@ -159,6 +198,7 @@
 )) }}
 {% block body %}
 {% endblock %}
+{% include 'menus/footer.html.twig' %}
 {# <button id="myBtn">Open Modal</button> #}
 
 
@@ -179,6 +219,10 @@
 
 <!--------------- additional-js ---------------->
 <script src="{{ asset('assets/js/shopus.js') }}"></script>
+
+<script src="{{ 'dist/js/adminlte.min.js' }}"></script>
+
+<script src="{{ 'plugins/bootstrap/js/bootstrap.bundle.min.js' }}"></script>
 
 <!-- Swiper JS -->
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>

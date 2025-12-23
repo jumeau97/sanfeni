@@ -16,7 +16,7 @@
     </div>
 </div>
 <header id="header" class="header sticky-top">
-    <div class="header-center-section d-none d-lg-block">
+    <div class="header-center-section d-none d-lg-block bg-white">
         <div class="container">
             <div class="header-center">
                 <div class="logo">
@@ -211,9 +211,15 @@
     <div class="header-bottom d-lg-block d-none">
         <div class="container">
             <div class="header-nav">
-                <div class="category-menu-section position-relative">
-                    <div class="empty position-fixed" onclick="tooglmenu()"></div>
-                    <button class="dropdown-btn" onclick="tooglmenu()">
+                <nav class="navbar-expand-md">
+                    <div class="container">
+                        <div class="collapse navbar-collapse order-3" id="navbarCollapse">
+                            <!-- Left navbar links -->
+                            <ul class="navbar-nav">
+                                <li class="nav-item dropdown">
+                                    <a id="dropdownSubMenu1" href="#" data-toggle="dropdown" aria-haspopup="true"
+                                       aria-expanded="false" class="nav-link dropdown-toggle">
+                                        <button class="dropdown-btn">
                             <span class="dropdown-icon">
                                 <svg width="14" height="9" viewBox="0 0 14 9" fill="none"
                                      xmlns="http://www.w3.org/2000/svg">
@@ -222,45 +228,55 @@
                                     <rect y="4" width="10" height="1"/>
                                 </svg>
                             </span>
-                        <span class="list-text">
+                                            <span class="list-text">
                                 Catégories
                             </span>
-                    </button>
-                    <div class="category-dropdown position-absolute" id="subMenu">
-                        <ul class="category-list">
-                            {% for categ in categories %}
-                                <li class="category-list-item">
-                                    <a href="product-sidebar.html">
-                                        <div class="dropdown-item">
-                                            <div class="dropdown-list-item">
-                                                <span class="dropdown-img">
-                                                    <img
-                                                        src="{{ asset('assets/images/homepage-one/category-img/dresses.webp') }}"
-                                                        alt="dress">
-                                                </span>
-                                                <span class="dropdown-text">
-                                                    {{ categ.name }}
-                                                </span>
-                                            </div>
-                                            <div class="drop-down-list-icon">
-                                                <span>
-                                                    <svg width="6" height="9" viewBox="0 0 6 9" fill="none"
-                                                         xmlns="http://www.w3.org/2000/svg">
-                                                        <rect x="1.5" y="0.818359" width="5.78538" height="1.28564"
-                                                              transform="rotate(45 1.5 0.818359)" fill="#1D1D1D"/>
-                                                        <rect x="5.58984" y="4.90918" width="5.78538" height="1.28564"
-                                                              transform="rotate(135 5.58984 4.90918)" fill="#1D1D1D"/>
-                                                    </svg>
-                                                </span>
-                                            </div>
-                                        </div>
+                                        </button>
                                     </a>
-                                </li>
-                            {% endfor %}
+                                    <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
+                                        <li><a href="#" class="dropdown-item">Some action </a></li>
+                                        <li><a href="#" class="dropdown-item">Some other action</a></li>
 
-                        </ul>
+                                        <li class="dropdown-divider"></li>
+
+                                        <!-- Level two dropdown-->
+                                        <li class="dropdown-submenu dropdown-hover">
+                                            <a id="dropdownSubMenu2" href="#" role="button" data-toggle="dropdown"
+                                               aria-haspopup="true" aria-expanded="false"
+                                               class="dropdown-item dropdown-toggle">Hover
+                                                for action</a>
+                                            <ul aria-labelledby="dropdownSubMenu2"
+                                                class="dropdown-menu border-0 shadow">
+                                                <li>
+                                                    <a tabindex="-1" href="#" class="dropdown-item">level 2</a>
+                                                </li>
+
+                                                <!-- Level three dropdown-->
+                                                <li class="dropdown-submenu">
+                                                    <a id="dropdownSubMenu3" href="#" role="button"
+                                                       data-toggle="dropdown"
+                                                       aria-haspopup="true" aria-expanded="false"
+                                                       class="dropdown-item dropdown-toggle">level 2</a>
+                                                    <ul aria-labelledby="dropdownSubMenu3"
+                                                        class="dropdown-menu border-0 shadow">
+                                                        <li><a href="#" class="dropdown-item">3rd level</a></li>
+                                                        <li><a href="#" class="dropdown-item">3rd level</a></li>
+                                                    </ul>
+                                                </li>
+                                                <!-- End Level three -->
+
+                                                <li><a href="#" class="dropdown-item">level 2</a></li>
+                                                <li><a href="#" class="dropdown-item">level 2</a></li>
+                                            </ul>
+                                        </li>
+                                        <!-- End Level two -->
+                                    </ul>
+                                </li>
+                            </ul>
+
+                        </div>
                     </div>
-                </div>
+                </nav>
                 <div class="header-nav-menu">
                     <div class="search-content">
                         <div class="search-section">

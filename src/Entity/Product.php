@@ -51,6 +51,7 @@ class Product
 
     #[ORM\Column(length: 255)]
     #[Groups(['getProducts'])]
+//    #[Gedmo\Slug(fields: ['name'])]
     private ?string $slug = null;
 
     #[Vich\UploadableField(mapping: 'products', fileNameProperty: 'illustration', size: 'imageSize')]
