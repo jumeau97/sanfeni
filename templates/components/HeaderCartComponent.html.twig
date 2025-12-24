@@ -55,7 +55,7 @@
             <div class="cart-wrapper-item">
                 {% set total = null %}
                 {% for c in previewCart %}
-                    <div class="wrapper">
+                    <div class="wrapper" style="min-height: 0;">
                         <div class="wrapper-item">
                             <div class="wrapper-img">
                                 <img
@@ -66,9 +66,6 @@
                                 <h5 class="wrapper-title">{{ c.product.name }} <span
                                         class="text-primary">x</span>
                                     {{ c.quantity }}</h5>
-                                {#                                <div class="price"> #}
-                                {#                                    <p class="new-price">{{ ((c.product.price * c.quantity) / 100) | number_format('0', ',', '.') }}</p> #}
-                                {#                                </div> #}
                                 <div class="price">
                                     {% if c.product.isPromotion %}
                                         <span class="price-cut">
@@ -94,7 +91,7 @@
                                             </svg>
                                         </span>
                     </div>
-                    {#                    {% set total = total + (c.product.price * c.quantity) %} #}
+
                     {% if c.product.offPercent is defined and c.product.offPercent > 0 %}
                         {# Produit en promotion #}
                         {% set price = (c.product.price / 100) * (1 - (c.product.offPercent / 100)) %}

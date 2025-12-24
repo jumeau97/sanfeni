@@ -30,6 +30,7 @@ final class HeaderCartComponent
     {
         // 1. Recharge les données fraîches depuis la session (via le service)
         $this->previewCart = $cartService->getFull();
+//        dd($this->previewCart);
 
         $this->currentCart = count($cartService->get());
 //        $this->dispatchBrowserEvent('modal:open', []);

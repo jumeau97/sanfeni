@@ -35,6 +35,7 @@ final class ProductItem
 //        dd($this->product['id']);
         if ($this->product['id']) {
             $this->cartService->add($this->product['id']);
+//            dd($this->cartService->getFull());
             $this->liveResponder->emit('headerCartUpdated', componentName: 'HeaderCartComponent');
 
         }
