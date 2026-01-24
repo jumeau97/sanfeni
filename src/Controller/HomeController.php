@@ -2,11 +2,11 @@
 
 namespace App\Controller;
 
-use App\Entity\Product;
+
 use App\Model\Cart;
 use App\Payload\SearchRequest\SearchActualites;
-use App\Payload\SearchRequest\SearchProduct;
 use App\Payload\Utils\UtilisService;
+use App\Request\Search\SearchProduct;
 use App\Service\Product\ProductInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -40,8 +40,6 @@ final class HomeController extends AbstractController
         $dataArray = json_decode($jsonData, true);
         $products = $this->utilisService->paginationResp($dataArray, $result, $limit);
 //        dd($this->indexCartPreview($cart));
-
-
 
         return $this->render('home/index.html.twig', [
             'products' => $products,

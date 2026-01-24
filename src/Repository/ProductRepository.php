@@ -3,7 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Product;
-use App\Payload\SearchRequest\SearchProduct;
+use App\Request\Search\SearchProduct;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -20,7 +20,6 @@ class ProductRepository extends ServiceEntityRepository
     public function findAllByCriteria(SearchProduct $data, $pageNumber, $limit)
     {
         $qb = $this->createQueryBuilder('p');
-
 
         $qb->setFirstResult($pageNumber - 1)->setMaxResults($limit);
         return $qb;

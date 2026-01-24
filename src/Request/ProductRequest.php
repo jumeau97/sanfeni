@@ -19,7 +19,6 @@ class ProductRequest
 
     private ?string $slug = null;
 
-    private ?string $illustration = null;
 
     private ?int $shopId = null;
 
@@ -112,18 +111,7 @@ class ProductRequest
     /**
      * @return string|null
      */
-    public function getIllustration(): ?string
-    {
-        return $this->illustration;
-    }
 
-    /**
-     * @param string|null $illustration
-     */
-    public function setIllustration(?string $illustration): void
-    {
-        $this->illustration = $illustration;
-    }
 
     /**
      * @return int|null

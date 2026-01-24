@@ -7,16 +7,25 @@ use App\Entity\OrderDetails;
 use App\Form\OrderType;
 use App\Form\PaymentMethodType;
 use App\Model\Cart;
+use App\Payload\Utils\GlobalResponse;
+use App\Payload\Utils\UtilisService;
+use App\Request\Search\SearchOrder;
+use App\Service\Order\OrderInterface;
+use App\Service\Product\ProductInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Serializer\SerializerInterface;
 
 final class OrderController extends AbstractController
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
+        private SerializerInterface $serializer,
+        private OrderInterface $orderInterface,
+        private UtilisService $utilisService,
     )
     {
     }
@@ -109,5 +118,20 @@ final class OrderController extends AbstractController
 
         }
         return $this->redirectToRoute('cart');
+    }
+
+    #[Route('/dashboard/commande', name: 'dashboard_commande')]
+    public function findAll(Request $request): Response
+    {
+        $pageNumb = $request->query->getInt('page', 1);
+        $limit = $request->query->getInt('limit', 50);
+        $data = $this->serializer->deserialize($request->getContent(), SearchOrder::class, 'json');
+
+        $result = $this->orderInterface->findAllByCriteria($pageNumb, $limit, $data);
+
+        $jsonData = $this->serializer->serialize($result, 'json', ["groups" => "getOrder"]);
+        $dataArray = json_decode($jsonData, true);
+        $array = $this->utilisService->paginationResp($dataArray, $result, $limit);
+        return GlobalResponse::successWith("La liste des commandes", $array);
     }
 }

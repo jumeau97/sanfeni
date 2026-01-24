@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 use function Symfony\Component\Translation\t;
 
 #[ORM\Entity(repositoryClass: OrderRepository::class)]
@@ -16,40 +17,50 @@ class Order
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['getOrder'])]
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'orders')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['getOrder'])]
     private ?User $user = null;
 
     #[ORM\Column]
+    #[Groups(['getOrder'])]
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['getOrder'])]
     private ?string $carrierName = null;
 
     #[ORM\Column]
+    #[Groups(['getOrder'])]
     private ?float $carrierPrice = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Groups(['getOrder'])]
     private ?string $delivery = null;
 
     /**
      * @var Collection<int, OrderDetails>
      */
     #[ORM\OneToMany(targetEntity: OrderDetails::class, mappedBy: 'commande')]
+    #[Groups(['getOrder'])]
     private Collection $orderDetails;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['getOrder'])]
     private ?bool $isPaid = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['getOrder'])]
     private ?string $reference = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $stripeSessionId = null;
 
     #[ORM\Column]
+    #[Groups(['getOrder'])]
     private ?int $state = 0;
 
     public function getTotal()

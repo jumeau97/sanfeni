@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: BoutiqueRepository::class)]
 class Boutique
@@ -14,21 +15,27 @@ class Boutique
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['getShop'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['getShop'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['getShop'])]
     private ?string $proprietaire = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['getShop'])]
     private ?string $phoneNumber = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['getShop'])]
     private ?string $propPhoneNumber = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Groups(['getShop'])]
     private ?string $description = null;
 
     /**
@@ -38,6 +45,7 @@ class Boutique
     private Collection $users;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['getShop'])]
     private ?string $email = null;
 
     /**

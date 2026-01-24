@@ -2,9 +2,10 @@
 
 namespace App\Service\Product;
 
-use App\Payload\SearchRequest\SearchProduct;
+
 use App\Payload\Utils\UtilisService;
 use App\Repository\ProductRepository;
+use App\Request\Search\SearchProduct;
 
 class ProductImplement implements ProductInterface
 {

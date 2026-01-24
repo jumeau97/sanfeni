@@ -3,6 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\Boutique;
+use App\Request\Search\SearchOrder;
+use App\Request\Search\SearchShop;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -14,6 +16,14 @@ class BoutiqueRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Boutique::class);
+    }
+
+    public function findAllByCriteria(SearchShop $data, $pageNumber, $limit)
+    {
+        $qb = $this->createQueryBuilder('o');
+
+        $qb->setFirstResult($pageNumber - 1)->setMaxResults($limit);
+        return $qb;
     }
 
     //    /**

@@ -3,6 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\Order;
+use App\Request\Search\SearchOrder;
+use App\Request\Search\SearchProduct;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -21,10 +23,18 @@ class OrderRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('o')
             ->andWhere('o.isPaid=1')
             ->andWhere('o.user=:user')
-            ->setParameter('user',$user)
+            ->setParameter('user', $user)
             ->orderBy('o.id', 'DESC')
             ->getQuery()
             ->getResult();
+    }
+
+    public function findAllByCriteria(SearchOrder $data, $pageNumber, $limit)
+    {
+        $qb = $this->createQueryBuilder('o');
+
+        $qb->setFirstResult($pageNumber - 1)->setMaxResults($limit);
+        return $qb;
     }
 
     //    /**

@@ -3,7 +3,9 @@
 namespace App\Service\Product;
 
 
-use App\Payload\SearchRequest\SearchProduct;
+
+
+use App\Request\Search\SearchProduct;
 
 interface ProductInterface
 {
