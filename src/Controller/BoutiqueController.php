@@ -3,10 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\Album;
+use App\Entity\Boutique;
 use App\Entity\Category;
 use App\Entity\Product;
 use App\Payload\Utils\GlobalResponse;
 use App\Payload\Utils\UtilisService;
+use App\Request\BoutiqueRequest;
 use App\Request\ProductRequest;
 use App\Request\Search\SearchCategory;
 use App\Request\Search\SearchProduct;
@@ -30,16 +32,16 @@ final class BoutiqueController extends AbstractController
     public function __construct(
         private EntityManagerInterface $entityManager,
         private SerializerInterface    $serializer,
-        private ValidatorInterface    $validator,
-        private ShopInterface $shopIterface,
-        private UtilisService $utilisService,
+        private ValidatorInterface     $validator,
+        private ShopInterface          $shopIterface,
+        private UtilisService          $utilisService,
 
     )
     {
     }
 
 
-    #[Route('/find-all-shop', name: 'find-all-shop',  methods: ['POST'])]
+    #[Route('/find-all-shop', name: 'find-all-shop', methods: ['POST'])]
     public function findAllByCriteria(Request $request,)
     {
         $pageNumb = $request->query->getInt('page', 1);
@@ -51,5 +53,39 @@ final class BoutiqueController extends AbstractController
         $dataArray = json_decode($jsonData, true);
         $array = $this->utilisService->paginationResp($dataArray, $result, $limit);
         return GlobalResponse::successWith("La liste des boutiques", $array);
+    }
+
+    #[Route("/add-boutique", name: 'dashboard_add_boutique')]
+    public function add(Request $request): Response
+    {
+        try {
+            $data = $this->serializer->deserialize($request->getContent(), BoutiqueRequest::class, 'json');
+
+            $errors = $this->validator->validate($data);
+            if ($errors->count() > 0) {
+                $errorMessages = [];
+                foreach ($errors as $error) {
+                    $errorMessages[] = $error->getMessage();
+                }
+                return GlobalResponse::errorWith("erreur", $errorMessages);
+            }
+
+            $boutique = new Boutique();
+            $boutique->setName($data->getName())
+                ->setDescription($data->getDescription())
+                ->setPropPhoneNumber($data->getPropPhoneNumber())
+                ->setProprietaire($data->getProprietaire())
+                ->setEmail($data->getEmail())
+                ->setPhoneNumber($data->getPhoneNumber());
+
+
+            $this->entityManager->persist($boutique);
+            $this->entityManager->flush();
+        } catch (UniqueConstraintViolationException $exception) {
+            return GlobalResponse::error("Cette boutique existe déjà");
+
+        }
+
+        return GlobalResponse::success("Boutique enregistrée avec succès");
     }
 }
