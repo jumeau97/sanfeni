@@ -15,27 +15,27 @@ class Boutique
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['getShop'])]
+    #[Groups(['getShop','getUsers'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['getShop'])]
+    #[Groups(['getShop','getUsers'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['getShop'])]
+    #[Groups(['getShop','getUsers'])]
     private ?string $proprietaire = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['getShop'])]
+    #[Groups(['getShop','getUsers'])]
     private ?string $phoneNumber = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['getShop'])]
+    #[Groups(['getShop','getUsers'])]
     private ?string $propPhoneNumber = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    #[Groups(['getShop'])]
+    #[Groups(['getShop','getUsers'])]
     private ?string $description = null;
 
     /**

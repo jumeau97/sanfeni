@@ -18,17 +18,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['getOrder'])]
+    #[Groups(['getOrder','getUsers'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 180)]
-    #[Groups(['getOrder'])]
+    #[Groups(['getOrder','getUsers'])]
     private ?string $email = null;
 
     /**
      * @var list<string> The user roles
      */
     #[ORM\Column]
+    #[Groups(['getUsers'])]
     private array $roles = [];
 
     /**
@@ -38,16 +39,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $password = null;
 
     #[ORM\ManyToOne(inversedBy: 'users')]
+    #[Groups(['getUsers'])]
     private ?Boutique $shop = null;
 
 
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['getOrder'])]
+    #[Groups(['getOrder','getUsers'])]
     private ?string $lastName = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['getOrder'])]
+    #[Groups(['getOrder','getUsers'])]
     private ?string $firstName = null;
 
     /**

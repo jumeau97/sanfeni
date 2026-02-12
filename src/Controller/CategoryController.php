@@ -84,7 +84,7 @@ final class CategoryController extends AbstractController
         $jsonData = $this->serializer->serialize($result, 'json', ["groups" => "getCategory"]);
         $dataArray = json_decode($jsonData, true);
         $array = $this->utilisService->paginationResp($dataArray, $result, $limit);
-        return GlobalResponse::successWith("La liste des offres", $array);
+        return GlobalResponse::successWith("La liste des categories", $array);
     }
 
     #[Route('/tree', name: 'category_tree')]

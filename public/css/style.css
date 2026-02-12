@@ -1135,6 +1135,8 @@ button {
     align-items: center;
     justify-content: flex-start;
     gap: 10px;
+    flex-wrap: nowrap;
+    white-space: nowrap;
 }
 
 .dropdown-btn .dropdown-icon {
@@ -1157,6 +1159,24 @@ button {
 .dropdown-btn .dropdown-text {
     font-size: 1.6rem;
     color: #FFFFFF;
+}
+
+/* Largeur et lisibilité des menus Catégories (header) */
+.header-bottom .navbar-nav .dropdown-menu {
+    min-width: 320px;
+    padding: 0.75rem 0;
+}
+
+.header-bottom .navbar-nav .dropdown-item {
+    white-space: nowrap;
+    padding: 0.65rem 1.25rem 0.65rem 1.25rem;
+    padding-right: 2.5rem;
+    font-size: 1.5rem;
+}
+
+/* Réserver la place pour l’icône flèche des sous-menus */
+.header-bottom .navbar-nav .dropdown-submenu > .dropdown-item::after {
+    margin-top: 0.35rem;
 }
 
 .header-vendor-btn .shop-btn {
