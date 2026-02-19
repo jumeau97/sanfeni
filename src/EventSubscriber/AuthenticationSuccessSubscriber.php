@@ -16,6 +16,8 @@ class AuthenticationSuccessSubscriber implements EventSubscriberInterface
         $data = $event->getData();
         $user = $event->getUser();
 
+//        dd($user->getLastName());
+
         if (!$user instanceof UserInterface) {
             return;
         }
@@ -23,7 +25,12 @@ class AuthenticationSuccessSubscriber implements EventSubscriberInterface
         $data['status'] = 1;
         $data['id'] = $user->getId();
         $data['email'] = $user->getUserIdentifier();
+        $data['fullName'] = $user->getFirstName()." ".$user->getLastName();
         $data['roles'] = $user->getRoles();
+        $data['shopId'] = $user->getShop()->getId();
+        $data['shopName'] = $user->getShop()->getName();
+        $data['shopProprietaire'] = $user->getShop()->getProprietaire();
+
         $event->setData($data);
     }
 
@@ -33,7 +40,7 @@ class AuthenticationSuccessSubscriber implements EventSubscriberInterface
 
         $data = [
             'status' => 0,
-            'message'=>json_decode($event->getResponse()->getContent(), true)['message']
+            'message' => json_decode($event->getResponse()->getContent(), true)['message']
 //            'message' => "Désolé, nous ne parvenons pas à identifier ce nom d'utilisateur
 //                  ou ce mot de passe. Vous pouvez essayer à nouveau ou choisir de
 //                  réinitialiser votre mot de passe.",
@@ -43,6 +50,7 @@ class AuthenticationSuccessSubscriber implements EventSubscriberInterface
         $response = new JsonResponse($data, 401);
         $event->setResponse($response);
     }
+
     public static function getSubscribedEvents(): array
     {
         return [

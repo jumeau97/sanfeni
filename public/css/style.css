@@ -1256,7 +1256,7 @@ button {
 
 @media (max-width: 767px) {
     .hero {
-        height: 50rem;
+        height: 5rem;
         background-color: #fff
     }
 }

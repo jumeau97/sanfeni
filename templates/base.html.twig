@@ -51,7 +51,7 @@
             text-align: center;
             border-radius: 3rem;
             display: inline-block;
-            background: #d0cb69;
+            background: #FFA500FF;
             font-size: 1.4rem;
             font-weight: 500;
             position: relative;
@@ -114,81 +114,186 @@
 
     </style>
     <style>
-        a{
-            font-size: 1.5rem;
-        }
-
-        .swiper {
+        .hero .swiper {
             width: 100%;
-            height: 100%;
+            /* Hauteur auto ou fixe selon tes besoins */
+            height: auto;
         }
 
-        .swiper-slide {
-            height: 30.5rem;
-            text-align: center;
-            font-size: 18px;
-            background: #444;
+        .hero .swiper-slide {
+            /* Hauteur sur mobile */
+            height: 250px;
             display: flex;
             justify-content: center;
             align-items: center;
             border-radius: 12px;
+            overflow: hidden;
+            background: #444;
         }
 
-        .swiper-slide img {
-            display: block;
+        /* Ajustement de la hauteur pour tablettes et PC */
+        @media (min-width: 768px) {
+            .hero .swiper-slide {
+                height: 30.5rem; /* On reprend ta hauteur d'origine */
+            }
+        }
+
+        .hero .swiper-slide {
+            height: auto; /* On annule la hauteur fixe */
+            aspect-ratio: 16 / 9; /* Force le slider à garder ce format */
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .hero .swiper-slide img {
             width: 100%;
             height: 100%;
+            object-fit: cover; /* Ici, il ne coupera presque rien car le cadre a la même forme que l'image */
+        }
+
+
+        /* On supprime les width: 60%, 40%, etc.
+           C'est le JS (slidesPerView) qui doit gérer ça pour être responsive. */
+    </style>
+
+    <style>
+        :root {
+            --wb-purple: #8a3ffc;
+            --wb-purple-hover: #712ed1;
+        }
+
+        /* Grille et Conteneur */
+        .product-card {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .img-container {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            background-color: #f1f1f1;
+        }
+
+        .product-img {
+            width: 100%;
+            aspect-ratio: 3 / 4; /* Format vertical type marketplace */
             object-fit: cover;
+            transition: transform 0.3s ease;
         }
 
-        .swiper-slide {
-            width: 60%;
+        .product-card:hover .product-img {
+            transform: scale(1.05);
         }
 
-        .swiper-slide:nth-child(2n) {
-            width: 40%;
+        /* Badges */
+        .discount-badge {
+            position: absolute;
+            bottom: 8px;
+            left: 8px;
+            background-color: #ff3b30;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: bold;
+            padding: 2px 8px;
+            border-radius: 4px;
         }
 
-        .swiper-slide:nth-child(3n) {
-            width: 20%;
+        .wishlist-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: rgba(255, 255, 255, 0.7);
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #333;
         }
 
-        /*!* Niveau 1 *!*/
-        /*.dropdown:hover > .dropdown-menu {*/
-        /*    display: block;*/
-        /*    margin-top: .125em;*/
+        /* Typographie */
+        .price-current {
+            color: #ff3b30;
+            font-size: 1.2rem;
+            font-weight: 800;
+        }
+
+        .price-old {
+            color: #999;
+            text-decoration: line-through;
+            font-size: 0.9rem;
+        }
+
+        /* Titre du produit : Augmenté et plus d'espace */
+        .product-title {
+            display: block;
+            font-size: 1.2rem; /* Taille standard bien lisible */
+            line-height: 1.3;
+            font-weight: 500;
+            margin-top: 6px;
+            height: 2.6em; /* Fixe la hauteur pour 2 lignes */
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .brand-name {
+            display: block;
+            font-size: 0.85rem;
+            line-height: 1.2;
+            margin-top: 4px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2; /* Limite à 2 lignes */
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        /* Bouton Custom */
+        .btn-wb {
+            background-color: var(--wb-purple);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 1rem !important;
+            transition: all 0.3s ease;
+        }
+
+        .btn-wb:hover {
+            background-color: var(--wb-purple-hover);
+            color: white;
+        }
+
+        /*!* Ajustements très petits mobiles *!*/
+        /*@media (max-width: 380px) {*/
+        /*    .price-current {*/
+        /*        font-size: 0.9rem;*/
+        /*    }*/
+
+        /*    .brand-name {*/
+        /*        font-size: 0.75rem;*/
+        /*    }*/
         /*}*/
 
-        /*!* Niveaux suivants (dropend) *!*/
-        /*.dropend {*/
-        /*    position: relative;*/
-        /*}*/
+        /* Optimisation Mobile */
+        @media (max-width: 576px) {
+            .price-current {
+                font-size: 1.1rem; /* Un peu plus petit sur mobile pour éviter les chevauchements */
+            }
 
-        /*.dropend:hover > .dropdown-menu {*/
-        /*    display: block;*/
-        /*    position: absolute;*/
-        /*    top: 0;*/
-        /*    left: 100%;*/
-        /*    margin-left: .125em;*/
-        /*}*/
+            .product-title {
+                font-size: 0.95rem;
+            }
 
-
-
-        /*.dropdown:active > .dropdown-menu, .dropend:active > .dropdown-menu {*/
-        /*    display: block;*/
-        /*    margin-top: .125em;*/
-        /*}*/
-
-        /*.dropend:active > .dropdown-menu {*/
-        /*    position: absolute;*/
-        /*    top: 0;*/
-        /*    left: 100%;*/
-        /*    margin-left: .125em;*/
-        /*}*/
-
-        /*.dropdown > .dropdown-menu {*/
-        /*    display: none;*/
-        /*}*/
+            .btn-wb {
+                font-size: 0.9rem !important;
+                padding: 10px 5px;
+            }
+        }
     </style>
 
 </head>
@@ -233,16 +338,34 @@
 <!-- Initialize Swiper -->
 <script>
     var swiper = new Swiper(".mySwiper", {
-        slidesPerView: 2,
-        spaceBetween: 30,
         loop: true,
+        spaceBetween: 20, // Espace plus petit sur mobile
+
+        // Configuration par défaut (Mobile)
+        slidesPerView: 1,
+
         pagination: {
             el: ".swiper-pagination",
             clickable: true,
-        }, navigation: {
+        },
+        navigation: {
             nextEl: ".swiper-button-next",
             prevEl: ".swiper-button-prev",
         },
+
+        // Points de rupture
+        breakpoints: {
+            // Quand l'écran est >= 768px (Tablette/PC)
+            768: {
+                slidesPerView: 2,
+                spaceBetween: 30,
+            },
+            // Optionnel : Quand l'écran est >= 1200px (Grand écran)
+            1200: {
+                slidesPerView: 2, // Permet de voir un bout de la slide suivante
+                spaceBetween: 40,
+            }
+        }
     });
 </script>
 <script>

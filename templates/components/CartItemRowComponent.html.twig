@@ -1,89 +1,167 @@
 {% set product = this.productEntity %}
-<tr {{ attributes }} class="table-row ticket-row" style="border-bottom: 1px solid #eee;">
+<tr {{ attributes }} class="table-row ticket-row align-middle" style="border-bottom: 1px solid #f0f0f0;">
 
-    {# 1. Colonne Produit et Image #}
-    <td class="table-wrapper wrapper-product" style="padding: 15px 0;">
-        <div class="wrapper" style="display: flex; align-items: center;">
-            <div class="wrapper-img" style="margin-right: 15px;">
-                {# ANCIEN : cartItemData.product.illustration #}
-                <img src="{{ asset('images/products/')~ product.illustration }}" alt="Produit"
-                     style="width: 60px; height: 60px; object-fit: cover; border-radius: 4px;">
+    {# 1. Colonne Produit et Image - Responsive : On élargit la zone de texte #}
+    <td class="table-wrapper py-4" style="min-width: 250px;">
+        <div class="d-flex align-items-start align-items-md-center">
+            <div class="me-3">
+                <img src="{{ asset('images/products/') ~ product.illustration }}" alt="{{ product.name }}"
+                     class="img-fluid"
+                     style="width: 100px; height: 100px; object-fit: cover; border-radius: 12px; min-width: 100px;">
             </div>
-            <div class="wrapper-content">
-                {# ANCIEN : cartItemData.product.name #}
-                <h5 class="heading" style="font-size: 1rem; margin: 0;">{{ product.name }}</h5>
-            </div>
-        </div>
-    </td>
+            <div class="flex-grow-1">
+                {# fs-4 pour augmenter la taille du titre (env 24px) #}
+                <h5 class="mb-1 fw-bold text-dark fs-4" style="line-height: 1.2;">{{ product.name }}</h5>
+                {# fs-5 pour les infos secondaires (env 20px) #}
+                <p class="text-muted fs-5 mb-2">Livraison : <span class="text-success">Demain</span></p>
 
-    {# 2. Colonne Prix Unitaire #}
-    <td class="table-wrapper">
-        <div class="table-wrapper-center">
-            <div class="price">
-                {% if product.isPromotion %}
-                    <span class="price-cut"
-                          style="text-decoration: line-through; color: #999; margin-right: 8px;">{{ (product.price/100)|format_currency('XOF') }}</span>
-                    {# this.finalUnitPrice utilise déjà l'objet product chargé #}
-                    <span class="new-price"
-                          style="font-weight: bold; color: #d9534f;">{{ this.finalUnitPrice|format_currency('XOF') }}</span>
-                {% else %}
-                    <span class="new-price"
-                          style="font-weight: bold;">{{ this.finalUnitPrice|format_currency('XOF') }}</span>
-                {% endif %}
+                <div class="d-flex gap-4 mt-2">
+                    <button class="btn btn-link p-0 text-secondary text-decoration-none fs-4" title="Favoris">♡</button>
+                    <button data-action="live#action" data-live-action-param="removeItem"
+                            class="btn btn-link p-0 text-danger text-decoration-none fs-4" title="Supprimer">🗑</button>
+                </div>
             </div>
         </div>
     </td>
 
-    {# 3. Colonne QUANTITÉ (Boutons +/-) #}
-    <td class="table-wrapper">
-        <div class="table-wrapper-center">
-            <div class="quantity flex items-center space-x-2"
-                 style="display: flex; align-items: center; justify-content: center;">
-
-                {# Bouton Diminuer #}
-                <button data-action="live#action"
-                        data-live-action-param="decreaseQuantity"
-                        class="btn btn-primary"
-                        style="color: white; border: none; padding: 8px 12px; border-radius: 5px 0 0 5px; cursor: pointer; font-weight: bold;"
-                    {% if quantity <= 1 %} disabled style="opacity: 0.5; cursor: not-allowed;" {% endif %}>
-                    -
-                </button>
-
-                {# Affichage de la Quantité (Utilisation de la LiveProp 'quantity') #}
-                <span
-                    style="display: inline-block; padding: 8px 12px; border: 1px solid #ccc; text-align: center; width: 40px; background-color: white;">
-                    {{ quantity }}
-                </span>
-
-                {# Bouton Augmenter #}
-                <button data-action="live#action"
-                        data-live-action-param="increaseQuantity"
-                        class="btn btn-primary"
-                        style="color: white; border: none; padding: 8px 12px; border-radius: 0 5px 5px 0; cursor: pointer; font-weight: bold;">
-                    +
-                </button>
-            </div>
-        </div>
-    </td>
-
-    {# 4. Colonne TOTAL de la ligne (Utilisation de l'accesseur this.lineTotal) #}
-    <td class="table-wrapper wrapper-total">
-        <div class="table-wrapper-center">
-            <h5 class="heading" style="font-size: 1.1rem; font-weight: bold;">
-                {{ this.lineTotal|format_currency('XOF') }}
-            </h5>
-        </div>
-    </td>
-
-    {# 5. Colonne ACTION (Bouton X) #}
-    <td class="table-wrapper">
-        <div class="table-wrapper-center">
+    {# 2. Colonne QUANTITÉ - Plus grande et tactile #}
+    <td class="table-wrapper text-center">
+        <div class="d-inline-flex align-items-center bg-light rounded-pill p-2 shadow-sm border">
+            {# Bouton Diminuer - Augmenté pour le clic mobile #}
             <button data-action="live#action"
-                    data-live-action-param="removeItem"
-                    class="btn btn-dark"
-                    style="background-color: #212529; color: white; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer; font-weight: bold;">
-                <span>X</span>
+                    data-live-action-param="decreaseQuantity"
+                    class="btn border-0 fw-bold fs-3 px-3"
+                    style="color: #333;"
+                {% if quantity <= 1 %} disabled style="opacity: 0.2; cursor: not-allowed;" {% endif %}>
+                −
+            </button>
+
+            {# Quantité affichée en gros #}
+            <span class="px-3 fw-bold fs-4" style="color: #1c1c1e; min-width: 45px; display: inline-block;">
+                {{ quantity }}
+            </span>
+
+            {# Bouton Augmenter #}
+            <button data-action="live#action"
+                    data-live-action-param="increaseQuantity"
+                    class="btn border-0 fw-bold fs-3 px-3"
+                    style="color: #333;">
+                +
             </button>
         </div>
     </td>
+
+    {# 3. Colonne PRIX - Très lisible #}
+    <td class="table-wrapper text-end pe-4" style="min-width: 150px;">
+        <div class="price-container">
+            {% if product.isPromotion %}
+                {# fs-2 pour le prix promo (env 32px) #}
+                <div class="new-price fw-bolder text-danger fs-2">
+                    {{ this.lineTotal|format_currency('XOF') }}
+                </div>
+                <div class="old-price text-muted text-decoration-line-through fs-5">
+                    {{ (product.price/100 * quantity)|format_currency('XOF') }}
+                </div>
+            {% else %}
+                <div class="new-price fw-bolder text-dark fs-2">
+                    {{ this.lineTotal|format_currency('XOF') }}
+                </div>
+            {% endif %}
+        </div>
+    </td>
 </tr>
+
+{#========================== ANCIEN ================#}
+
+{#{% set product = this.productEntity %}#}
+{#<tr {{ attributes }} class="table-row ticket-row" style="border-bottom: 1px solid #eee;">#}
+
+{#    #}{# 1. Colonne Produit et Image #}
+{#    <td class="table-wrapper wrapper-product" style="padding: 15px 0;">#}
+{#        <div class="wrapper" style="display: flex; align-items: center;">#}
+{#            <div class="wrapper-img" style="margin-right: 15px;">#}
+{#                #}{# ANCIEN : cartItemData.product.illustration #}
+{#                <img src="{{ asset('images/products/')~ product.illustration }}" alt="Produit"#}
+{#                     style="width: 60px; height: 60px; object-fit: cover; border-radius: 4px;">#}
+{#            </div>#}
+{#            <div class="wrapper-content">#}
+{#                #}{# ANCIEN : cartItemData.product.name #}
+{#                <h5 class="heading" style="font-size: 1rem; margin: 0;">{{ product.name }}</h5>#}
+{#            </div>#}
+{#        </div>#}
+{#    </td>#}
+
+{#    #}{# 2. Colonne Prix Unitaire #}
+{#    <td class="table-wrapper">#}
+{#        <div class="table-wrapper-center">#}
+{#            <div class="price">#}
+{#                {% if product.isPromotion %}#}
+{#                    <span class="price-cut"#}
+{#                          style="text-decoration: line-through; color: #999; margin-right: 8px;">{{ (product.price/100)|format_currency('XOF') }}</span>#}
+{#                    #}{# this.finalUnitPrice utilise déjà l'objet product chargé #}
+{#                    <span class="new-price"#}
+{#                          style="font-weight: bold; color: #d9534f;">{{ this.finalUnitPrice|format_currency('XOF') }}</span>#}
+{#                {% else %}#}
+{#                    <span class="new-price"#}
+{#                          style="font-weight: bold;">{{ this.finalUnitPrice|format_currency('XOF') }}</span>#}
+{#                {% endif %}#}
+{#            </div>#}
+{#        </div>#}
+{#    </td>#}
+
+{#    #}{# 3. Colonne QUANTITÉ (Boutons +/-) #}
+{#    <td class="table-wrapper">#}
+{#        <div class="table-wrapper-center">#}
+{#            <div class="quantity flex items-center space-x-2"#}
+{#                 style="display: flex; align-items: center; justify-content: center;">#}
+
+{#                #}{# Bouton Diminuer #}
+{#                <button data-action="live#action"#}
+{#                        data-live-action-param="decreaseQuantity"#}
+{#                        class="btn btn-primary"#}
+{#                        style="color: white; border: none; padding: 8px 12px; border-radius: 5px 0 0 5px; cursor: pointer; font-weight: bold;"#}
+{#                    {% if quantity <= 1 %} disabled style="opacity: 0.5; cursor: not-allowed;" {% endif %}>#}
+{#                    -#}
+{#                </button>#}
+
+{#                #}{# Affichage de la Quantité (Utilisation de la LiveProp 'quantity') #}
+{#                <span#}
+{#                    style="display: inline-block; padding: 8px 12px; border: 1px solid #ccc; text-align: center; width: 40px; background-color: white;">#}
+{#                    {{ quantity }}#}
+{#                </span>#}
+
+{#                #}{# Bouton Augmenter #}
+{#                <button data-action="live#action"#}
+{#                        data-live-action-param="increaseQuantity"#}
+{#                        class="btn btn-primary"#}
+{#                        style="color: white; border: none; padding: 8px 12px; border-radius: 0 5px 5px 0; cursor: pointer; font-weight: bold;">#}
+{#                    +#}
+{#                </button>#}
+{#            </div>#}
+{#        </div>#}
+{#    </td>#}
+
+{#    #}{# 4. Colonne TOTAL de la ligne (Utilisation de l'accesseur this.lineTotal) #}
+{#    <td class="table-wrapper wrapper-total">#}
+{#        <div class="table-wrapper-center">#}
+{#            <h5 class="heading" style="font-size: 1.1rem; font-weight: bold;">#}
+{#                {{ this.lineTotal|format_currency('XOF') }}#}
+{#            </h5>#}
+{#        </div>#}
+{#    </td>#}
+
+{#    #}{# 5. Colonne ACTION (Bouton X) #}
+{#    <td class="table-wrapper">#}
+{#        <div class="table-wrapper-center">#}
+{#            <button data-action="live#action"#}
+{#                    data-live-action-param="removeItem"#}
+{#                    class="btn btn-dark"#}
+{#                    style="background-color: #212529; color: white; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer; font-weight: bold;">#}
+{#                <span>X</span>#}
+{#            </button>#}
+{#        </div>#}
+{#    </td>#}
+{#</tr>#}
+
+
+
