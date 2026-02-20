@@ -25,11 +25,11 @@ class AuthenticationSuccessSubscriber implements EventSubscriberInterface
         $data['status'] = 1;
         $data['id'] = $user->getId();
         $data['email'] = $user->getUserIdentifier();
-        $data['fullName'] = $user->getFirstName()." ".$user->getLastName();
+        $data['fullName'] = $user->getFirstName() . " " . $user->getLastName();
         $data['roles'] = $user->getRoles();
-        $data['shopId'] = $user->getShop()->getId();
-        $data['shopName'] = $user->getShop()->getName();
-        $data['shopProprietaire'] = $user->getShop()->getProprietaire();
+        $data['shopId'] = $user->getShop() ? $user->getShop()->getId() : 0;
+        $data['shopName'] = $user->getShop() ? $user->getShop()->getName() : "";
+        $data['shopProprietaire'] = $user->getShop() ? $user->getShop()->getProprietaire() : "";
 
         $event->setData($data);
     }
