@@ -65,14 +65,14 @@
             <div class="d-flex align-items-baseline flex-wrap">
                 {% if product.isPromotion %}
                     <span class="price-current">
-                        {{ ((product.price/100) * (1 - (product.offPercent / 100))) | format_currency('XOF') }}
+                        {{ ((product.price) * (1 - (product.offPercent / 100))) | format_currency('XOF') }}
                     </span>
                     <span class="price-old ms-1">
-                        {{ (product.price/100)|format_currency('XOF') }}
+                        {{ (product.price)|format_currency('XOF') }}
                     </span>
                 {% else %}
                     <span class="price-current text-dark">
-                        {{ (product.price/100)|format_currency('XOF') }}
+                        {{ (product.price)|format_currency('XOF') }}
                     </span>
                 {% endif %}
             </div>
@@ -91,7 +91,7 @@
                 data-action="live#action"
                 data-live-action-param="addToCart"
                 class="btn btn-wb w-100 py-2">
-                <i class="bi bi-cart3 me-1"></i> <span class="d-none d-sm-inline">Ajouter</span>
+                <i class="bi bi-cart3 me-1"></i> <span class="d-none d-sm-inline">Ajouter au panier</span>
             </button>
         </div>
     </div>

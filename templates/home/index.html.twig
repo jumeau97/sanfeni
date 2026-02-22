@@ -51,6 +51,24 @@
         <div class="container">
             <div class="best-product-section">
                 <div class="row g-4">
+                    <div class="d-none" data-live-loading-class="d-row">
+                        <div class="row row-cols-2 row-cols-md-3 row-cols-lg-6 g-3" id="loading-placeholder">
+                            {% for i in 1..12 %} {# On affiche 6 cartes vides pendant le chargement #}
+                                <div class="col">
+                                    <div class="card border-0 bg-transparent h-100 p-0">
+                                        <div class="skeleton-img mb-2 shadow-sm rounded-4"></div>
+                                        <div class="card-body p-1">
+                                            <div class="skeleton-text skeleton-price mb-2"></div>
+                                            <div class="skeleton-text skeleton-title mb-1"></div>
+                                            <div class="skeleton-text skeleton-title w-50"></div>
+                                            <div class="skeleton-btn mt-3"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
                     {% for product in products.items %}
                         {{ component('ProductItem', {
                             product: product

@@ -217,7 +217,7 @@
         /* Typographie */
         .price-current {
             color: #ff3b30;
-            font-size: 1.2rem;
+            font-size: 1.5rem;
             font-weight: 800;
         }
 
@@ -259,7 +259,7 @@
             border: none;
             border-radius: 8px;
             font-weight: 600;
-            font-size: 1rem !important;
+            font-size: 1.5rem !important;
             transition: all 0.3s ease;
         }
 
@@ -292,6 +292,95 @@
             .btn-wb {
                 font-size: 0.9rem !important;
                 padding: 10px 5px;
+            }
+        }
+    </style>
+    <style>
+        /* Animation de chargement */
+        @keyframes shimmer {
+            0% { background-position: -468px 0; }
+            100% { background-position: 468px 0; }
+        }
+
+        .skeleton-img, .skeleton-text, .skeleton-btn {
+            background: #f6f7f8;
+            background-image: linear-gradient(to right, #f6f7f8 0%, #edeef1 20%, #f6f7f8 40%, #f6f7f8 100%);
+            background-repeat: no-repeat;
+            background-size: 800px 100%;
+            display: inline-block;
+            position: relative;
+            animation: shimmer 1.2s infinite linear;
+            border-radius: 8px;
+        }
+
+        .skeleton-img { width: 100%; aspect-ratio: 3/4; }
+        .skeleton-price { width: 60%; height: 24px; }
+        .skeleton-title { width: 100%; height: 14px; }
+        .skeleton-btn { width: 100%; height: 40px; border-radius: 10px; }
+    </style>
+
+    <style>
+        /* Container de recherche */
+        .search-section-wb {
+            max-width: 900px; /* Wildberries utilise une barre très large */
+            margin: 0 auto;
+        }
+
+        .search-section-wb .input-group {
+            background-color: #fff;
+            border-radius: 25px; /* Coins très arrondis */
+            padding: 4px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); /* Effet de profondeur */
+            border: 2px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        /* Effet au focus (changement de bordure comme sur l'original) */
+        .search-section-wb .input-group:focus-within {
+            border-color: #111f2d; /* Rose/Violet Wildberries */
+            box-shadow: 0 4px 25px rgba(203, 17, 171, 0.15);
+        }
+
+        /* L'input texte */
+        .search-section-wb .form-control {
+            border-radius: 25px 0 0 25px;
+            height: 48px;
+            font-size: 1rem;
+            color: #333;
+        }
+
+        .search-section-wb .form-control:focus {
+            box-shadow: none; /* On enlève le halo bleu Bootstrap */
+        }
+
+        .search-section-wb .form-control::placeholder {
+            color: #999;
+        }
+
+        /* Le bouton Loupe */
+        .btn-search-wb {
+            background-color: transparent;
+            border: none;
+            color: #212529; /* Couleur marque */
+            padding: 0 20px;
+            font-size: 1.2rem;
+            border-radius: 0 25px 25px 0;
+            transition: transform 0.2s ease;
+        }
+
+        .btn-search-wb:hover {
+            color: #212529;
+            transform: scale(1.1);
+        }
+
+        /* Responsive Mobile */
+        @media (max-width: 576px) {
+            .search-section-wb .input-group {
+                border-radius: 15px;
+            }
+            .search-section-wb .form-control {
+                height: 40px;
+                font-size: 0.9rem;
             }
         }
     </style>

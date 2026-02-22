@@ -68,10 +68,10 @@
                                                         <h5 class="wrapper-heading">
                                                             {% if product.product.isPromotion %}
 
-                                                                {{ (((product.product.price / 100) * (1 - (product.product.offPercent / 100))) * product.quantity) |format_currency('XOF') }}
+                                                                {{ (((product.product.price ) * (1 - (product.product.offPercent / 100))) * product.quantity) |format_currency('XOF') }}
 
                                                             {% else %}
-                                                                {{ ((product.product.price * product.quantity) / 100) |format_currency('XOF') }}
+                                                                {{ ((product.product.price * product.quantity) ) |format_currency('XOF') }}
                                                             {% endif %}
 
                                                         </h5>
@@ -80,10 +80,10 @@
                                                 {#                                                {% set total = total + (product.product.price * product.quantity) %} #}
                                                 {% if product.product.offPercent is defined and product.product.offPercent > 0 %}
                                                     {# Produit en promotion #}
-                                                    {% set price = (product.product.price / 100) * (1 - (product.product.offPercent / 100)) %}
+                                                    {% set price = (product.product.price ) * (1 - (product.product.offPercent / 100)) %}
                                                 {% else %}
                                                     {# Produit sans promotion #}
-                                                    {% set price = (product.product.price / 100) %}
+                                                    {% set price = (product.product.price ) %}
                                                 {% endif %}
 
                                                 {# Ajout au total #}

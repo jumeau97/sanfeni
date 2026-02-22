@@ -60,7 +60,7 @@
                     {{ this.lineTotal|format_currency('XOF') }}
                 </div>
                 <div class="old-price text-muted text-decoration-line-through fs-5">
-                    {{ (product.price/100 * quantity)|format_currency('XOF') }}
+                    {{ (product.price * quantity)|format_currency('XOF') }}
                 </div>
             {% else %}
                 <div class="new-price fw-bolder text-dark fs-2">
