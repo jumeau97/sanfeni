@@ -284,32 +284,39 @@
                         </div>
                     </div>
                 </nav>
-{#                <div class="header-nav-menu">#}
-{#                    <div class="search-content">#}
-{#                        <div class="search-section">#}
-{#                            <input type="text" placeholder="Rechercher les produits.........">#}
-{#                            <div class="divider"></div>#}
-{#                            <button type="button">All Categories</button>#}
-{#                            <a href="#" class="shop-btn">Search</a>#}
-{#                        </div>#}
-{#                    </div>#}
+                {#                <div class="header-nav-menu"> #}
+                {#                    <div class="search-content"> #}
+                {#                        <div class="search-section"> #}
+                {#                            <input type="text" placeholder="Rechercher les produits........."> #}
+                {#                            <div class="divider"></div> #}
+                {#                            <button type="button">All Categories</button> #}
+                {#                            <a href="#" class="shop-btn">Search</a> #}
+                {#                        </div> #}
+                {#                    </div> #}
 
-{#                </div>#}
+                {#                </div> #}
                 <div class="header-nav-menu py-3">
                     <div class="container">
                         <div class="search-content">
+                            {{ form_start(form) }}
                             <div class="search-section-wb">
-                                <div class="input-group">
+                                <div class="input-group search-wrapper">
+
                                     <input type="text"
-                                           class="form-control border-0 ps-4"
+                                           name="{{ field_name(form.name) }}"
+                                           id="{{ field_id(form.name) }}"
+                                           class="form-control search-input ps-4"
                                            placeholder="Rechercher un produit ou une marque..."
                                            aria-label="Search">
 
-                                    <button class="btn btn-search-wb" type="button">
+                                    <button type="submit" class="btn btn-search-blue" type="button">
                                         Rechercher
                                     </button>
+
+{#                                    {{ form_widget(form.saved, {'label':'Enregistrer'}) }}#}
                                 </div>
                             </div>
+                            {{ form_end(form) }}
                         </div>
                     </div>
                 </div>

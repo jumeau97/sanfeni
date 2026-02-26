@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 
+use App\Form\SearchType;
 use App\Model\Cart;
 use App\Payload\SearchRequest\SearchActualites;
 use App\Payload\Utils\UtilisService;
@@ -32,10 +33,20 @@ final class HomeController extends AbstractController
 
         $pageNumb = $request->query->getInt('page', 1);
         $limit = $request->query->getInt('limit', 50);
-        $data = new SearchProduct();
+        $search = new SearchProduct();
+        $form = $this->createForm(SearchType::class, $search);
+        $form->handleRequest($request);
+//        dd($search);
 
 
-        $result = $this->productInterface->findAllByCriteria($pageNumb, $limit, $data);
+//        if ($form->isSubmitted() && $form->isValid()) {
+            // $form->getData(); == $search
+//            $result = $this->productInterface->findAllByCriteria($pageNumb, $limit, $search);
+//        } else {
+            $result = $this->productInterface->findAllByCriteria($pageNumb, $limit, $search);
+//        }
+
+
         $jsonData = $this->serializer->serialize($result, 'json', ["groups" => "getProducts"]);
         $dataArray = json_decode($jsonData, true);
         $products = $this->utilisService->paginationResp($dataArray, $result, $limit);
@@ -46,6 +57,19 @@ final class HomeController extends AbstractController
         ]);
     }
 
+
+//    #[Route('/product/{slug}', name: 'show-products', methods: ['GET'])]
+//    public function show($slug): Response
+//    {
+//        dd($slug);
+//        $product = $this->entityManager->getRepository(Product::class)->findOneBySlug($slug);
+//        if (!$product) {
+//            return $this->redirectToRoute('app_home');
+//        }
+//        return $this->render('home/index.html.twig', [
+//            'product' => $product,
+//        ]);
+//    }
 
 
 }

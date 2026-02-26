@@ -86,12 +86,18 @@
 {#            </div>#}
         </div>
 
-        <div class="mt-auto">
+        <div class="mt-auto pt-3">
             <button
+                type="button"
                 data-action="live#action"
                 data-live-action-param="addToCart"
-                class="btn btn-wb w-100 py-2">
-                <i class="bi bi-cart3 me-1"></i> <span class="d-none d-sm-inline">Ajouter au panier</span>
+                class="btn btn-wb w-100 d-flex align-items-center justify-content-center">
+
+                <i class="bi bi-cart3 fs-5 me-2"></i>
+                <span class="fw-bold">Ajouter au panier</span>
+
+                {# Optionnel : Un petit spinner qui apparaît pendant l'action Live #}
+                <div class="spinner-border spinner-border-sm ms-2 d-none" data-live-active-class="d-inline-block" role="status"></div>
             </button>
         </div>
     </div>

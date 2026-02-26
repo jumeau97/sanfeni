@@ -101,7 +101,7 @@
             width: 62rem;
             height: 6rem;
             border-radius: 3rem;
-            border: 1px solid #ffffff;
+            /*border: 1px solid #ffffff;*/
             overflow: hidden;
         }
 
@@ -110,8 +110,6 @@
             width: 1px;
             background: #e8e8e8;
         }
-
-
     </style>
     <style>
         .hero .swiper {
@@ -252,54 +250,49 @@
             overflow: hidden;
         }
 
-        /* Bouton Custom */
         .btn-wb {
-            background-color: var(--wb-purple);
+            background-color: #FFA500FF; /* Violet Wildberries */
             color: white;
             border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 1.5rem !important;
-            transition: all 0.3s ease;
+            border-radius: 12px; /* Coins arrondis modernes */
+            padding: 10px 15px;
+            font-size: 1rem;
+            transition: all 0.2s ease-in-out;
+            box-shadow: 0 4px 10px rgba(234, 62, 46, 0.2);
         }
 
         .btn-wb:hover {
-            background-color: var(--wb-purple-hover);
+            background-color: #FFA500FF;
             color: white;
+            transform: translateY(-2px); /* Petit effet de levier au survol */
+            box-shadow: 0 6px 15px rgba(239, 59, 42, 0.3);
         }
 
-        /*!* Ajustements très petits mobiles *!*/
-        /*@media (max-width: 380px) {*/
-        /*    .price-current {*/
-        /*        font-size: 0.9rem;*/
-        /*    }*/
+        .btn-wb:active {
+            transform: translateY(0);
+        }
 
-        /*    .brand-name {*/
-        /*        font-size: 0.75rem;*/
-        /*    }*/
-        /*}*/
-
-        /* Optimisation Mobile */
+        /* Ajustement pour les petits écrans */
         @media (max-width: 576px) {
-            .price-current {
-                font-size: 1.1rem; /* Un peu plus petit sur mobile pour éviter les chevauchements */
-            }
-
-            .product-title {
-                font-size: 0.95rem;
-            }
-
             .btn-wb {
-                font-size: 0.9rem !important;
-                padding: 10px 5px;
+                font-size: 1rem;
+                padding: 8px 10px;
+            }
+            .btn-wb span {
+                /* On peut cacher le texte long sur très petit mobile si besoin */
+                /* display: none; */
             }
         }
     </style>
     <style>
         /* Animation de chargement */
         @keyframes shimmer {
-            0% { background-position: -468px 0; }
-            100% { background-position: 468px 0; }
+            0% {
+                background-position: -468px 0;
+            }
+            100% {
+                background-position: 468px 0;
+            }
         }
 
         .skeleton-img, .skeleton-text, .skeleton-btn {
@@ -313,75 +306,112 @@
             border-radius: 8px;
         }
 
-        .skeleton-img { width: 100%; aspect-ratio: 3/4; }
-        .skeleton-price { width: 60%; height: 24px; }
-        .skeleton-title { width: 100%; height: 14px; }
-        .skeleton-btn { width: 100%; height: 40px; border-radius: 10px; }
+        .skeleton-img {
+            width: 100%;
+            aspect-ratio: 3/4;
+        }
+
+        .skeleton-price {
+            width: 60%;
+            height: 24px;
+        }
+
+        .skeleton-title {
+            width: 100%;
+            height: 14px;
+        }
+
+        .skeleton-btn {
+            width: 100%;
+            height: 40px;
+            border-radius: 10px;
+        }
     </style>
 
     <style>
-        /* Container de recherche */
-        .search-section-wb {
-            max-width: 900px; /* Wildberries utilise une barre très large */
-            margin: 0 auto;
-        }
-
-        .search-section-wb .input-group {
+        /* Conteneur principal */
+        .search-wrapper {
             background-color: #fff;
-            border-radius: 25px; /* Coins très arrondis */
-            padding: 4px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); /* Effet de profondeur */
-            border: 2px solid transparent;
-            transition: all 0.2s ease;
-        }
-
-        /* Effet au focus (changement de bordure comme sur l'original) */
-        .search-section-wb .input-group:focus-within {
-            border-color: #111f2d; /* Rose/Violet Wildberries */
-            box-shadow: 0 4px 25px rgba(203, 17, 171, 0.15);
+            border-radius: 30px; /* On arrondit tout le bloc pour la sécurité */
+            overflow: hidden; /* Pour que les enfants ne dépassent pas */
+            border: 2px solid #0d6efd; /* Bordure bleue autour de tout le bloc */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
         }
 
         /* L'input texte */
-        .search-section-wb .form-control {
-            border-radius: 25px 0 0 25px;
-            height: 48px;
-            font-size: 1rem;
-            color: #333;
+        .search-input {
+            border: none !important;
+            height: 50px;
+            /* On arrondit uniquement à gauche */
+            border-top-left-radius: 30px !important;
+            border-bottom-left-radius: 30px !important;
+            border-top-right-radius: 0 !important;
+            border-bottom-right-radius: 0 !important;
         }
 
-        .search-section-wb .form-control:focus {
-            box-shadow: none; /* On enlève le halo bleu Bootstrap */
+        .search-input:focus {
+            box-shadow: none;
         }
 
-        .search-section-wb .form-control::placeholder {
-            color: #999;
-        }
-
-        /* Le bouton Loupe */
-        .btn-search-wb {
-            background-color: transparent;
+        /* Le bouton bleu à droite */
+        .btn-search-blue {
+            background-color: #082c6a;
+            color: white;
             border: none;
-            color: #212529; /* Couleur marque */
-            padding: 0 20px;
-            font-size: 1.2rem;
-            border-radius: 0 25px 25px 0;
-            transition: transform 0.2s ease;
+            padding: 0 30px;
+            font-weight: 600;
+            font-size: 1rem;
+            /* On arrondit uniquement à droite */
+            border-top-right-radius: 28px !important; /* Légèrement moins pour l'esthétique */
+            border-bottom-right-radius: 28px !important;
+            border-top-left-radius: 0 !important;
+            border-bottom-left-radius: 0 !important;
+            transition: background 0.2s ease;
         }
 
-        .btn-search-wb:hover {
-            color: #212529;
-            transform: scale(1.1);
+        .btn-search-blue:hover {
+            background-color: orange;
+            color: white;
         }
 
-        /* Responsive Mobile */
+        /* Ajustements Mobile */
         @media (max-width: 576px) {
-            .search-section-wb .input-group {
-                border-radius: 15px;
+            .search-wrapper {
+                border-radius: 20px;
             }
-            .search-section-wb .form-control {
+            .search-input {
+                border-top-left-radius: 20px !important;
+                border-bottom-left-radius: 20px !important;
                 height: 40px;
-                font-size: 0.9rem;
             }
+            .btn-search-blue {
+                padding: 0 15px;
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+
+    <style>
+        .header-top-section {
+            border-bottom: 1px solid #ffab09;
+            background: #fff;
+        }
+
+        .header-top a {
+            color: #000;
+            text-decoration: none;
+            background-color: transparent;
+        }
+
+        .header-user a {
+            color: orange;
+            text-decoration: none;
+            background-color: transparent;
+        }
+
+        .mobile-menu {
+            padding: 10px;
+            background-color: rgb(255 255 255);
         }
     </style>
 

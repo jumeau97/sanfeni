@@ -21,6 +21,12 @@ class ProductRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('p');
 
+        if(!empty($data->getName())){
+            $qb = $qb
+                ->andWhere('p.name LIKE :name')
+                ->setParameter('name', "%{$data->getName()}%");
+        }
+
         $qb->setFirstResult($pageNumber - 1)->setMaxResults($limit);
         return $qb;
     }
