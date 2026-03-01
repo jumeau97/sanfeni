@@ -40,6 +40,7 @@ class Product
     private Collection $categories;
 
     #[ORM\Column]
+    #[Groups(['getProducts'])]
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column(nullable: true)]
@@ -76,6 +77,7 @@ class Product
     private Collection $albums;
 
     #[ORM\ManyToOne(inversedBy: 'products')]
+    #[Groups(['getOrder', 'getProducts'])]
     private ?Boutique $shop = null;
 
     /**

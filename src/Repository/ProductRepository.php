@@ -19,12 +19,19 @@ class ProductRepository extends ServiceEntityRepository
 
     public function findAllByCriteria(SearchProduct $data, $pageNumber, $limit)
     {
-        $qb = $this->createQueryBuilder('p');
+        $qb = $this->createQueryBuilder('p')
+            ->leftJoin('p.shop', 'shop');
 
-        if(!empty($data->getName())){
+        if (!empty($data->getName())) {
             $qb = $qb
                 ->andWhere('p.name LIKE :name')
                 ->setParameter('name', "%{$data->getName()}%");
+        }
+
+        if (!empty($data->getShopId())) {
+            $qb = $qb
+                ->andWhere('shop.id= :shopId')
+                ->setParameter('shopId', $data->getShopId());
         }
 
         $qb->setFirstResult($pageNumber - 1)->setMaxResults($limit);

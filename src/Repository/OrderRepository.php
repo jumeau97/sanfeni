@@ -31,7 +31,15 @@ class OrderRepository extends ServiceEntityRepository
 
     public function findAllByCriteria(SearchOrder $data, $pageNumber, $limit)
     {
-        $qb = $this->createQueryBuilder('o');
+        $qb = $this->createQueryBuilder('o')
+            ->leftJoin('o.orderDetails', 'orderD')
+            ->leftJoin('orderD.produit', 'p')
+            ->leftJoin('p.shop', 'shop');
+
+        if (!empty($data->getShopId())){
+            $qb = $qb->andWhere('shop.id = :shopId')
+                ->setParameter('shopId', $data->getShopId());
+        }
 
         $qb->setFirstResult($pageNumber - 1)->setMaxResults($limit);
         return $qb;

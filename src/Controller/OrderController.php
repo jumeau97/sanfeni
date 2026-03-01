@@ -10,7 +10,9 @@ use App\Model\Cart;
 use App\Payload\Utils\GlobalResponse;
 use App\Payload\Utils\UtilisService;
 use App\Request\Search\SearchOrder;
+use App\Request\Search\SearchOrderDetails;
 use App\Service\Order\OrderInterface;
+use App\Service\OrderDetails\OrderDetailsInterface;
 use App\Service\Product\ProductInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -23,9 +25,10 @@ final class OrderController extends AbstractController
 {
     public function __construct(
         private EntityManagerInterface $entityManager,
-        private SerializerInterface $serializer,
-        private OrderInterface $orderInterface,
-        private UtilisService $utilisService,
+        private SerializerInterface    $serializer,
+        private OrderInterface         $orderInterface,
+        private OrderDetailsInterface  $orderDetailsInterface,
+        private UtilisService          $utilisService,
     )
     {
     }
@@ -133,5 +136,20 @@ final class OrderController extends AbstractController
         $dataArray = json_decode($jsonData, true);
         $array = $this->utilisService->paginationResp($dataArray, $result, $limit);
         return GlobalResponse::successWith("La liste des commandes", $array);
+    }
+
+    #[Route('/dashboard/commande-details', name: 'dashboard_commande_details')]
+    public function findAllOrderDetails(Request $request): Response
+    {
+        $pageNumb = $request->query->getInt('page', 1);
+        $limit = $request->query->getInt('limit', 50);
+        $data = $this->serializer->deserialize($request->getContent(), SearchOrderDetails::class, 'json');
+
+        $result = $this->orderDetailsInterface->findAllByCriteria($pageNumb, $limit, $data);
+
+        $jsonData = $this->serializer->serialize($result, 'json', ["groups" => "getOrderDetails"]);
+        $dataArray = json_decode($jsonData, true);
+        $array = $this->utilisService->paginationResp($dataArray, $result, $limit);
+        return GlobalResponse::successWith("La liste des details de commande", $array);
     }
 }

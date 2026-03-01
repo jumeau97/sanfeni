@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\OrderDetails;
+use App\Request\Search\SearchOrderDetails;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -14,6 +15,28 @@ class OrderDetailsRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, OrderDetails::class);
+    }
+
+    public function findAllByCriteria(SearchOrderDetails $data, $pageNumber, $limit)
+    {
+        $qb = $this->createQueryBuilder('o')
+            ->leftJoin('o.commande', 'c')
+            ->leftJoin('o.produit', 'p')
+        ->leftJoin('p.shop', 'shop');
+
+        if (!empty($data->getOrderId())) {
+            $qb = $qb
+                ->andWhere('c.id= :orderId')
+                ->setParameter('orderId', $data->getOrderId());
+        }
+
+        if (!empty($data->getShopId())) {
+            $qb = $qb
+                ->andWhere('shop.id= :shopId')
+                ->setParameter('shopId', $data->getShopId());
+        }
+        $qb->setFirstResult($pageNumber - 1)->setMaxResults($limit);
+        return $qb;
     }
 
     //    /**

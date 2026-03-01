@@ -12,33 +12,34 @@ class OrderDetails
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['getOrder'])]
+    #[Groups(['getOrder', 'getOrderDetails'])]
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'orderDetails')]
     private ?Order $commande = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['getOrder'])]
+    #[Groups(['getOrder', 'getOrderDetails'])]
     private ?string $product = null;
 
     #[ORM\Column]
-    #[Groups(['getOrder'])]
+    #[Groups(['getOrder', 'getOrderDetails'])]
     private ?int $quantity = null;
 
     #[ORM\Column]
-    #[Groups(['getOrder'])]
+    #[Groups(['getOrder', 'getOrderDetails'])]
     private ?float $price = null;
 
     #[ORM\Column]
-    #[Groups(['getOrder'])]
+    #[Groups(['getOrder', 'getOrderDetails'])]
     private ?float $total = null;
 
     #[ORM\ManyToOne(inversedBy: 'orderDetails')]
+    #[Groups(['getOrder', 'getOrderDetails'])]
     private ?Product $produit = null;
 
     #[ORM\Column]
-    #[Groups(['getOrder'])]
+    #[Groups(['getOrder', 'getOrderDetails'])]
     private ?bool $state = null;
 
 //    public function __toString(): string

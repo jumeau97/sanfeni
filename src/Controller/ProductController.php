@@ -3,10 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\Album;
+use App\Entity\Boutique;
 use App\Entity\Category;
 use App\Entity\Product;
 use App\Payload\Utils\GlobalResponse;
 use App\Payload\Utils\UtilisService;
+use App\Repository\BoutiqueRepository;
 use App\Request\ProductRequest;
 use App\Request\Search\SearchCategory;
 use App\Request\Search\SearchProduct;
@@ -30,7 +32,7 @@ final class ProductController extends AbstractController
         private SerializerInterface    $serializer,
         private ValidatorInterface     $validator,
         private ProductInterface       $productInterface,
-        private UtilisService $utilisService,
+        private UtilisService          $utilisService,
 
     )
     {
@@ -57,7 +59,6 @@ final class ProductController extends AbstractController
                 return GlobalResponse::error("Les données JSON sont requises.");
             }
 
-
             $data = $this->serializer->deserialize($jsonData, ProductRequest::class, 'json');
 
             $errors = $this->validator->validate($data);
@@ -69,12 +70,13 @@ final class ProductController extends AbstractController
                 return GlobalResponse::errorWith("erreur", $errorMessages);
             }
 
-
+            $shop = $this->entityManager->getRepository(Boutique::class)->findOneBy(['id' => $data->getShopId()]);
             $product = new Product();
             $product->setName($data->getName())
                 ->setIsPromotion($data->getIsPromotion())
                 ->setDescription($data->getDescription())
                 ->setPrice($data->getPrice())
+                ->setShop($shop)
                 ->setSlug(uniqid($data->getName()));
 
 
@@ -129,7 +131,7 @@ final class ProductController extends AbstractController
         return GlobalResponse::success("Produit crée avec succès");
     }
 
-    #[Route('dashboard/find-all-product', name: 'find-all-product',  methods: ['POST'])]
+    #[Route('dashboard/find-all-product', name: 'find-all-product', methods: ['POST'])]
     public function findAllByCriteria(Request $request,)
     {
         $pageNumb = $request->query->getInt('page', 1);
