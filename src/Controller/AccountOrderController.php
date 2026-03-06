@@ -31,7 +31,7 @@ final class AccountOrderController extends AbstractController
     {
         $order = $this->entityManager->getRepository(Order::class)->findOneBy(['reference' => $reference]);
 
-        if (!$order|| $order->getUser()!=$this->getUser()){
+        if (!$order || $order->getUser() != $this->getUser()) {
             return $this->redirectToRoute("account_order");
         }
 

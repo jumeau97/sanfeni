@@ -256,7 +256,7 @@
             border: none;
             border-radius: 12px; /* Coins arrondis modernes */
             padding: 10px 15px;
-            font-size: 1rem;
+            font-size: 1.3rem;
             transition: all 0.2s ease-in-out;
             box-shadow: 0 4px 10px rgba(234, 62, 46, 0.2);
         }
@@ -278,6 +278,7 @@
                 font-size: 1rem;
                 padding: 8px 10px;
             }
+
             .btn-wb span {
                 /* On peut cacher le texte long sur très petit mobile si besoin */
                 /* display: none; */
@@ -329,63 +330,77 @@
     </style>
 
     <style>
-        /* Conteneur principal */
-        .search-wrapper {
+        /* Container de recherche */
+        .search-section-wb {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .search-section-wb .input-group {
             background-color: #fff;
-            border-radius: 30px; /* On arrondit tout le bloc pour la sécurité */
-            overflow: hidden; /* Pour que les enfants ne dépassent pas */
-            border: 2px solid #0d6efd; /* Bordure bleue autour de tout le bloc */
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border-radius: 50px; /* Barre très arrondie style pilule */
+            /* L'espace (marge interne) qui entoure le bouton bleu */
+            padding: 6px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e0e0e0;
+            transition: all 0.2s ease;
+            align-items: center; /* Centre verticalement l'input et le bouton */
+        }
+
+        /* Effet au focus */
+        .search-section-wb .input-group:focus-within {
+            border-color: #FFA500FF;
+            box-shadow: 0 4px 25px rgba(13, 110, 253, 0.15);
         }
 
         /* L'input texte */
-        .search-input {
+        .search-section-wb .form-control {
             border: none !important;
-            height: 50px;
-            /* On arrondit uniquement à gauche */
-            border-top-left-radius: 30px !important;
-            border-bottom-left-radius: 30px !important;
-            border-top-right-radius: 0 !important;
-            border-bottom-right-radius: 0 !important;
+            background: transparent;
+            height: 40px;
+            font-size: 1rem;
+            color: #333;
+            padding-left: 20px;
         }
 
-        .search-input:focus {
+        .search-section-wb .form-control:focus {
             box-shadow: none;
         }
 
-        /* Le bouton bleu à droite */
-        .btn-search-blue {
-            background-color: #082c6a;
-            color: white;
+        /* Le bouton RECHERCHER (Style "Flottant" Arrondi) */
+        .btn-search-wb {
+            background-color: #082C6A;
+            color: #ffffff;
             border: none;
-            padding: 0 30px;
             font-weight: 600;
-            font-size: 1rem;
-            /* On arrondit uniquement à droite */
-            border-top-right-radius: 28px !important; /* Légèrement moins pour l'esthétique */
-            border-bottom-right-radius: 28px !important;
-            border-top-left-radius: 0 !important;
-            border-bottom-left-radius: 0 !important;
-            transition: background 0.2s ease;
+            font-size: 1.4rem;
+            /* Arrondi complet pour faire un bouton ovale à l'intérieur */
+            border-radius: 40px !important;
+            padding: 10px 30px;
+            height: 100%; /* S'adapte à la hauteur du padding parent */
+            transition: all 0.3s ease;
         }
 
-        .btn-search-blue:hover {
-            background-color: orange;
-            color: white;
+        .btn-search-wb:hover {
+            background-color: #FFA500FF;
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(232, 164, 60, 0.3);
         }
 
-        /* Ajustements Mobile */
+        /* Responsive Mobile */
         @media (max-width: 576px) {
-            .search-wrapper {
-                border-radius: 20px;
+            .search-section-wb .input-group {
+                padding: 4px;
+                border-radius: 30px;
             }
-            .search-input {
-                border-top-left-radius: 20px !important;
-                border-bottom-left-radius: 20px !important;
-                height: 40px;
+
+            .search-section-wb .form-control {
+                height: 35px;
+                font-size: 0.85rem;
             }
-            .btn-search-blue {
-                padding: 0 15px;
+
+            .btn-search-wb {
+                padding: 8px 15px;
                 font-size: 0.85rem;
             }
         }
@@ -414,6 +429,7 @@
             background-color: rgb(255 255 255);
         }
     </style>
+
 
 </head>
 <body>

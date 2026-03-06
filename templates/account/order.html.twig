@@ -4,15 +4,63 @@
 
 {% block stylesheets %}
     <style>
-        /*.account-section .review-form {*/
-        /*    width: 57.2rem;*/
-        /*    height: 79.1rem;*/
-        /*}*/
+        /* Style des cartes de commandes */
+        .order-card {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            border: 1px solid transparent;
+        }
 
-        .user-dashboard .nav-content .modal-main .review-form {
-            width: 57.2rem;
-            height: 79.1rem;
-            margin-top: 0;
+        .order-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08) !important;
+            border-color: rgba(138, 63, 252, 0.2);
+        }
+
+        /* Typographie augmentée */
+        .small-caps {
+            font-size: 0.75rem;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .fs-5 { font-size: 1.15rem !important; }
+        .fs-4 { font-size: 1.4rem !important; }
+
+        /* Badges de statut doux */
+        .bg-soft-success {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        /* Bordures verticales sur desktop */
+        @media (min-width: 768px) {
+            .border-start-md {
+                border-left: 1px solid #eee !important;
+            }
+        }
+
+        /* Bouton personnalisé */
+        .btn-outline-primary {
+            border-color: var(--wb-purple);
+            color: var(--wb-purple);
+        }
+
+        .btn-outline-primary:hover {
+            background-color: var(--wb-purple);
+            border-color: var(--wb-purple);
+            color: white;
+        }
+
+        /* Ajustement Mobile */
+        @media (max-width: 576px) {
+            .order-card {
+                padding: 20px !important;
+            }
+            .order-card .btn {
+                width: 100%;
+                margin-top: 10px;
+            }
         }
     </style>
 {% endblock %}
@@ -20,82 +68,147 @@
 {% block body %}
 
     <!---------------user-profile-section---------------->
-    <section class="user-profile footer-padding">
+    {#    <section class="user-profile footer-padding"> #}
+    {#        <div class="container"> #}
+    {#            <h2>Mes commandes</h2> #}
+    {#            <a href="{{ path('app_account') }}" class="view">Retourner à mon compte</a> #}
+    {#            <div class="user-profile-section"> #}
+    {#                {% if orders|length==0 %} #}
+    {#                    <p>Vous n'avez pas encore passé de commande.</p> #}
+    {#                {% else %} #}
+
+    {#                    <div class="cart-section"> #}
+    {#                        <table> #}
+    {#                            <tbody> #}
+    {#                            <tr class="table-row table-top-row"> #}
+    {#                                <td class="table-wrapper wrapper-product"> #}
+    {#                                    <h5 class="table-heading">Passé le</h5> #}
+    {#                                </td> #}
+    {#                                <td class="table-wrapper"> #}
+    {#                                    <div class="table-wrapper-center"> #}
+    {#                                        <h5 class="table-heading">Référence</h5> #}
+    {#                                    </div> #}
+    {#                                </td> #}
+    {#                                <td class="table-wrapper"> #}
+    {#                                    <div class="table-wrapper-center"> #}
+    {#                                        <h5 class="table-heading">Produit</h5> #}
+    {#                                    </div> #}
+    {#                                </td> #}
+    {#                                <td class="table-wrapper wrapper-total"> #}
+    {#                                    <div class="table-wrapper-center"> #}
+    {#                                        <h5 class="table-heading">TOTAL</h5> #}
+    {#                                    </div> #}
+    {#                                </td> #}
+    {#                                <td class="table-wrapper"> #}
+    {#                                    <div class="table-wrapper-center"> #}
+    {#                                        <h5 class="table-heading">ACTION</h5> #}
+    {#                                    </div> #}
+    {#                                </td> #}
+    {#                            </tr> #}
+    {#                            {% for order in orders %} #}
+    {#                                <tr class="table-row ticket-row"> #}
+    {#                                    <td class="table-wrapper wrapper-product"> #}
+    {#                                        <div class="wrapper"> #}
+    {#                                            <div class="wrapper-content"> #}
+    {#                                                <h5 class="heading">{{ order.createdAt|date('d/m/Y') }}</h5> #}
+    {#                                            </div> #}
+    {#                                        </div> #}
+    {#                                    </td> #}
+    {#                                    <td class="table-wrapper"> #}
+    {#                                        <div class="wrapper-content"> #}
+    {#                                            <h5 class="heading">{{ order.reference }}</h5> #}
+    {#                                        </div> #}
+
+    {#                                    </td> #}
+
+    {#                                    <td class="table-wrapper wrapper-total"> #}
+    {#                                        <div class="table-wrapper-center"> #}
+    {#                                            <h5 class="heading">{{ order.orderDetails|length }}</h5> #}
+    {#                                        </div> #}
+    {#                                    </td> #}
+    {#                                    <td class="table-wrapper wrapper-total"> #}
+    {#                                        <div class="table-wrapper-center"> #}
+    {#                                            <h5 class="heading">{{ ((order.carrierPrice+order.getTotal)/100)|number_format(0,',','.') }} F cfa</h5> #}
+    {#                                        </div> #}
+    {#                                    </td> #}
+    {#                                    <td class="table-wrapper wrapper-total"> #}
+    {#                                        <div class="table-wrapper-center"> #}
+    {#                                            <h5 class="heading"><a href="{{ path('account_order_show',{'reference':order.reference}) }}">Voir ma commande</a> </h5> #}
+    {#                                        </div> #}
+    {#                                    </td> #}
+
+    {#                                </tr> #}
+
+    {#                            {% endfor %} #}
+    {#                            </tbody> #}
+    {#                        </table> #}
+    {#                    </div> #}
+
+    {#                {% endif %} #}
+    {#            </div> #}
+    {#        </div> #}
+    {#    </section> #}
+
+
+    <section class="user-profile py-5 bg-light">
         <div class="container">
-            <h2>Mes commandes</h2>
-            <a href="{{ path('app_account') }}" class="view">Retourner à mon compte</a>
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h2 class="fw-bold mb-1">Mes commandes</h2>
+                    <a href="{{ path('app_account') }}" class="text-muted text-decoration-none">
+                        <i class="bi bi-arrow-left me-1"></i> Retourner à mon compte
+                    </a>
+                </div>
+            </div>
+
             <div class="user-profile-section">
-                {% if orders|length==0 %}
-                    <p>Vous n'avez pas encore passé de commande.</p>
-                {% else %}
-
-                    <div class="cart-section">
-                        <table>
-                            <tbody>
-                            <tr class="table-row table-top-row">
-                                <td class="table-wrapper wrapper-product">
-                                    <h5 class="table-heading">Passé le</h5>
-                                </td>
-                                <td class="table-wrapper">
-                                    <div class="table-wrapper-center">
-                                        <h5 class="table-heading">Référence</h5>
-                                    </div>
-                                </td>
-                                <td class="table-wrapper">
-                                    <div class="table-wrapper-center">
-                                        <h5 class="table-heading">Produit</h5>
-                                    </div>
-                                </td>
-                                <td class="table-wrapper wrapper-total">
-                                    <div class="table-wrapper-center">
-                                        <h5 class="table-heading">TOTAL</h5>
-                                    </div>
-                                </td>
-                                <td class="table-wrapper">
-                                    <div class="table-wrapper-center">
-                                        <h5 class="table-heading">ACTION</h5>
-                                    </div>
-                                </td>
-                            </tr>
-                            {% for order in orders %}
-                                <tr class="table-row ticket-row">
-                                    <td class="table-wrapper wrapper-product">
-                                        <div class="wrapper">
-                                            <div class="wrapper-content">
-                                                <h5 class="heading">{{ order.createdAt|date('d/m/Y') }}</h5>
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td class="table-wrapper">
-                                        <div class="wrapper-content">
-                                            <h5 class="heading">{{ order.reference }}</h5>
-                                        </div>
-
-                                    </td>
-
-                                    <td class="table-wrapper wrapper-total">
-                                        <div class="table-wrapper-center">
-                                            <h5 class="heading">{{ order.orderDetails|length }}</h5>
-                                        </div>
-                                    </td>
-                                    <td class="table-wrapper wrapper-total">
-                                        <div class="table-wrapper-center">
-                                            <h5 class="heading">{{ ((order.carrierPrice+order.getTotal)/100)|number_format(0,',','.') }} F cfa</h5>
-                                        </div>
-                                    </td>
-                                    <td class="table-wrapper wrapper-total">
-                                        <div class="table-wrapper-center">
-                                            <h5 class="heading"><a href="{{ path('account_order_show',{'reference':order.reference}) }}">Voir ma commande</a> </h5>
-                                        </div>
-                                    </td>
-
-                                </tr>
-
-                            {% endfor %}
-                            </tbody>
-                        </table>
+                {% if orders|length == 0 %}
+                    <div class="text-center py-5 bg-white rounded-4 shadow-sm">
+                        <i class="bi bi-bag-x display-1 text-muted"></i>
+                        <p class="fs-4 mt-3 text-muted">Vous n'avez pas encore passé de commande.</p>
+                        <a href="{{ path('products') }}" class="btn btn-wb-auth px-4 py-2 mt-2">Commencer mes achats</a>
                     </div>
+                {% else %}
+                    <div class="order-list">
+                        {% for order in orders %}
+                            <div class="order-card bg-white shadow-sm rounded-4 p-4 mb-3 border-0">
+                                <div class="row align-items-center gy-3">
+                                    <div class="col-md-3">
+                                        <span class="text-muted small-caps d-block mb-1">Commande du</span>
+                                        <h5 class="fw-bold mb-0 fs-5">{{ order.createdAt|date('d/m/Y') }}</h5>
+                                        <span
+                                            class="text-primary small fw-bold mt-1 d-block">Réf: {{ order.reference }}</span>
+                                    </div>
 
+                                    <div class="col-6 col-md-2 text-md-center border-start-md">
+                                        <span class="text-muted small-caps d-block mb-1">Articles</span>
+                                        <h5 class="fw-bold mb-0 fs-5">{{ order.orderDetails|length }}</h5>
+                                    </div>
+
+                                    <div class="col-6 col-md-3 text-md-center border-start-md">
+                                        <span class="text-muted small-caps d-block mb-1">Montant Total</span>
+                                        <h5 class="fw-bold mb-0 fs-4 text-dark">
+                                            {{ ((order.carrierPrice + order.getTotal) / 100)|number_format(0,',','.') }}
+                                            <small>F CFA</small>
+                                        </h5>
+                                    </div>
+
+                                    <div class="col-6 col-md-2 text-md-center">
+                                    <span class="badge bg-soft-success text-success px-3 py-2 rounded-pill fw-bold">
+                                        Payée
+                                    </span>
+                                    </div>
+
+                                    <div class="col-6 col-md-2 text-end">
+                                        <a href="{{ path('account_order_show',{'reference':order.reference}) }}"
+                                           class="btn btn-outline-primary rounded-pill fw-bold px-4">
+                                            Détails
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
                 {% endif %}
             </div>
         </div>

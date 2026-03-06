@@ -4,15 +4,65 @@
 
 {% block stylesheets %}
     <style>
-        /*.account-section .review-form {*/
-        /*    width: 57.2rem;*/
-        /*    height: 79.1rem;*/
-        /*}*/
 
-        .user-dashboard .nav-content .modal-main .review-form {
-            width: 57.2rem;
-            height: 79.1rem;
-            margin-top: 0;
+
+        /* Typographie & Caps */
+        .small-caps {
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        /* Badges Soft */
+        .bg-soft-primary {
+            background-color: #FFF;
+            color: var(--wb-purple);
+        }
+
+        /* Bordures Desktop */
+        @media (min-width: 768px) {
+            .border-end-md {
+                border-right: 1px solid #f0f0f0 !important;
+            }
+        }
+
+        /* Table Style */
+        .table thead {
+            border-bottom: 1px solid #eee;
+        }
+
+        .table tbody tr {
+            transition: background 0.2s ease;
+        }
+
+        /* Polices augmentées */
+        .fs-2 {
+            font-size: 2.2rem !important;
+        }
+
+        .fs-3 {
+            font-size: 1.8rem !important;
+        }
+
+        .fs-5 {
+            font-size: 1.2rem !important;
+        }
+
+        .fs-6 {
+            font-size: 1.1rem !important;
+        }
+
+        /* Responsive Mobile */
+        @media (max-width: 576px) {
+            .fs-2 {
+                font-size: 1.6rem !important;
+            }
+
+            .table-responsive {
+                border: 1px solid #eee;
+                border-radius: 12px;
+            }
         }
     </style>
 {% endblock %}
@@ -20,93 +70,190 @@
 {% block body %}
 
     <!---------------user-profile-section---------------->
-    <section class="user-profile footer-padding">
+    {#    <section class="user-profile footer-padding"> #}
+    {#        <div class="container"> #}
+    {#            <h2>Ma commande - {{ order.reference }}</h2> #}
+    {#            <a href="{{ path('app_account') }}" class="view">Retourner à mon compte</a> #}
+    {#            <div class="user-profile-section"> #}
+    {#                <p> #}
+    {#                    <strong>Commande passé le : </strong>{{ order.createdAt|date('d/m/Y') }}<br> #}
+    {#                    <strong>Référence de ma commande: </strong>{{ order.reference }}<br> #}
+    {#                    <strong>Transporteur choisi: </strong>{{ order.carriername }}<br> #}
+    {#                </p> #}
+
+    {#            </div> #}
+    {#            <div class="cart-section"> #}
+    {#                <table> #}
+    {#                    <tbody> #}
+    {#                    <tr class="table-row table-top-row"> #}
+    {#                        <td class="table-wrapper wrapper-product"> #}
+    {#                            <h5 class="table-heading">Produit</h5> #}
+    {#                        </td> #}
+    {#                        <td class="table-wrapper"> #}
+    {#                            <div class="table-wrapper-center"> #}
+    {#                                <h5 class="table-heading">Quantité</h5> #}
+    {#                            </div> #}
+    {#                        </td> #}
+    {#                        <td class="table-wrapper"> #}
+    {#                            <div class="table-wrapper-center"> #}
+    {#                                <h5 class="table-heading">Prix Unitaire</h5> #}
+    {#                            </div> #}
+    {#                        </td> #}
+    {#                        <td class="table-wrapper wrapper-total"> #}
+    {#                            <div class="table-wrapper-center"> #}
+    {#                                <h5 class="table-heading">Total</h5> #}
+    {#                            </div> #}
+    {#                        </td> #}
+    {#                        <td class="table-wrapper"> #}
+    {#                            <div class="table-wrapper-center"> #}
+    {#                                <h5 class="table-heading">ACTION</h5> #}
+    {#                            </div> #}
+    {#                        </td> #}
+    {#                    </tr> #}
+    {#                    {% for product in order.orderDetails %} #}
+    {#                        <tr class="table-row ticket-row"> #}
+    {#                            <td class="table-wrapper wrapper-product"> #}
+    {#                                <div class="wrapper"> #}
+    {#                                    <div class="wrapper-content"> #}
+    {#                                        <h5 class="heading">{{ product.product }}</h5> #}
+    {#                                    </div> #}
+    {#                                </div> #}
+    {#                            </td> #}
+    {#                            <td class="table-wrapper"> #}
+    {#                                <div class="wrapper-content"> #}
+    {#                                    <h5 class="heading">{{ product.quantity }}</h5> #}
+    {#                                </div> #}
+
+    {#                            </td> #}
+
+    {#                            <td class="table-wrapper wrapper-total"> #}
+    {#                                <div class="table-wrapper-center"> #}
+    {#                                    <h5 class="heading">{{ (product.price/100)|number_format(0,',','.') }} F cfa</h5> #}
+    {#                                </div> #}
+    {#                            </td> #}
+    {#                            <td class="table-wrapper wrapper-total"> #}
+    {#                                <div class="table-wrapper-center"> #}
+    {#                                    <h5 class="heading">{{ (product.total/100)|number_format(0,',','.') }} F cfa</h5> #}
+    {#                                </div> #}
+    {#                            </td> #}
+    {#                            <td class="table-wrapper wrapper-total"> #}
+    {#                                <div class="table-wrapper-center"> #}
+    {#                                    <h5 class="heading"><a href="{{ path('account_order_show',{'reference':order.reference}) }}">Voir ma commande</a> </h5> #}
+    {#                                </div> #}
+    {#                            </td> #}
+
+    {#                        </tr> #}
+
+    {#                    {% endfor %} #}
+    {#                    </tbody> #}
+    {#                </table> #}
+    {#                <div class="text-right"> #}
+    {#                   <p> #}
+    {#                       <strong>Sous-total: {{ (order.getTotal/100)|number_format(0,',','.') }} F cfa</strong> <br> #}
+    {#                       <strong>Livraison: {{ (order.carrierprice/100)|number_format(0,',','.') }} F cfa</strong><br> #}
+    {#                       <strong>Total: {{ ((order.carrierPrice+order.getTotal)/100)|number_format(0,',','.') }} F cfa</strong><br> #}
+    {#                   </p> #}
+    {#                </div> #}
+    {#            </div> #}
+
+    {#        </div> #}
+    {#    </section> #}
+    <!--------------- user-profile-section-end --------------->
+
+
+    <section class="order-details py-5 bg-light">
         <div class="container">
-            <h2>Ma commande - {{ order.reference }}</h2>
-            <a href="{{ path('app_account') }}" class="view">Retourner à mon compte</a>
-            <div class="user-profile-section">
-                <p>
-                    <strong>Commande passé le : </strong>{{ order.createdAt|date('d/m/Y') }}<br>
-                    <strong>Référence de ma commande: </strong>{{ order.reference }}<br>
-                    <strong>Transporteur choisi: </strong>{{ order.carriername }}<br>
-                </p>
-
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h2 class="fw-bold mb-1 fs-2">Détails de la commande</h2>
+                    <a href="{{ path('account_order') }}" class="text-muted text-decoration-none fw-bold">
+                        <i class="bi bi-arrow-left me-1"></i> Retour à mes commandes
+                    </a>
+                </div>
+                <span class="badge bg-soft-primary text-primary px-4 py-2 rounded-pill fs-6 fw-bold">
+                {{ order.reference }}
+            </span>
             </div>
-            <div class="cart-section">
-                <table>
-                    <tbody>
-                    <tr class="table-row table-top-row">
-                        <td class="table-wrapper wrapper-product">
-                            <h5 class="table-heading">Produit</h5>
-                        </td>
-                        <td class="table-wrapper">
-                            <div class="table-wrapper-center">
-                                <h5 class="table-heading">Quantité</h5>
-                            </div>
-                        </td>
-                        <td class="table-wrapper">
-                            <div class="table-wrapper-center">
-                                <h5 class="table-heading">Prix Unitaire</h5>
-                            </div>
-                        </td>
-                        <td class="table-wrapper wrapper-total">
-                            <div class="table-wrapper-center">
-                                <h5 class="table-heading">Total</h5>
-                            </div>
-                        </td>
-                        <td class="table-wrapper">
-                            <div class="table-wrapper-center">
-                                <h5 class="table-heading">ACTION</h5>
-                            </div>
-                        </td>
-                    </tr>
-                    {% for product in order.orderDetails %}
-                        <tr class="table-row ticket-row">
-                            <td class="table-wrapper wrapper-product">
-                                <div class="wrapper">
-                                    <div class="wrapper-content">
-                                        <h5 class="heading">{{ product.product }}</h5>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="table-wrapper">
-                                <div class="wrapper-content">
-                                    <h5 class="heading">{{ product.quantity }}</h5>
-                                </div>
 
-                            </td>
+            <div class="row g-4">
+                <div class="col-12">
+                    <div class="card border-0 shadow-sm rounded-4 p-4">
+                        <div class="row gy-3">
+                            <div class="col-md-4 border-end-md text-center text-md-start">
+                                <p class="text-muted small-caps mb-1">Passée le</p>
+                                <h5 class="fw-bold mb-0 fs-5">{{ order.createdAt|date('d/m/Y') }}</h5>
+                            </div>
+                            <div class="col-md-4 border-end-md text-center text-md-start">
+                                <p class="text-muted small-caps mb-1">Transporteur</p>
+                                <h5 class="fw-bold mb-0 fs-5">{{ order.carriername }}</h5>
+                            </div>
+                            <div class="col-md-4 text-center text-md-start">
+                                <p class="text-muted small-caps mb-1">Statut</p>
+                                <h5 class="fw-bold mb-0 text-success fs-5"><i class="bi bi-check-circle-fill me-1"></i>
+                                    Confirmée</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-                            <td class="table-wrapper wrapper-total">
-                                <div class="table-wrapper-center">
-                                    <h5 class="heading">{{ (product.price/100)|number_format(0,',','.') }} F cfa</h5>
-                                </div>
-                            </td>
-                            <td class="table-wrapper wrapper-total">
-                                <div class="table-wrapper-center">
-                                    <h5 class="heading">{{ (product.total/100)|number_format(0,',','.') }} F cfa</h5>
-                                </div>
-                            </td>
-                            <td class="table-wrapper wrapper-total">
-                                <div class="table-wrapper-center">
-                                    <h5 class="heading"><a href="{{ path('account_order_show',{'reference':order.reference}) }}">Voir ma commande</a> </h5>
-                                </div>
-                            </td>
+                <div class="col-lg-8">
+                    <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0">
+                                <thead class="bg-light">
+                                <tr>
+                                    <th class="ps-4 py-3 text-muted small-caps border-0">Produit</th>
+                                    <th class="text-center py-3 text-muted small-caps border-0">Quantité</th>
+                                    <th class="text-end py-3 text-muted small-caps border-0">Prix Unitaire</th>
+                                    <th class="text-end pe-4 py-3 text-muted small-caps border-0">Total</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for product in order.orderDetails %}
+                                    <tr>
+                                        <td class="ps-4 py-3">
+                                            <h6 class="fw-bold mb-0 fs-6">{{ product.product }}</h6>
+                                        </td>
+                                        <td class="text-center fw-bold fs-6">x {{ product.quantity }}</td>
+                                        <td class="text-end fw-medium fs-6 text-muted">{{ (product.price/100)|number_format(0,',','.') }}
+                                            F
+                                        </td>
+                                        <td class="text-end pe-4 fw-bold fs-6 text-dark">{{ (product.total/100)|number_format(0,',','.') }}
+                                            F
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
 
-                        </tr>
+                <div class="col-lg-4">
+                    <div class="card border-0 shadow-sm rounded-4 p-4 sticky-top" style="top: 20px;">
+                        <h5 class="fw-bold mb-4 fs-4">Résumé financier</h5>
 
-                    {% endfor %}
-                    </tbody>
-                </table>
-                <div class="text-right">
-                   <p>
-                       <strong>Sous-total: {{ (order.getTotal/100)|number_format(0,',','.') }} F cfa</strong> <br>
-                       <strong>Livraison: {{ (order.carrierprice/100)|number_format(0,',','.') }} F cfa</strong><br>
-                       <strong>Total: {{ ((order.carrierPrice+order.getTotal)/100)|number_format(0,',','.') }} F cfa</strong><br>
-                   </p>
+                        <div class="d-flex justify-content-between mb-3 fs-6">
+                            <span class="text-muted">Sous-total</span>
+                            <span class="fw-bold">{{ (order.getTotal/100)|number_format(0,',','.') }} F cfa</span>
+                        </div>
+
+                        <div class="d-flex justify-content-between mb-3 fs-6">
+                            <span class="text-muted">Livraison</span>
+                            <span class="fw-bold">{{ (order.carrierprice/100)|number_format(0,',','.') }} F cfa</span>
+                        </div>
+
+                        <hr class="my-4 border-light">
+
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="fs-5 fw-bold">TOTAL</span>
+                            <span class="fs-3 fw-bold text-primary">
+                            {{ ((order.carrierPrice + order.getTotal)/100)|number_format(0,',','.') }} <small>F</small>
+                        </span>
+                        </div>
+                    </div>
                 </div>
             </div>
-
         </div>
     </section>
-    <!--------------- user-profile-section-end --------------->
 {% endblock %}

@@ -7,7 +7,6 @@ use App\Entity\User;
 use App\Form\RegisterType;
 use App\Payload\Utils\GlobalResponse;
 use App\Payload\Utils\UtilisService;
-use App\Request\Search\SearchCategory;
 use App\Request\Search\SearchUser;
 use App\Request\UserRequest;
 use App\Service\Utilisateur\UserInterface;
@@ -18,6 +17,10 @@ use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -31,8 +34,28 @@ final class RegisterController extends AbstractController
         private ValidatorInterface     $validator,
         private UserInterface          $userInterface,
         private UtilisService          $utilisService,
+        private MailerInterface        $mailer
     )
     {
+    }
+
+    #[Route('/email', name: 'email')]
+    public function sendingEmail()
+    {
+        $email = (new Email())
+            ->from('contact@sanfeni.com')
+            ->to('contact@sanfeni.com')
+            ->subject('Time for Symfony Mailer!')
+            ->text('Sending emails is fun again!')
+            ->html('<p>See Twig integration for better HTML integration!</p>');
+
+        try {
+            $this->mailer->send($email);
+        } catch (TransportExceptionInterface $e) {
+            return GlobalResponse::error($e->getMessage());
+        }
+
+        return GlobalResponse::success("send");
     }
 
     #[Route('/register', name: 'register_customer')]
@@ -56,8 +79,24 @@ final class RegisterController extends AbstractController
                 $user->getPassword()
             );
             $user->setPassword($password);
-            $this->entityManager->persist($user);
-            $this->entityManager->flush();
+//            $this->entityManager->persist($user);
+//            $this->entityManager->flush();
+
+            try {
+                //send email
+//                $this->userInterface->sendingEmailTo(
+//                    [new Address('contact@sanfeni.com')],
+//                    'Nouvelle inscription',
+//                    ['user' => $user],
+//                    'register/register_email.html.twig'
+//                );
+
+
+            } catch (\Exception $exception) {
+                dd($exception->getMessage());
+//                return GlobalResponse::success("Votre offre a bien é");
+            }
+
 
             return $security->login($user, 'form_login', 'main');
 
@@ -88,7 +127,7 @@ final class RegisterController extends AbstractController
     }
 
     #[Route("/dashboard/add-utilisateur", name: 'dashboard_add_user')]
-    public function add(Request $request,     UserPasswordHasherInterface $passwordHasher,): Response
+    public function add(Request $request, UserPasswordHasherInterface $passwordHasher,): Response
     {
         try {
             $data = $this->serializer->deserialize($request->getContent(), UserRequest::class, 'json');
@@ -102,7 +141,7 @@ final class RegisterController extends AbstractController
                 return GlobalResponse::errorWith("erreur", $errorMessages);
             }
 
-            $shop = $this->entityManager->getRepository(Boutique::class)->findOneBy(["id"=>$data->getShop()]);
+            $shop = $this->entityManager->getRepository(Boutique::class)->findOneBy(["id" => $data->getShop()]);
 
             $user = new User();
             $user->setLastName($data->getLastName())
@@ -112,7 +151,7 @@ final class RegisterController extends AbstractController
                 ->setRoles($data->getRoles());
             $password = $passwordHasher->hashPassword(
                 $user,
-             "12345678"
+                "12345678"
             );
             $user->setPassword($password);
 

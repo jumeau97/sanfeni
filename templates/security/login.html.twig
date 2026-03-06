@@ -2,57 +2,145 @@
 
 {% block title %}Log in!{% endblock %}
 
+{% block stylesheets %}
+    <style>
+        :root {
+            --wb-purple: #8a3ffc;
+            --wb-purple-hover: #712ed1;
+        }
+
+        /* Carte Auth */
+        .auth-card {
+            border-radius: 24px;
+            border: none;
+        }
+
+        /* Inputs flottants XL */
+        .custom-input {
+            border: 2px solid #f0f0f0 !important;
+            border-radius: 16px !important;
+            height: 65px !important; /* Plus haut pour la lisibilité */
+            font-size: 1.1rem !important;
+            padding-left: 20px !important;
+            transition: all 0.3s ease;
+        }
+
+        .custom-input:focus {
+            border-color: var(--wb-purple) !important;
+            box-shadow: 0 0 0 4px rgba(138, 63, 252, 0.1) !important;
+        }
+
+        /* Étiquettes flottantes */
+        .form-floating > label {
+            padding-left: 20px;
+            color: #888;
+        }
+
+        /* Checkbox personnalisée */
+        .custom-check {
+            width: 1.2em;
+            height: 1.2em;
+            margin-top: 0.15em;
+            cursor: pointer;
+        }
+
+        .custom-check:checked {
+            background-color: var(--wb-purple);
+            border-color: var(--wb-purple);
+        }
+
+        /* Bouton de connexion */
+        .btn-wb-auth {
+            background-color: var(--wb-purple);
+            color: white;
+            border: none;
+            border-radius: 16px;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .btn-wb-auth:hover {
+            background-color: var(--wb-purple-hover);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(138, 63, 252, 0.2) !important;
+        }
+
+        /* Typographie */
+        .text-primary {
+            color: var(--wb-purple) !important;
+        }
+
+        .fs-2 { font-size: 2.2rem !important; }
+    </style>
+{% endblock %}
+
 {% block body %}
 
     <form method="post">
         <!--------------- login-section --------------->
-        <section class="login footer-padding">
+        <section class="login-page py-5 bg-light min-vh-100 d-flex align-items-center">
             <div class="container">
-                <div class="login-section">
-                    <div class="review-form">
-                        <h5 class="comment-title">Se connecter</h5>
-                        {% if error %}
-                            <div
-                                class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-                        {% endif %}
+                <div class="row justify-content-center">
+                    <div class="col-md-7 col-lg-5">
+                        <div class="auth-card shadow-sm bg-white p-4 p-md-5 rounded-4">
 
-                        {% if app.user %}
-                            <div class="mb-3">
-                                You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
+                            <div class="text-center mb-5">
+                                <h2 class="fw-bold fs-2 mb-2">Se connecter</h2>
+                                <p class="text-muted fs-6">Bon retour parmi nous !</p>
                             </div>
-                        {% endif %}
-                        <div class="review-inner-form ">
-                            <div class="review-form-name">
-                                {#                                <label for="email" class="form-label">Adresse e-mail</label> #}
-                                <input type="email" value="{{ last_username }}" name="_username" id="username"
-                                       class="form-control" placeholder="Entrez votre adresse e-mail"
-                                       autocomplete="email" required autofocus>
-                            </div>
-                            <div class="review-form-name">
-                                {#                                <label for="password" class="form-label">Mot de passe</label> #}
-                                <input type="password" name="_password" id="password" class="form-control"
-                                       placeholder="Entrez votre mot de passe" autocomplete="current-password"
-                                       required>
-                            </div>
-                            <input type="hidden" name="_csrf_token" data-controller="csrf-protection"
-                                   value="{{ csrf_token('authenticate') }}">
-                            <div class="review-form-name checkbox">
-                                <div class="checkbox-item">
-                                    <input type="checkbox">
-                                    <span class="address">
-                                                            Se rappeler de moi</span>
+
+                            {% if error %}
+                                <div class="alert alert-danger rounded-3 mb-4 border-0 shadow-sm fs-6">
+                                    {{ error.messageKey|trans(error.messageData, 'security') }}
                                 </div>
-                                <div class="forget-pass">
-                                    <p>Mot de passe oublié?</p>
+                            {% endif %}
+
+                            <form method="post">
+                                <div class="review-inner-form">
+                                    {# Email #}
+                                    <div class="form-floating mb-3">
+                                        <input type="email" value="{{ last_username }}" name="_username" id="username"
+                                               class="form-control custom-input" placeholder="Email"
+                                               autocomplete="email" required autofocus>
+                                        <label for="username">Adresse e-mail</label>
+                                    </div>
+
+                                    {# Mot de passe #}
+                                    <div class="form-floating mb-3">
+                                        <input type="password" name="_password" id="password"
+                                               class="form-control custom-input"
+                                               placeholder="Mot de passe" autocomplete="current-password" required>
+                                        <label for="password">Mot de passe</label>
+                                    </div>
+
+                                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                                    {# Options : Remember me & Forgot Pass #}
+                                    <div class="d-flex justify-content-between align-items-center mb-4 px-2">
+                                        <div class="form-check">
+                                            <input class="form-check-input custom-check" type="checkbox" name="_remember_me" id="remember_me">
+                                            <label class="form-check-label small fw-bold text-muted" for="remember_me">
+                                                Se rappeler de moi
+                                            </label>
+                                        </div>
+                                        <div class="forget-pass">
+                                            <a href="#" class="small fw-bold text-primary text-decoration-none">Mot de passe oublié ?</a>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="login-btn text-center">
-                            {#                            <a href="#" class="shop-btn">Se connecter</a> #}
-                            <button class="shop-btn btn btn-lg " type="submit">
-                                Se connecter
-                            </button>
-                            <span class="shop-account">Vous n'avez pas de compte ?<a href="create-account.html">Creer un compte gratuitement</a></span>
+
+                                <div class="login-btn text-center">
+                                    <button class="btn btn-wb-auth w-100 py-3 fs-5 fw-bold mb-4 shadow-sm" type="submit">
+                                        Se connecter
+                                    </button>
+
+                                    <p class="mb-0 text-muted">
+                                        Vous n'avez pas de compte ?
+                                        <a href="" class="text-primary fw-bold text-decoration-none">Créer un compte</a>
+                                    </p>
+                                </div>
+                            </form>
+
                         </div>
                     </div>
                 </div>

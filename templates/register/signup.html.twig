@@ -1,44 +1,215 @@
 {% extends 'base.html.twig' %}
 
+{% block stylesheets %}
+    <style>
+        /* Carte principale */
+        .auth-card {
+            border-radius: 24px !important;
+            border: none;
+        }
+
+        /* Inputs personnalisés */
+        .custom-input {
+            border: 2px solid #f0f0f0 !important;
+            border-radius: 15px !important;
+            height: 60px !important;
+            font-size: 1.1rem !important;
+            padding-left: 20px !important;
+            transition: all 0.3s ease;
+        }
+
+        .custom-input:focus {
+            border-color: var(--wb-purple) !important;
+            box-shadow: 0 0 0 4px rgba(138, 63, 252, 0.1) !important;
+        }
+
+        /* Floating labels (le texte qui monte) */
+        .form-floating > label {
+            padding-left: 20px;
+            color: #999;
+        }
+
+        /* Bouton d'inscription */
+        .btn-wb-auth {
+            background-color: var(--wb-purple);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-wb-auth:hover {
+            background-color: var(--wb-purple-hover);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(138, 63, 252, 0.2);
+        }
+
+        /* Typographie */
+        .fs-2 {
+            font-size: 2rem !important;
+        }
+
+        .text-primary {
+            color: var(--wb-purple) !important;
+        }
+
+        /* Style des champs de mot de passe */
+        .custom-input {
+            height: 65px !important; /* Plus haut pour plus de confort */
+            font-size: 1.2rem !important; /* Texte plus grand */
+            border: 2px solid #eee !important;
+            border-radius: 15px !important;
+        }
+
+        /* Gestion de l'erreur Symfony si les mots de passe ne correspondent pas */
+        .invalid-feedback, .form-error-message {
+            color: #dc3545;
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-top: 5px;
+            padding-left: 10px;
+        }
+
+        /* Animation de focus violette */
+        .custom-input:focus {
+            border-color: #FFA500FF !important;
+            box-shadow: 0 0 0 4px rgba(138, 63, 252, 0.15) !important;
+        }
+
+        /* Mobile */
+        @media (max-width: 576px) {
+            .auth-card {
+                padding: 25px !important;
+            }
+
+            .fs-2 {
+                font-size: 1.5rem !important;
+            }
+        }
+    </style>
+{% endblock %}
 {% block body %}
     <!--------------- login-section--------------->
 
+    {#    {{ form_start(form) }} #}
+    {#    <section class="login account footer-padding"> #}
+    {#        <div class="container"> #}
+    {#            <div class="login-section account-section"> #}
+    {#                <div class="review-form"> #}
+    {#                    <h5 class="comment-title">Créez votre compte</h5> #}
+    {#                    <div class=" account-inner-form"> #}
+    {#                        <div class="review-form-name"> #}
+    {#                            {{ form_widget(form.firstName) }} #}
+    {#                        </div> #}
+    {#                        <div class="review-form-name"> #}
+    {#                            #}{#                            <input type="text" id="lname" class="form-control" placeholder="Nom"> #}
+    {#                            {{ form_widget(form.lastName) }} #}
+    {#                        </div> #}
+    {#                    </div> #}
+    {#                    <div class=" account-inner-form"> #}
+    {#                        <div class="review-form-name"> #}
+    {#                            {{ form_widget(form.email) }} #}
+    {#                        </div> #}
+    {#                        <div class="review-form-name"> #}
+    {#                            <input type="tel" id="phone" class="form-control" placeholder="Numéro portable"> #}
+    {#                        </div> #}
+    {#                    </div> #}
+    {#                    <div class=" account-inner-form"> #}
+    {#                        <div class="review-form-name"> #}
+    {#                            {{ form_widget(form.password) }} #}
+    {#                        </div> #}
+    {#                    </div> #}
+
+    {#                    <div class="login-btn text-center"> #}
+    {#                        {{ form_widget(form.save, { 'label': 'Créer un compte' }) }} #}
+    {#                        <span class="shop-account">J'ai dejà un compte ?<a #}
+    {#                                href="{{ path('app_login') }}">Se connecter</a></span> #}
+
+    {#                    </div> #}
+
+    {#                </div> #}
+    {#            </div> #}
+    {#        </div> #}
+    {#    </section> #}
+    {#    {{ form_end(form) }} #}
+
     {{ form_start(form) }}
-    <section class="login account footer-padding">
+    <section class="login-registration py-5 bg-light min-vh-100 d-flex align-items-center">
         <div class="container">
-            <div class="login-section account-section">
-                <div class="review-form">
-                    <h5 class="comment-title">Créez votre compte</h5>
-                    <div class=" account-inner-form">
-                        <div class="review-form-name">
-                            {{ form_widget(form.firstName) }}
+            <div class="row justify-content-center">
+                <div class="col-md-8 col-lg-6">
+                    <div class="auth-card shadow-sm bg-white p-4 p-md-5 rounded-4">
+                        <div class="text-center mb-4">
+                            <h2 class="fw-bold fs-2 mb-2">Créez votre compte</h2>
+                            <p class="text-muted">Rejoignez-nous pour une expérience shopping unique</p>
                         </div>
-                        <div class="review-form-name">
-                            {#                            <input type="text" id="lname" class="form-control" placeholder="Nom"> #}
-                            {{ form_widget(form.lastName) }}
-                        </div>
-                    </div>
-                    <div class=" account-inner-form">
-                        <div class="review-form-name">
-                            {{ form_widget(form.email) }}
-                        </div>
-                        <div class="review-form-name">
-                            <input type="tel" id="phone" class="form-control" placeholder="Numéro portable">
-                        </div>
-                    </div>
-                    <div class=" account-inner-form">
-                        <div class="review-form-name">
-                            {{ form_widget(form.password) }}
-                        </div>
-                    </div>
 
-                    <div class="login-btn text-center">
-                        {{ form_widget(form.save, { 'label': 'Créer un compte' }) }}
-                        <span class="shop-account">J'ai dejà un compte ?<a
-                                href="{{ path('app_login') }}">Se connecter</a></span>
+                        <div class="row g-3">
+                            {# Prénom et Nom #}
+                            <div class="col-sm-6">
+                                <div class="form-floating mb-3">
+                                    {{ form_widget(form.firstName, {'attr': {'class': 'form-control custom-input', 'placeholder': 'Prénom'}}) }}
+                                    <label for="{{ form.firstName.vars.id }}">Prénom</label>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-floating mb-3">
+                                    {{ form_widget(form.lastName, {'attr': {'class': 'form-control custom-input', 'placeholder': 'Nom'}}) }}
+                                    <label for="{{ form.lastName.vars.id }}">Nom</label>
+                                </div>
+                            </div>
 
+                            {# Email #}
+                            <div class="col-12">
+                                <div class="form-floating mb-3">
+                                    {{ form_widget(form.email, {'attr': {'class': 'form-control custom-input', 'placeholder': 'Email'}}) }}
+                                    <label for="{{ form.email.vars.id }}">Email</label>
+                                </div>
+                            </div>
+
+                            {# Téléphone (Champ libre) #}
+                            <div class="col-12">
+                                <div class="form-floating mb-3">
+                                    <input type="tel" id="phone" class="form-control custom-input"
+                                           placeholder="Numéro portable">
+                                    <label for="phone">Numéro portable</label>
+                                </div>
+                            </div>
+
+                            {# Mot de passe #}
+                            {# Mot de passe #}
+                            <div class="col-12">
+                                <div class="form-floating mb-3">
+                                    {{ form_widget(form.password.first, {'attr': {'class': 'form-control custom-input', 'placeholder': 'Mot de passe'}}) }}
+                                    <label for="{{ form.password.first.vars.id }}">Mot de passe</label>
+                                    {{ form_errors(form.password.first) }}
+                                </div>
+                            </div>
+
+                            {# Confirmation du Mot de passe #}
+                            <div class="col-12">
+                                <div class="form-floating mb-4">
+                                    {{ form_widget(form.password.second, {'attr': {'class': 'form-control custom-input', 'placeholder': 'Confirmation'}}) }}
+                                    <label for="{{ form.password.second.vars.id }}">Confirmez le mot de passe</label>
+                                </div>
+                            </div>
+
+                            {# Bouton et Lien #}
+                            <div class="col-12 text-center">
+                                {{ form_widget(form.save, {
+                                    'label': 'Créer mon compte',
+                                    'attr': {'class': 'btn btn-wb-auth w-100 py-3 mb-3 fs-5 fw-bold'}
+                                }) }}
+
+                                <p class="mb-0 text-muted">
+                                    Déjà un compte ?
+                                    <a href="{{ path('app_login') }}" class="text-primary fw-bold text-decoration-none">Se
+                                        connecter</a>
+                                </p>
+                            </div>
+                        </div>
                     </div>
-
                 </div>
             </div>
         </div>

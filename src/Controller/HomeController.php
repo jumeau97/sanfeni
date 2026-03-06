@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 
+use App\Entity\Category;
 use App\Form\SearchType;
 use App\Model\Cart;
 use App\Payload\SearchRequest\SearchActualites;
@@ -28,22 +29,29 @@ final class HomeController extends AbstractController
     }
 
     #[Route('/', name: 'app_home')]
-    public function index(Request $request, Cart $cart): Response
+    public function index( Request $request, Cart $cart): Response
     {
 
         $pageNumb = $request->query->getInt('page', 1);
         $limit = $request->query->getInt('limit', 50);
         $search = new SearchProduct();
+
         $form = $this->createForm(SearchType::class, $search);
         $form->handleRequest($request);
+        $slug = $request->query->get('slug');
+        if (!empty($slug)) {
+            $categ = $this->entityManager
+                ->getRepository(Category::class)->findOneBy(['name' => $slug]);
+            if ($categ) $search->setCategory($categ);
+        }
 //        dd($search);
 
 
 //        if ($form->isSubmitted() && $form->isValid()) {
-            // $form->getData(); == $search
+        // $form->getData(); == $search
 //            $result = $this->productInterface->findAllByCriteria($pageNumb, $limit, $search);
 //        } else {
-            $result = $this->productInterface->findAllByCriteria($pageNumb, $limit, $search);
+        $result = $this->productInterface->findAllByCriteria($pageNumb, $limit, $search);
 //        }
 
 

@@ -4,153 +4,356 @@
     <script src="https://js.stripe.com/v3/"></script>
 {% endblock %}
 
+{% block stylesheets %}
+    <style>
+        :root {
+            --wb-blue: #FFA500FF;
+            --wb-blue-dark: #d7780b;
+        }
+
+
+        /* Cartes */
+        .checkout-card {
+            background: #ffffff;
+            border-radius: 20px;
+        }
+
+        .card-header-wb {
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        /* Bloc Total */
+        .total-banner {
+            background: linear-gradient(135deg, var(--wb-blue), #b63518);
+            box-shadow: 0 4px 15px rgba(13, 110, 253, 0.3);
+        }
+
+        /* Bouton de paiement XXL */
+        .btn-wb-pay {
+            background-color: var(--wb-blue);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-wb-pay:hover {
+            background-color: var(--wb-blue-dark);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(253, 185, 13, 0.4);
+        }
+
+        /* Radio Buttons personnalisés pour le paiement */
+        .payment-item .btn-check:checked + .btn-outline-primary {
+            background-color: var(--wb-blue);
+            color: white;
+            border-color: var(--wb-blue);
+        }
+
+        .payment-item .btn-outline-primary {
+            border: 2px solid #eee;
+            color: #444;
+            border-radius: 12px;
+        }
+
+        /* Typographie augmentée */
+        .fs-2 {
+            font-size: 2.2rem !important;
+        }
+
+        .fs-4 {
+            font-size: 1.5rem !important;
+        }
+
+        .fs-5 {
+            font-size: 1.25rem !important;
+        }
+
+        .fs-6 {
+            font-size: 1.1rem !important;
+        }
+
+        /* Responsive */
+        @media (max-width: 576px) {
+            .fs-2 {
+                font-size: 1.6rem !important;
+            }
+
+            .total-banner .fs-2 {
+                font-size: 1.4rem !important;
+            }
+
+            .btn-wb-pay {
+                font-size: 1.2rem !important;
+            }
+        }
+    </style>
+{% endblock %}
+
 {% block title %}Confirmation - Panier{% endblock %}
 
 {% block body %}
 
 
     <!--------------- checkout-section---------------->
-    <section class="checkout product footer-padding">
+    {#    <section class="checkout product footer-padding"> #}
+    {#        <div class="container"> #}
+    {#            <div class="checkout-section"> #}
+
+    {#                <div class="row gy-5"> #}
+
+    {#                    <div class="col-lg-6"> #}
+    {#                        <div class="checkout-wrapper"> #}
+    {#                            <div class="account-section billing-section"> #}
+    {#                                <div class="seller-info"> #}
+    {#                                    <h5 class="heading">Mon Adresse</h5> #}
+    {#                                    <div class="info-list"> #}
+    {#                                        <div class="info-details"> #}
+    {#                                            <p>{{ delivery|raw }}</p> #}
+    {#                                        </div> #}
+    {#                                    </div> #}
+    {#                                </div> #}
+    {#                            </div> #}
+    {#                        </div> #}
+    {#                        <div class="checkout-wrapper"> #}
+    {#                            <div class="account-section billing-section"> #}
+    {#                                <div class="seller-info"> #}
+    {#                                    <h5 class="heading">Moyen de livraison</h5> #}
+    {#                                    <div class="info-list"> #}
+    {#                                        <div class="info-details"> #}
+    {#                                            <p>{{ carrier.name }}</p> #}
+    {#                                            <p>{{ carrier.description }}</p> #}
+    {#                                            <p>{{ carrier.price }} F cfa</p> #}
+    {#                                        </div> #}
+    {#                                    </div> #}
+    {#                                </div> #}
+    {#                            </div> #}
+    {#                        </div> #}
+    {#                    </div> #}
+    {#                    <div class="col-lg-6"> #}
+    {#                        <div class="checkout-wrapper"> #}
+    {#                            <div class="account-section billing-section"> #}
+    {#                                <h5 class="wrapper-heading">Recapitulatif</h5> #}
+    {#                                <div class="order-summery"> #}
+    {#                                    <div class="subtotal product-total"> #}
+    {#                                        <h5 class="wrapper-heading">PRODUIT</h5> #}
+    {#                                        <h5 class="wrapper-heading">TOTAL</h5> #}
+    {#                                    </div> #}
+    {#                                    <hr> #}
+    {#                                    <div class="subtotal product-total"> #}
+    {#                                        <ul class="product-list"> #}
+    {#                                            {% set total = null %} #}
+    {#                                            {% for product in cart %} #}
+    {#                                                <li> #}
+    {#                                                    <div class="product-info"> #}
+    {#                                                        <h5 class="wrapper-heading">{{ product.product.name }} #}
+    {#                                                            X{{ product.quantity }}</h5> #}
+    {#                                                        #}{#                                                    <p class="paragraph">64GB, Black, 44mm, Chain Belt</p> #}
+    {#                                                    </div> #}
+    {#                                                    <div class="price"> #}
+    {#                                                        <h5 class="wrapper-heading"> #}
+    {#                                                            {% if product.product.isPromotion %} #}
+
+    {#                                                                {{ (((product.product.price / 100) * (1 - (product.product.offPercent / 100))) * product.quantity) |format_currency('XOF') }} #}
+
+    {#                                                            {% else %} #}
+    {#                                                                {{ ((product.product.price * product.quantity) / 100) |format_currency('XOF') }} #}
+    {#                                                            {% endif %} #}
+
+    {#                                                        </h5> #}
+    {#                                                    </div> #}
+    {#                                                </li> #}
+    {#                                                #}{#                                                {% set total = total + (product.product.price * product.quantity) %} #}
+    {#                                                {% if product.product.offPercent is defined and product.product.offPercent > 0 %} #}
+    {#                                                    #}{# Produit en promotion #}
+    {#                                                    {% set price = (product.product.price / 100) * (1 - (product.product.offPercent / 100)) %} #}
+    {#                                                {% else %} #}
+    {#                                                    #}{# Produit sans promotion #}
+    {#                                                    {% set price = (product.product.price / 100) %} #}
+    {#                                                {% endif %} #}
+
+    {#                                                #}{# Ajout au total #}
+    {#                                                {% set total = total + (price * product.quantity) %} #}
+    {#                                            {% endfor %} #}
+
+    {#                                        </ul> #}
+    {#                                    </div> #}
+    {#                                    <hr> #}
+    {#                                    <div class="subtotal product-total"> #}
+    {#                                        <h5 class="wrapper-heading">SOUS TOTAL</h5> #}
+    {#                                        <h5 class="wrapper-heading">{{ total |format_currency('XOF') }} </h5> #}
+    {#                                    </div> #}
+    {#                                    <div class="subtotal product-total"> #}
+    {#                                        <ul class="product-list"> #}
+    {#                                            <li> #}
+    {#                                                <div class="product-info"> #}
+    {#                                                    <p class="paragraph">LIVRAISON</p> #}
+    {#                                                    <h5 class="wrapper-heading">Livraison</h5> #}
+
+    {#                                                </div> #}
+    {#                                                <div class="price"> #}
+    {#                                                    <h5 class="wrapper-heading">{{ carrier.price|format_currency('XOF') }} #}
+    {#                                                    </h5> #}
+    {#                                                </div> #}
+    {#                                            </li> #}
+    {#                                        </ul> #}
+    {#                                    </div> #}
+    {#                                    <hr> #}
+    {#                                    <div class="subtotal total"> #}
+    {#                                        <h5 class="wrapper-heading">TOTAL</h5> #}
+    {#                                        <h5 class="wrapper-heading price">{{ ((total) + carrier.price)|format_currency('XOF') }} #}
+
+    {#                                        </h5> #}
+    {#                                    </div> #}
+    {#                                    {{ form_start(form, {'action': path('stripe_create_session', {'reference':reference}),'attr': { 'data-turbo': 'false' }}) }} #}
+    {#                                    <div class="subtotal payment-type"> #}
+    {#                                        {% for label, value in field_choices(form.payMethod) %} #}
+    {#                                            {% set inputId = field_id(form.payMethod) ~ '_' ~ loop.index %} #}
+    {#                                            <div class="checkbox-item"> #}
+    {#                                                <input type="radio" name="{{ field_name(form.payMethod) }}" #}
+    {#                                                       id="{{ inputId }}" value="{{ value }}"> #}
+    {#                                                <div class="cash"> #}
+    {#                                                    <h5 class="wrapper-heading" id="{{ inputId }}">{{ label }}</h5> #}
+    {#                                                </div> #}
+    {#                                            </div> #}
+    {#                                        {% endfor %} #}
+    {#                                    </div> #}
+
+    {#                                    #}{#                                            {{ form_widget(form.payMethod, {'attr': {'class': 'form-control'}}) }} #}
+
+    {#                                    #}{#                                    <a href="#" class="shop-btn">Place Order Now</a> #}
+    {#                                    #}{#                                    <a href="{{ path('stripe_create_session', {'reference':reference}) }}" #}
+    {#                                    #}{#                                       class="btn shop-btn" id="checkout-button">Payer la commande #}
+    {#                                    #}{#                                    </a> #}
+    {#                                    <button type="submit" class="btn shop-btn" id="{{ field_id(form.submit) }}" #}
+    {#                                            name="{{ field_name(form.submit) }}">Confirmer #}
+    {#                                    </button> #}
+    {#                                    {{ form_end(form) }} #}
+    {#                                </div> #}
+    {#                            </div> #}
+    {#                        </div> #}
+    {#                    </div> #}
+
+
+    {#                </div> #}
+
+    {#            </div> #}
+    {#        </div> #}
+    {#    </section> #}
+
+    <section class="checkout-recap py-5 bg-light">
         <div class="container">
-            <div class="checkout-section">
+            <h2 class="fw-bold mb-5 fs-2">Vérification de votre commande</h2>
 
-                <div class="row gy-5">
-
-                    <div class="col-lg-6">
-                        <div class="checkout-wrapper">
-                            <div class="account-section billing-section">
-                                <div class="seller-info">
-                                    <h5 class="heading">Mon Adresse</h5>
-                                    <div class="info-list">
-                                        <div class="info-details">
-                                            <p>{{ delivery|raw }}</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+            <div class="row g-4">
+                <div class="col-lg-7">
+                    <div class="checkout-card mb-4 shadow-sm border-0">
+                        <div class="card-header-wb py-3 px-4">
+                            <i class="bi bi-geo-alt-fill fs-4 text-primary me-2"></i>
+                            <h5 class="mb-0 fs-4 fw-bold">Adresse de livraison</h5>
                         </div>
-                        <div class="checkout-wrapper">
-                            <div class="account-section billing-section">
-                                <div class="seller-info">
-                                    <h5 class="heading">Moyen de livraison</h5>
-                                    <div class="info-list">
-                                        <div class="info-details">
-                                            <p>{{ carrier.name }}</p>
-                                            <p>{{ carrier.description }}</p>
-                                            <p>{{ carrier.price }} F cfa</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="checkout-wrapper">
-                            <div class="account-section billing-section">
-                                <h5 class="wrapper-heading">Recapitulatif</h5>
-                                <div class="order-summery">
-                                    <div class="subtotal product-total">
-                                        <h5 class="wrapper-heading">PRODUIT</h5>
-                                        <h5 class="wrapper-heading">TOTAL</h5>
-                                    </div>
-                                    <hr>
-                                    <div class="subtotal product-total">
-                                        <ul class="product-list">
-                                            {% set total = null %}
-                                            {% for product in cart %}
-                                                <li>
-                                                    <div class="product-info">
-                                                        <h5 class="wrapper-heading">{{ product.product.name }}
-                                                            X{{ product.quantity }}</h5>
-                                                        {#                                                    <p class="paragraph">64GB, Black, 44mm, Chain Belt</p> #}
-                                                    </div>
-                                                    <div class="price">
-                                                        <h5 class="wrapper-heading">
-                                                            {% if product.product.isPromotion %}
-
-                                                                {{ (((product.product.price / 100) * (1 - (product.product.offPercent / 100))) * product.quantity) |format_currency('XOF') }}
-
-                                                            {% else %}
-                                                                {{ ((product.product.price * product.quantity) / 100) |format_currency('XOF') }}
-                                                            {% endif %}
-
-                                                        </h5>
-                                                    </div>
-                                                </li>
-                                                {#                                                {% set total = total + (product.product.price * product.quantity) %} #}
-                                                {% if product.product.offPercent is defined and product.product.offPercent > 0 %}
-                                                    {# Produit en promotion #}
-                                                    {% set price = (product.product.price / 100) * (1 - (product.product.offPercent / 100)) %}
-                                                {% else %}
-                                                    {# Produit sans promotion #}
-                                                    {% set price = (product.product.price / 100) %}
-                                                {% endif %}
-
-                                                {# Ajout au total #}
-                                                {% set total = total + (price * product.quantity) %}
-                                            {% endfor %}
-
-                                        </ul>
-                                    </div>
-                                    <hr>
-                                    <div class="subtotal product-total">
-                                        <h5 class="wrapper-heading">SOUS TOTAL</h5>
-                                        <h5 class="wrapper-heading">{{ total |format_currency('XOF') }} </h5>
-                                    </div>
-                                    <div class="subtotal product-total">
-                                        <ul class="product-list">
-                                            <li>
-                                                <div class="product-info">
-                                                    <p class="paragraph">LIVRAISON</p>
-                                                    <h5 class="wrapper-heading">Livraison</h5>
-
-                                                </div>
-                                                <div class="price">
-                                                    <h5 class="wrapper-heading">{{ carrier.price|format_currency('XOF') }}
-                                                    </h5>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    <hr>
-                                    <div class="subtotal total">
-                                        <h5 class="wrapper-heading">TOTAL</h5>
-                                        <h5 class="wrapper-heading price">{{ ((total) + carrier.price)|format_currency('XOF') }}
-
-                                        </h5>
-                                    </div>
-                                    {{ form_start(form, {'action': path('stripe_create_session', {'reference':reference}),'attr': { 'data-turbo': 'false' }}) }}
-                                    <div class="subtotal payment-type">
-                                        {% for label, value in field_choices(form.payMethod) %}
-                                            {% set inputId = field_id(form.payMethod) ~ '_' ~ loop.index %}
-                                            <div class="checkbox-item">
-                                                <input type="radio" name="{{ field_name(form.payMethod) }}"
-                                                       id="{{ inputId }}" value="{{ value }}">
-                                                <div class="cash">
-                                                    <h5 class="wrapper-heading" id="{{ inputId }}">{{ label }}</h5>
-                                                </div>
-                                            </div>
-                                        {% endfor %}
-                                    </div>
-
-                                    {#                                            {{ form_widget(form.payMethod, {'attr': {'class': 'form-control'}}) }} #}
-
-                                    {#                                    <a href="#" class="shop-btn">Place Order Now</a> #}
-                                    {#                                    <a href="{{ path('stripe_create_session', {'reference':reference}) }}" #}
-                                    {#                                       class="btn shop-btn" id="checkout-button">Payer la commande #}
-                                    {#                                    </a> #}
-                                    <button type="submit" class="btn shop-btn" id="{{ field_id(form.submit) }}"
-                                            name="{{ field_name(form.submit) }}">Confirmer
-                                    </button>
-                                    {{ form_end(form) }}
-                                </div>
+                        <div class="card-body-wb p-4">
+                            <div class="delivery-box p-3 rounded-3 bg-light border">
+                                <p class="fs-5 mb-0 text-dark" style="line-height: 1.6;">
+                                    {{ delivery|raw }}
+                                </p>
                             </div>
                         </div>
                     </div>
 
-
+                    <div class="checkout-card shadow-sm border-0">
+                        <div class="card-header-wb py-3 px-4">
+                            <i class="bi bi-truck fs-4 text-primary me-2"></i>
+                            <h5 class="mb-0 fs-4 fw-bold">Mode d'expédition</h5>
+                        </div>
+                        <div class="card-body-wb p-4">
+                            <div class="carrier-box">
+                                <h5 class="fw-bold fs-5 text-primary mb-1">{{ carrier.name }}</h5>
+                                <p class="text-muted fs-6 mb-2">{{ carrier.description }}</p>
+                                <span
+                                    class="badge bg-primary fs-6 px-3 py-2">{{ carrier.price|format_currency('XOF') }}</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
+                <div class="col-lg-5">
+                    <div class="sticky-top" style="top: 20px;">
+                        <div class="checkout-card shadow-sm border-0">
+                            <div class="card-body-wb p-4">
+                                <h4 class="fw-bold mb-4 fs-3">Récapitulatif financier</h4>
+
+                                <ul class="list-unstyled">
+                                    {% set total = 0 %}
+                                    {% for product in cart %}
+                                        {% if product.product.offPercent is defined and product.product.offPercent > 0 %}
+                                            {% set unitPrice = (product.product.price / 100) * (1 - (product.product.offPercent / 100)) %}
+                                        {% else %}
+                                            {% set unitPrice = (product.product.price / 100) %}
+                                        {% endif %}
+                                        {% set rowTotal = unitPrice * product.quantity %}
+                                        {% set total = total + rowTotal %}
+
+                                        <li class="d-flex justify-content-between mb-3">
+                                            <div class="pe-3">
+                                                <h6 class="fw-bold mb-0 fs-5">{{ product.product.name }}</h6>
+                                                <span
+                                                    class="text-muted fw-medium">Quantité : {{ product.quantity }}</span>
+                                            </div>
+                                            <span
+                                                class="fw-bold fs-5 text-dark">{{ rowTotal|format_currency('XOF') }}</span>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+
+                                <hr class="my-4">
+
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span class="fs-5 text-muted">Sous-total produits</span>
+                                    <span class="fs-5 fw-bold">{{ total|format_currency('XOF') }}</span>
+                                </div>
+                                <div class="d-flex justify-content-between mb-4">
+                                    <span class="fs-5 text-muted">Frais de port</span>
+                                    <span class="fs-5 fw-bold">{{ carrier.price|format_currency('XOF') }}</span>
+                                </div>
+
+                                <div
+                                    class="total-banner p-3 rounded-3 mb-4 d-flex justify-content-between align-items-center">
+                                    <span class="fs-4 fw-bold text-white">TOTAL À PAYER</span>
+                                    <span
+                                        class="fs-2 fw-bold text-white">{{ (total + carrier.price)|format_currency('XOF') }}</span>
+                                </div>
+
+                                {{ form_start(form, {'action': path('stripe_create_session', {'reference':reference}),'attr': { 'data-turbo': 'false' }}) }}
+                                <h5 class="fw-bold mb-3 fs-5">Moyen de paiement</h5>
+                                <div class="payment-methods mb-4">
+                                    {% for label, value in field_choices(form.payMethod) %}
+                                        {% set inputId = field_id(form.payMethod) ~ '_' ~ loop.index %}
+                                        <div class="payment-item mb-2">
+                                            <input type="radio" class="btn-check"
+                                                   name="{{ field_name(form.payMethod) }}" id="{{ inputId }}"
+                                                   value="{{ value }}" autocomplete="off" required>
+                                            <label class="btn btn-outline-primary w-100 text-start p-3 fw-bold fs-6"
+                                                   for="{{ inputId }}">
+                                                <i class="bi bi-credit-card-2-back me-2"></i> {{ label }}
+                                            </label>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+
+                                <button type="submit" class="btn btn-wb-pay w-100 py-3 fs-4 fw-bold shadow">
+                                    Confirmer et Payer
+                                </button>
+                                {{ form_end(form) }}
+
+                                <p class="text-center text-muted small mt-3">
+                                    <i class="bi bi-shield-lock-fill me-1"></i> Transaction sécurisée par Stripe
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>

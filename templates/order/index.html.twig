@@ -2,94 +2,254 @@
 
 {% block title %}Validation - Panier{% endblock %}
 
+{% block stylesheets %}
+    <style>
+        /* Tailles de police globales pour le checkout */
+        .checkout-page {
+            font-size: 1.2rem; /* Augmentation générale de la base */
+        }
+
+        .checkout-card {
+            background: #fff;
+            border-radius: 16px;
+        }
+
+        /* Labels des adresses et transporteurs (Symfony Widgets) */
+        .custom-form-radio label {
+            font-size: 1.2rem !important; /* Texte des adresses bien plus grand */
+            font-weight: 500;
+            line-height: 1.5;
+            /*padding: 10px 0;*/
+            cursor: pointer;
+            display: inline-block;
+        }
+
+        /* Espacement entre les lignes de choix */
+        .custom-form-radio br {
+            display: block;
+            content: "";
+            margin-top: 10px;
+        }
+
+        /* Prix final */
+        .text-primary {
+            color: #ffab09 !important; /* Violet Wildberries */
+        }
+
+        .fs-3 {
+            font-size: 1.85rem !important; /* Prix total imposant */
+        }
+
+        /* Bouton principal */
+        .btn-wb-checkout {
+            background-color: #ffab09;
+            color: #fff;
+            border-radius: 12px;
+            letter-spacing: 0.5px;
+            transition: transform 0.2s ease;
+        }
+
+        .btn-wb-checkout:hover {
+            background-color: #ffab09;
+            transform: scale(1.01);
+        }
+
+        .small-caps {
+            letter-spacing: 1px;
+            font-size: 0.85rem;
+        }
+
+        /* Optimisation mobile */
+        @media (max-width: 576px) {
+            .fs-3 {
+                font-size: 1.5rem !important;
+            }
+
+            .custom-form-radio label {
+                font-size: 1rem !important;
+            }
+        }
+    </style>
+{% endblock %}
+
 {% block body %}
     <!--------------- checkout-section---------------->
-    <section class="checkout product footer-padding">
+    {#    <section class="checkout product footer-padding"> #}
+    {#        <div class="container"> #}
+    {#            <div class="checkout-section"> #}
+    {#                {{ form_start(form,{action:path('app_order_recap'), 'attr': { 'data-turbo': 'false' }}) }} #}
+    {#                <div class="row gy-5"> #}
+    {#                    <div class="col-lg-6"> #}
+    {#                        <div class="checkout-wrapper"> #}
+    {#                            <div class="account-section billing-section " style="font-size: 12px;"> #}
+    {#                                {% set formHtml %} #}
+    {#                                    <h5 class="wrapper-heading"> {{ form_label(form.adresses, 'Choisissez votre adresse de livraison') }}</h5> #}
+
+    {#                                    <a href="{{ path('app_account_address') }}" class="text text-sm-start text-primary">Ajouter #}
+    {#                                        une #}
+    {#                                        nouvelle adresse</a> #}
+    {#                                    {{ form_widget(form.adresses) }} #}
+    {#                                {% endset %} #}
+
+    {#                                {{ formHtml|replace({'[br]': "<br>"})|raw }} #}
+    {#                            </div> #}
+    {#                        </div> #}
+
+    {#                        <div class="checkout-wrapper"> #}
+    {#                            <div class="account-section billing-section" style="font-size: 12px;"> #}
+    {#                                {% set formHtml %} #}
+    {#                                    {{ form_widget(form.carriers) }} #}
+    {#                                {% endset %} #}
+
+    {#                                {{ formHtml|replace({'[br]': "<br>"})|raw }} #}
+    {#                            </div> #}
+    {#                        </div> #}
+    {#                    </div> #}
+    {#                    <div class="col-lg-6"> #}
+    {#                        <div class="checkout-wrapper"> #}
+    {#                            <div class="account-section billing-section"> #}
+    {#                                <h5 class="wrapper-heading">Recapitulatif</h5> #}
+    {#                                <div class="order-summery"> #}
+    {#                                    <div class="subtotal product-total"> #}
+    {#                                        <h5 class="wrapper-heading">PRODUIT</h5> #}
+    {#                                        <h5 class="wrapper-heading">TOTAL</h5> #}
+    {#                                    </div> #}
+    {#                                    <hr> #}
+    {#                                    <div class="subtotal product-total"> #}
+    {#                                        <ul class="product-list"> #}
+    {#                                            {% set total = null %} #}
+    {#                                            {% for product in cart %} #}
+    {#                                                <li> #}
+    {#                                                    <div class="product-info"> #}
+    {#                                                        <h5 class="wrapper-heading">{{ product.product.name }} #}
+    {#                                                            X{{ product.quantity }}</h5> #}
+    {#                                                        #}{#                                                    <p class="paragraph">64GB, Black, 44mm, Chain Belt</p> #}
+    {#                                                    </div> #}
+    {#                                                    <div class="price"> #}
+    {#                                                        <h5 class="wrapper-heading"> #}
+    {#                                                            {% if product.product.isPromotion %} #}
+
+    {#                                                                {{ (((product.product.price / 100) * (1 - (product.product.offPercent / 100))) * product.quantity) |format_currency('XOF') }} #}
+
+    {#                                                            {% else %} #}
+    {#                                                                {{ ((product.product.price * product.quantity) / 100) |format_currency('XOF')  }} #}
+    {#                                                            {% endif %} #}
+    {#                                                          </h5> #}
+    {#                                                    </div> #}
+    {#                                                </li> #}
+    {#                                                {% set total = total + (product.product.price * product.quantity) %} #}
+    {#                                            {% endfor %} #}
+
+    {#                                        </ul> #}
+    {#                                    </div> #}
+
+    {#                                    <hr> #}
+
+    {#                                    #}{#                                    <a href="#" class="shop-btn">Place Order Now</a> #}
+    {#                                    <button type="submit" class="btn shop-btn" id="{{ field_id(form.submit) }}" #}
+    {#                                            name="{{ field_name(form.submit) }}">Valider la commande #}
+    {#                                    </button> #}
+    {#                                </div> #}
+    {#                            </div> #}
+    {#                        </div> #}
+    {#                    </div> #}
+
+
+    {#                </div> #}
+    {#                {{ form_end(form) }} #}
+    {#            </div> #}
+    {#        </div> #}
+    {#    </section> #}
+    <section class="checkout-page py-5 bg-light">
         <div class="container">
-            <div class="checkout-section">
-                {{ form_start(form,{action:path('app_order_recap'), 'attr': { 'data-turbo': 'false' }}) }}
-                <div class="row gy-5">
+            <h2 class="fw-bold mb-5 fs-2">Finaliser ma commande</h2> {# Titre agrandi #}
 
-                    <div class="col-lg-6">
-                        <div class="checkout-wrapper">
-                            <div class="account-section billing-section " style="font-size: 12px;">
-                                {% set formHtml %}
-                                    <h5 class="wrapper-heading"> {{ form_label(form.adresses, 'Choisissez votre adresse de livraison') }}</h5>
+            {{ form_start(form,{action:path('app_order_recap'), 'attr': { 'data-turbo': 'false' }}) }}
+            <div class="row g-4">
 
-                                    <a href="{{ path('app_account_address') }}" class="text text-sm-start text-primary">Ajouter
-                                        une
-                                        nouvelle adresse</a>
-                                    {{ form_widget(form.adresses) }}
-                                {% endset %}
-
-                                {{ formHtml|replace({'[br]': "<br>"})|raw }}
-                            </div>
+                <div class="col-lg-7">
+                    <div class="checkout-card mb-4 shadow-sm border-0">
+                        <div class="card-header-wb py-3">
+                            <i class="bi bi-geo-alt-fill me-2 fs-5 text-primary"></i>
+                            <h5 class="mb-0 fs-5 fw-bold">1. Adresse de livraison</h5>
                         </div>
-
-                        <div class="checkout-wrapper">
-                            <div class="account-section billing-section" style="font-size: 12px;">
-                                {% set formHtml %}
-                                    {{ form_widget(form.carriers) }}
-                                {% endset %}
-
-                                {{ formHtml|replace({'[br]': "<br>"})|raw }}
+                        <div class="card-body-wb p-4">
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <label class="fw-bold text-muted text-uppercase small-caps">Sélectionnez une
+                                    adresse</label>
+                                <a href="{{ path('app_account_address') }}"
+                                   class="btn btn-outline-primary btn-sm rounded-pill px-3 fw-bold">
+                                    + Ajouter
+                                </a>
+                            </div>
+                            <div class="custom-form-radio fs-6"> {# fs-6 pour les labels d'adresse #}
+                                {{ form_widget(form.adresses) }}
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-6">
-                        <div class="checkout-wrapper">
-                            <div class="account-section billing-section">
-                                <h5 class="wrapper-heading">Recapitulatif</h5>
-                                <div class="order-summery">
-                                    <div class="subtotal product-total">
-                                        <h5 class="wrapper-heading">PRODUIT</h5>
-                                        <h5 class="wrapper-heading">TOTAL</h5>
+
+                    <div class="checkout-card shadow-sm border-0">
+                        <div class="card-header-wb py-3">
+                            <i class="bi bi-truck me-2 fs-5 text-primary"></i>
+                            <h5 class="mb-0 fs-5 fw-bold">2. Mode de livraison</h5>
+                        </div>
+                        <div class="card-body-wb p-4">
+                            <div class="custom-form-radio fs-6">
+                                {{ form_widget(form.carriers) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-5">
+                    <div class="sticky-top" style="top: 20px;">
+                        <div class="checkout-card shadow-sm border-0 border-top border-primary border-4">
+                            <div class="card-body-wb p-4">
+                                <h4 class="fw-bold mb-4">Votre panier</h4>
+
+                                <ul class="order-list list-unstyled m-0">
+                                    {% set total = 0 %}
+                                    {% for product in cart %}
+                                        <li class="d-flex justify-content-between align-items-start mb-3 pb-3 border-bottom border-light">
+                                            <div class="product-info-mini">
+                                                <h6 class="mb-1 fw-bold fs-6">{{ product.product.name }}</h6>
+                                                <span class="text-muted fw-medium">Qté : {{ product.quantity }}</span>
+                                            </div>
+                                            <div class="text-end ps-3">
+                                                {% if product.product.isPromotion %}
+                                                    {% set itemPrice = ((product.product.price / 100) * (1 - (product.product.offPercent / 100))) * product.quantity %}
+                                                {% else %}
+                                                    {% set itemPrice = (product.product.price * product.quantity) / 100 %}
+                                                {% endif %}
+                                                <span
+                                                    class="fw-bold fs-6 text-dark">{{ itemPrice | format_currency('XOF') }}</span>
+                                            </div>
+                                        </li>
+                                        {% set total = total + itemPrice %}
+                                    {% endfor %}
+                                </ul>
+
+                                <div class="mt-4 pt-2">
+                                    <div class="d-flex justify-content-between align-items-center mb-4">
+                                        <span class="fs-5 fw-medium text-muted">Total final</span>
+                                        <span
+                                            class="fs-3 fw-bold text-primary">{{ total | format_currency('XOF') }}</span>
                                     </div>
-                                    <hr>
-                                    <div class="subtotal product-total">
-                                        <ul class="product-list">
-                                            {% set total = null %}
-                                            {% for product in cart %}
-                                                <li>
-                                                    <div class="product-info">
-                                                        <h5 class="wrapper-heading">{{ product.product.name }}
-                                                            X{{ product.quantity }}</h5>
-                                                        {#                                                    <p class="paragraph">64GB, Black, 44mm, Chain Belt</p> #}
-                                                    </div>
-                                                    <div class="price">
-                                                        <h5 class="wrapper-heading">
-                                                            {% if product.product.isPromotion %}
 
-                                                                {{ (((product.product.price / 100) * (1 - (product.product.offPercent / 100))) * product.quantity) |format_currency('XOF') }}
-
-                                                            {% else %}
-                                                                {{ ((product.product.price * product.quantity) / 100) |format_currency('XOF')  }}
-                                                            {% endif %}
-                                                          </h5>
-                                                    </div>
-                                                </li>
-                                                {% set total = total + (product.product.price * product.quantity) %}
-                                            {% endfor %}
-
-                                        </ul>
-                                    </div>
-
-                                    <hr>
-
-                                    {#                                    <a href="#" class="shop-btn">Place Order Now</a> #}
-                                    <button type="submit" class="btn shop-btn" id="{{ field_id(form.submit) }}"
-                                            name="{{ field_name(form.submit) }}">Valider la commande
+                                    <button type="submit" class="btn btn-wb-checkout w-100 py-3 fs-5 fw-bold">
+                                        Valider et payer
                                     </button>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-
                 </div>
-                {{ form_end(form) }}
+
             </div>
+            {{ form_end(form) }}
         </div>
     </section>
+
+
     <!--------------- checkout-section-end---------------->
 {% endblock %}

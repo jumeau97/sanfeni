@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        /* Styles de secours pour les clients mail */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7ff;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 16px;
+            overflow: hidden;
+            margin-top: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #8a3ffc, #6610f2);
+            padding: 40px 20px;
+            text-align: center;
+            color: #ffffff;
+        }
+
+        .content {
+            padding: 40px 30px;
+            line-height: 1.6;
+            color: #333333;
+        }
+
+        .footer {
+            padding: 20px;
+            text-align: center;
+            font-size: 12px;
+            color: #999999;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 15px 30px;
+            background-color: #8a3ffc;
+            color: #ffffff !important;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: bold;
+            margin-top: 20px;
+            box-shadow: 0 4px 10px rgba(138, 63, 252, 0.2);
+        }
+
+        .info-box {
+            background-color: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 1px solid #eeeeee;
+        }
+
+        .info-item {
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .info-label {
+            color: #888888;
+            font-weight: bold;
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1 style="margin: 0; font-size: 28px;">Bienvenue, Lorem ✨</h1>
+        <p style="margin-top: 10px; opacity: 0.9;">Votre aventure shopping commence ici.</p>
+    </div>
+
+    <div class="content">
+        <h2 style="color: #1a1a1a;">Félicitations pour votre inscription !</h2>
+        <p>Nous sommes ravis de vous accueillir sur <strong>[Nom de votre Boutique]</strong>. Votre compte est désormais
+            actif et prêt à être utilisé.</p>
+
+        <div class="info-box">
+            <div class="info-item">
+                <span class="info-label">Identifiant :</span>
+                <span style="color: #8a3ffc; font-weight: bold;">lorem@gmail.com</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Accès :</span>
+                <span>Utilisez le mot de passe défini lors de l'inscription.</span>
+            </div>
+        </div>
+
+        <p>Grâce à votre compte, vous pouvez :</p>
+        <ul style="padding-left: 20px;">
+            <li>Suivre vos commandes en temps réel 🚚</li>
+            <li>Enregistrer vos adresses favorites 🏠</li>
+            <li>Recevoir des offres personnalisées 🎁</li>
+        </ul>
+
+        <div style="text-align: center;">
+            <a href="" class="button">Accéder à mon compte</a>
+        </div>
+
+        <p style="margin-top: 30px; font-size: 14px; color: #666;">
+            Si vous n'êtes pas à l'origine de cette inscription, veuillez ignorer cet e-mail.
+        </p>
+    </div>
+
+    <div class="footer">
+        <p>&copy; {{ "now"|date("Y") }} [Nom de votre Boutique]. Tous droits réservés.</p>
+        <p>Besoin d'aide ? <a href="#" style="color: #8a3ffc;">Contactez notre support</a></p>
+    </div>
+</div>
+</body>
+</html>
