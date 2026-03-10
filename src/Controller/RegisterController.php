@@ -150,8 +150,8 @@ final class RegisterController extends AbstractController
             $user->setPassword($password);
 
 
-//            $this->entityManager->persist($user);
-//            $this->entityManager->flush();
+            $this->entityManager->persist($user);
+            $this->entityManager->flush();
 
             try {
                 //send email

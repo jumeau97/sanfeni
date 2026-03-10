@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bienvenue sur notre Marketplace</title>
+    <title>Bienvenue sur SANFENI</title>
     <style>
-        /* Styles de base pour assurer la compatibilité email */
         body {
             margin: 0;
             padding: 0;
@@ -20,12 +19,10 @@
 
         .container {
             max-width: 600px;
-            margin: 0 auto;
+            margin: 30px auto;
             background-color: #ffffff;
             border-radius: 20px;
             overflow: hidden;
-            margin-top: 30px;
-            margin-bottom: 30px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
         }
 
@@ -42,7 +39,6 @@
             line-height: 1.6;
         }
 
-        /* Bloc Identifiants */
         .credentials-box {
             background-color: #f8f9fa;
             border: 2px dashed #082C6A;
@@ -68,7 +64,6 @@
             font-weight: bold;
         }
 
-        /* Bouton */
         .btn {
             display: inline-block;
             padding: 16px 35px;
@@ -81,7 +76,6 @@
             margin-top: 20px;
         }
 
-        /* Footer Business */
         .footer-info {
             background-color: #fafafa;
             padding: 35px 30px;
@@ -115,14 +109,36 @@
 <body>
 <div class="container">
     <div class="header">
-        <h1 style="margin: 0; font-size: 26px;">Félicitations !</h1>
-        <p style="margin: 10px 0 0; opacity: 0.9;">Votre boutique <strong>{{ user.getShop().getName() }}</strong> est en ligne.</p>
+        <h1 style="margin: 0; font-size: 24px;">
+            {% if 'ROLE_ADMIN' in user.roles %}
+                Accès Administrateur Sanfeni
+            {% elseif 'ROLE_SHOP_PROPERTY' in user.roles %}
+                Bienvenue, Propriétaire !
+            {% else %}
+                Accès Gestionnaire Boutique
+            {% endif %}
+        </h1>
+        <p style="margin: 10px 0 0; opacity: 0.9;">
+            {% if user.getShop() %}
+                Boutique : <strong>{{ user.getShop().getName() }}</strong>
+            {% else %}
+                Plateforme Administrative <strong>SANFENI</strong>
+            {% endif %}
+        </p>
     </div>
 
     <div class="content">
         <p style="font-size: 16px;">Bonjour <strong>{{ user.firstName }}</strong>,</p>
-        <p>Votre espace vendeur a été configuré avec succès. Vous pouvez dès maintenant commencer à ajouter vos produits
-            et gérer vos ventes.</p>
+
+        <p>
+            {% if 'ROLE_ADMIN' in user.roles %}
+                Votre compte administrateur a été créé. Vous avez désormais un contrôle total sur la gestion de la marketplace, des utilisateurs et des boutiques.
+            {% elseif 'ROLE_SHOP_PROPERTY' in user.roles %}
+                Félicitations ! Votre espace propriétaire est prêt. Vous pouvez dès maintenant configurer votre boutique, ajouter vos produits et suivre vos revenus.
+            {% else %}
+                Vous avez été ajouté en tant que gestionnaire de boutique. Vous pouvez maintenant gérer les stocks, traiter les commandes et répondre aux clients.
+            {% endif %}
+        </p>
 
         <div class="credentials-box">
             <span class="label">Identifiant (Email) :</span>
@@ -137,7 +153,7 @@
         </p>
 
         <div style="text-align: center; margin-top: 30px;">
-            <a href="{{ url('app_login') }}" class="btn">Accéder au Tableau de Bord</a>
+            <a href="{{ url('app_login') }}" class="btn">Accéder à mon espace</a>
         </div>
     </div>
 
@@ -150,16 +166,14 @@
                     <p style="margin: 0; font-size: 14px; color: #666;">
                         <strong style="color: #082C6A;">📍 Siège Social</strong><br>
                         Immeuble BAMA<br>
-                        Hamdallaye ACI, Bamako<br>
-                        Mali
+                        Hamdallaye ACI, Bamako, Mali
                     </p>
                 </td>
                 <td class="col" width="50%" style="vertical-align: top; padding-left: 10px;">
                     <p style="margin: 0; font-size: 14px; color: #666;">
-                        <strong style="color: #082C6A;">✉️ Support Vendeurs</strong><br>
-                        Tél : +223  74 74 17 45<br>
-                        Email : <a href="mailto:support@votremarketplace.com"
-                                   class="contact-link">support@votre-mp.com</a>
+                        <strong style="color: #082C6A;">✉️ Support Partenaires</strong><br>
+                        Tél : +223 74 74 17 45<br>
+                        Email : <a href="mailto:support@sanfeni.com" class="contact-link">contact@sanfeni.com</a>
                     </p>
                 </td>
             </tr>
