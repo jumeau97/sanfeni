@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bienvenue sur notre Marketplace</title>
+    <style>
+        /* Styles de base pour assurer la compatibilité email */
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100% !important;
+            background-color: #f4f7ff;
+            font-family: 'Segoe UI', Helvetica, Arial, sans-serif;
+        }
+
+        table {
+            border-collapse: collapse;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 20px;
+            overflow: hidden;
+            margin-top: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #0a216c, #082C6A);
+            padding: 45px 30px;
+            text-align: center;
+            color: #ffffff;
+        }
+
+        .content {
+            padding: 40px 30px;
+            color: #333333;
+            line-height: 1.6;
+        }
+
+        /* Bloc Identifiants */
+        .credentials-box {
+            background-color: #f8f9fa;
+            border: 2px dashed #082C6A;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
+        }
+
+        .label {
+            color: #888888;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .value {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 18px;
+            color: #1a1a1a;
+            font-weight: bold;
+        }
+
+        /* Bouton */
+        .btn {
+            display: inline-block;
+            padding: 16px 35px;
+            background-color: #082C6A;
+            color: #ffffff !important;
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: bold;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+
+        /* Footer Business */
+        .footer-info {
+            background-color: #fafafa;
+            padding: 35px 30px;
+            border-top: 1px solid #eeeeee;
+        }
+
+        .footer-title {
+            color: #1a1a1a;
+            font-size: 15px;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .contact-link {
+            color: #082C6A;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        @media only screen and (max-width: 480px) {
+            .col {
+                display: block !important;
+                width: 100% !important;
+                padding: 10px 0 !important;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1 style="margin: 0; font-size: 26px;">Félicitations !</h1>
+        <p style="margin: 10px 0 0; opacity: 0.9;">Votre boutique <strong>{{ user.getShop().getName() }}</strong> est en ligne.</p>
+    </div>
+
+    <div class="content">
+        <p style="font-size: 16px;">Bonjour <strong>{{ user.firstName }}</strong>,</p>
+        <p>Votre espace vendeur a été configuré avec succès. Vous pouvez dès maintenant commencer à ajouter vos produits
+            et gérer vos ventes.</p>
+
+        <div class="credentials-box">
+            <span class="label">Identifiant (Email) :</span>
+            <span class="value">{{ user.email }}</span>
+            <div style="margin-top: 15px;"></div>
+            <span class="label">Mot de passe provisoire :</span>
+            <span class="value">{{ plainPassword }}</span>
+        </div>
+
+        <p style="font-size: 13px; color: #d9534f; font-style: italic;">
+            ⚠️ Par sécurité, merci de modifier ce mot de passe dès votre première connexion.
+        </p>
+
+        <div style="text-align: center; margin-top: 30px;">
+            <a href="{{ url('app_login') }}" class="btn">Accéder au Tableau de Bord</a>
+        </div>
+    </div>
+
+    <div class="footer-info">
+        <span class="footer-title">Assistance & Marketplace</span>
+
+        <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
+            <tr>
+                <td class="col" width="50%" style="vertical-align: top; padding-right: 10px;">
+                    <p style="margin: 0; font-size: 14px; color: #666;">
+                        <strong style="color: #082C6A;">📍 Siège Social</strong><br>
+                        Immeuble BAMA<br>
+                        Hamdallaye ACI, Bamako<br>
+                        Mali
+                    </p>
+                </td>
+                <td class="col" width="50%" style="vertical-align: top; padding-left: 10px;">
+                    <p style="margin: 0; font-size: 14px; color: #666;">
+                        <strong style="color: #082C6A;">✉️ Support Vendeurs</strong><br>
+                        Tél : +223  74 74 17 45<br>
+                        Email : <a href="mailto:support@votremarketplace.com"
+                                   class="contact-link">support@votre-mp.com</a>
+                    </p>
+                </td>
+            </tr>
+        </table>
+
+        <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee; text-align: center;">
+            <p style="margin: 0; font-size: 12px; color: #999;">
+                &copy; {{ "now"|date("Y") }} <strong>SANFENI</strong><br>
+                Espace Business - Partenaire de votre croissance.
+            </p>
+        </div>
+    </div>
+</div>
+</body>
+</html>

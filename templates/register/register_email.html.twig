@@ -22,7 +22,7 @@
         }
 
         .header {
-            background: linear-gradient(135deg, #8a3ffc, #6610f2);
+            background: linear-gradient(135deg, #0e2244, #082C6A);
             padding: 40px 20px;
             text-align: center;
             color: #ffffff;
@@ -44,13 +44,13 @@
         .button {
             display: inline-block;
             padding: 15px 30px;
-            background-color: #8a3ffc;
+            background-color: #082C6A;
             color: #ffffff !important;
             text-decoration: none;
             border-radius: 12px;
             font-weight: bold;
             margin-top: 20px;
-            box-shadow: 0 4px 10px rgba(138, 63, 252, 0.2);
+            box-shadow: 0 4px 10px rgba(15, 57, 162, 0.2);
         }
 
         .info-box {
@@ -76,19 +76,19 @@
 <body>
 <div class="container">
     <div class="header">
-        <h1 style="margin: 0; font-size: 28px;">Bienvenue, Lorem ✨</h1>
+        <h1 style="margin: 0; font-size: 28px;">Bienvenue, {{ user.getLastName() }} ✨</h1>
         <p style="margin-top: 10px; opacity: 0.9;">Votre aventure shopping commence ici.</p>
     </div>
 
     <div class="content">
         <h2 style="color: #1a1a1a;">Félicitations pour votre inscription !</h2>
-        <p>Nous sommes ravis de vous accueillir sur <strong>[Nom de votre Boutique]</strong>. Votre compte est désormais
+        <p>Nous sommes ravis de vous accueillir sur <strong>Sanfeni</strong>. Votre compte est désormais
             actif et prêt à être utilisé.</p>
 
         <div class="info-box">
             <div class="info-item">
                 <span class="info-label">Identifiant :</span>
-                <span style="color: #8a3ffc; font-weight: bold;">lorem@gmail.com</span>
+                <span style="color: #8a3ffc; font-weight: bold;">{{ user.getEmail() }}</span>
             </div>
             <div class="info-item">
                 <span class="info-label">Accès :</span>
@@ -113,7 +113,7 @@
     </div>
 
     <div class="footer">
-        <p>&copy; {{ "now"|date("Y") }} [Nom de votre Boutique]. Tous droits réservés.</p>
+        <p>&copy; {{ "now"|date("Y") }} Sanfeni. Tous droits réservés.</p>
         <p>Besoin d'aide ? <a href="#" style="color: #8a3ffc;">Contactez notre support</a></p>
     </div>
 </div>

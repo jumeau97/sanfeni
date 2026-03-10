@@ -13,7 +13,9 @@ use App\Service\Category\CategoryInterface;
 use App\Service\Product\ProductInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mailer\Transport\TransportInterface;
 use Symfony\Component\Mime\Address;
+use Symfony\Component\Mime\Email;
 
 class UserImplement implements UserInterface
 {
@@ -45,6 +47,21 @@ class UserImplement implements UserInterface
             ->subject($subject)
             ->context($context)
             ->htmlTemplate($template);
+
+        $this->mailer->send($email);
+    }
+
+    public function sendingEmailFromToBstp( array $addresses, string $subject, $body): void
+    {
+        $email = (new Email())
+            ->from(...$addresses)
+            ->to(new Address('contact@sanfeni.com'))
+//            ->cc('cc@example.com')
+            //->bcc('bcc@example.com')
+            //->replyTo('fabien@example.com')
+//            ->priority(Email::PRIORITY_HIGH)
+            ->subject($subject)
+            ->text($body);
 
         $this->mailer->send($email);
     }

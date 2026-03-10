@@ -39,23 +39,18 @@ final class RegisterController extends AbstractController
     {
     }
 
-    #[Route('/email', name: 'email')]
-    public function sendingEmail()
+    #[Route('/send-email', name: 'sending_email_to_bstp')]
+    public function send(Request $request): Response
     {
-        $email = (new Email())
-            ->from('contact@sanfeni.com')
-            ->to('contact@sanfeni.com')
-            ->subject('Time for Symfony Mailer!')
-            ->text('Sending emails is fun again!')
-            ->html('<p>See Twig integration for better HTML integration!</p>');
-
         try {
-            $this->mailer->send($email);
-        } catch (TransportExceptionInterface $e) {
-            return GlobalResponse::error($e->getMessage());
+            $data = json_decode($request->getContent(), true);
+
+            $this->userInterface->sendingEmailFromToBstp([$data['from']], $data['subject'], $data['message']);
+        } catch (\Exception $exception) {
+            return GlobalResponse::error("Une erreur est survenue", $exception->getMessage());
         }
 
-        return GlobalResponse::success("send");
+        return GlobalResponse::success("Votre e-mail a bien été envoyé à BSTP-MALI. Nous le prendrons en charge et reviendrons vers vous dans les plus brefs délais.");
     }
 
     #[Route('/register', name: 'register_customer')]
@@ -79,22 +74,21 @@ final class RegisterController extends AbstractController
                 $user->getPassword()
             );
             $user->setPassword($password);
-//            $this->entityManager->persist($user);
-//            $this->entityManager->flush();
+            $this->entityManager->persist($user);
+            $this->entityManager->flush();
 
             try {
                 //send email
-//                $this->userInterface->sendingEmailTo(
-//                    [new Address('contact@sanfeni.com')],
-//                    'Nouvelle inscription',
-//                    ['user' => $user],
-//                    'register/register_email.html.twig'
-//                );
+                $this->userInterface->sendingEmailTo(
+                    [new Address($user->getEmail())],
+                    'Nouvelle inscription',
+                    ['user' => $user],
+                    'register/register_email.html.twig'
+                );
 
 
             } catch (\Exception $exception) {
-                dd($exception->getMessage());
-//                return GlobalResponse::success("Votre offre a bien é");
+                return GlobalResponse::success("Compte créé. Vérifiez vos e-mails (y compris spam) ou contactez l’administrateur $exception");
             }
 
 
@@ -156,8 +150,22 @@ final class RegisterController extends AbstractController
             $user->setPassword($password);
 
 
-            $this->entityManager->persist($user);
-            $this->entityManager->flush();
+//            $this->entityManager->persist($user);
+//            $this->entityManager->flush();
+
+            try {
+                //send email
+                $this->userInterface->sendingEmailTo(
+                    [new Address($user->getEmail())],
+                    'Création de boutique',
+                    ['user' => $user, 'plainPassword' => '12345678'],
+                    'register/register_shop_email.html.twig'
+                );
+
+
+            } catch (\Exception $exception) {
+                return GlobalResponse::success("Compte créé. Vérifiez vos e-mails (y compris spam) ou contactez l’administrateur $exception");
+            }
         } catch (UniqueConstraintViolationException $exception) {
             return GlobalResponse::error("Cet utilisateur existe déjà");
 
