@@ -77,7 +77,7 @@ class Product
     private Collection $albums;
 
     #[ORM\ManyToOne(inversedBy: 'products')]
-    #[Groups(['getOrder', 'getProducts'])]
+    #[Groups(['getOrder', 'getProducts', 'getOrderDetails'])]
     private ?Boutique $shop = null;
 
     /**

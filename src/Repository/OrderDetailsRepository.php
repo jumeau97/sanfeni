@@ -22,7 +22,7 @@ class OrderDetailsRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('o')
             ->leftJoin('o.commande', 'c')
             ->leftJoin('o.produit', 'p')
-        ->leftJoin('p.shop', 'shop');
+            ->leftJoin('p.shop', 'shop');
 
         if (!empty($data->getOrderId())) {
             $qb = $qb

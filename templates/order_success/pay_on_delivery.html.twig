@@ -1,25 +1,107 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Confirmation de commande{% endblock %}
+{% block stylesheets %}
+    <style>
+        /* Design de l'icône de succès */
+        .success-circle {
+            width: 80px;
+            height: 80px;
+            background: #e7f6ed;
+            color: #28a745;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            animation: scaleIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .success-circle svg { width: 40px; height: 40px; }
+
+        /* Boutons Sanfeni Style */
+        .btn-sanfeni-fill {
+            background-color: #082C6A;
+            color: white !important;
+            padding: 16px 32px;
+            border-radius: 14px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: none;
+        }
+
+        .btn-sanfeni-outline {
+            background-color: transparent;
+            color: #082C6A !important;
+            border: 2px solid #082C6A;
+            padding: 14px 30px;
+            border-radius: 14px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-sanfeni-fill:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(8, 44, 106, 0.15); }
+        .btn-sanfeni-outline:hover { background: #f0f4ff; }
+
+        @keyframes scaleIn {
+            0% { transform: scale(0); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+    </style>
+{% endblock %}
 
 {% block body %}
     <!--------------- terms-section --------------->
-    <section class="product privacy footer-padding">
+    <section class="product privacy footer-padding" style="background-color: #f6f6f9; min-height: 80vh; display: flex; align-items: center;">
         <div class="container">
-            <div class="privacy-section">
-                <div class="policy">
-                    <h1 class="intro-heading">Confirmation de commande</h1>
-                    <p class="policy-details">
-                        Nous vous remercions pour votre commande n {{ order.reference }}. <br>
-                        Une confirmation vient de vous être envoyeée par email à l'adresse {{ order.user.email }}.
-                    </p>
+            <div class="row justify-content-center">
+                <div class="col-lg-7">
+                    <div class="confirmation-card text-center" style="background: #fff; border-radius: 24px; padding: 50px 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
 
-                    <div>
-                        Pour suivre votre commande, rendez-vous dans votre <a href="{{ path('app_account') }}">Compte</a>
+                        <div class="success-icon-wrapper mb-4">
+                            <div class="success-circle">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
+                                </svg>
+                            </div>
+                        </div>
+
+                        <h1 class="intro-heading mb-3" style="font-weight: 800; color: #082C6A; font-size: 32px;">Merci pour votre commande !</h1>
+
+                        <p class="policy-details mb-4" style="color: #666; font-size: 16px; line-height: 1.6;">
+                            Bonjour <strong>{{ order.user.firstname }}</strong>, votre commande est bien enregistrée.<br>
+                            Un e-mail de confirmation a été envoyé à : <br>
+                            <span style="color: #082C6A; font-weight: 600;">{{ order.user.email }}</span>
+                        </p>
+
+                        <div class="order-info-box mb-5" style="background: #f8f9fa; border-radius: 16px; padding: 20px; display: inline-block; min-width: 320px; border: 1px solid #eee;">
+                            <span style="display: block; color: #888; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px;">Référence de commande</span>
+                            <span style="display: block; color: #1a1a1a; font-size: 22px; font-weight: 800;">#{{ order.reference }}</span>
+                        </div>
+
+                        <hr style="border: 0; border-top: 1px solid #eee; margin: 30px 0;">
+
+                        <div class="action-buttons">
+                            <p class="mb-4" style="color: #888; font-size: 14px;">
+                                Vous pouvez suivre l'évolution de votre colis à tout moment.
+                            </p>
+                            <div class="d-flex flex-column flex-md-row gap-3 justify-content-center">
+                                <a href="{{ path('app_account') }}" class="btn-sanfeni-outline">
+                                    Suivre ma commande
+                                </a>
+                                <a href="{{ path('app_home') }}" class="btn-sanfeni-fill">
+                                    Continuer mes achats
+                                </a>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
         </div>
     </section>
+
+
     <!--------------- terms-section-end --------------->
 {% endblock %}

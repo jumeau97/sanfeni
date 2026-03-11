@@ -15,11 +15,11 @@ class Boutique
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['getShop', 'getUsers', 'getOrder','getProducts'])]
+    #[Groups(['getShop', 'getUsers', 'getOrder', 'getProducts'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['getShop', 'getUsers', 'getOrder', 'getProducts'])]
+    #[Groups(['getShop', 'getUsers', 'getOrder', 'getProducts', 'getOrderDetails'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255, nullable: true)]

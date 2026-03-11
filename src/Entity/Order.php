@@ -61,7 +61,7 @@ class Order
 
     #[ORM\Column]
     #[Groups(['getOrder'])]
-    private ?int $state = 0;
+    private ?string $state = null;
 
     public function getTotal()
     {
@@ -209,15 +209,21 @@ class Order
         return $this;
     }
 
-    public function getState(): ?int
+    /**
+     * @return string|null
+     */
+    public function getState(): ?string
     {
         return $this->state;
     }
 
-    public function setState(int $state): static
+    /**
+     * @param string|null $state
+     */
+    public function setState(?string $state): void
     {
         $this->state = $state;
-
-        return $this;
     }
+
+
 }

@@ -2,24 +2,29 @@
 
 namespace App\Controller;
 
+use App\Entity\Category;
 use App\Entity\Order;
 use App\Entity\OrderDetails;
 use App\Form\OrderType;
 use App\Form\PaymentMethodType;
 use App\Model\Cart;
+use App\Payload\OrderUpdateRequest;
+use App\Payload\Utils\DtoMapperService;
 use App\Payload\Utils\GlobalResponse;
+use App\Payload\Utils\ObjectUpdater;
 use App\Payload\Utils\UtilisService;
 use App\Request\Search\SearchOrder;
 use App\Request\Search\SearchOrderDetails;
 use App\Service\Order\OrderInterface;
 use App\Service\OrderDetails\OrderDetailsInterface;
-use App\Service\Product\ProductInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 final class OrderController extends AbstractController
 {
@@ -29,6 +34,9 @@ final class OrderController extends AbstractController
         private OrderInterface         $orderInterface,
         private OrderDetailsInterface  $orderDetailsInterface,
         private UtilisService          $utilisService,
+        private ValidatorInterface     $validator,
+        private DtoMapperService       $mapperService,
+        private ObjectUpdater          $objectUpdater,
     )
     {
     }
@@ -151,5 +159,36 @@ final class OrderController extends AbstractController
         $dataArray = json_decode($jsonData, true);
         $array = $this->utilisService->paginationResp($dataArray, $result, $limit);
         return GlobalResponse::successWith("La liste des details de commande", $array);
+    }
+
+    #[Route('/dashboard/update-order/{id}', name: 'update_order', methods: ['PUT'])]
+    public function updateOrder($id, Request $request): JsonResponse
+    {
+        try {
+            $existData = $this->entityManager->getRepository(Order::class)->findOneBy(["id" => $id]);
+            if (!$existData) {
+                return GlobalResponse::error("Aucune information avec cette information");
+            }
+            $data = $this->serializer->deserialize($request->getContent(), OrderUpdateRequest::class, 'json');
+
+            $errors = $this->validator->validate($data);
+            if ($errors->count() > 0) {
+                $errorMessages = [];
+                foreach ($errors as $error) {
+                    $errorMessages[] = $error->getMessage();
+                }
+                return GlobalResponse::errorWith("erreur", $errorMessages);
+            }
+
+//            $entity = $this->mapperService->mapDtoToEntity($data, new Order());
+//            $this->objectUpdater->updateObject($existData, $entity);
+//            dd($data);
+//            $this->entityManager->flush();
+        } catch (\Exception $exception) {
+            return GlobalResponse::error("Une erreur est survenue, veuillez réessayer !");
+
+        }
+
+        return GlobalResponse::success("Mise à jour de la commande reussie!.");
     }
 }

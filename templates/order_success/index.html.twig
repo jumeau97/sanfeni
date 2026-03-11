@@ -2,11 +2,101 @@
 
 {% block title %}Confirmation de commande{% endblock %}
 
+{% block stylesheets %}
+    <style>
+        /* Icône de succès Sanfeni */
+        .success-circle {
+            width: 80px;
+            height: 80px;
+            background: #e7f6ed;
+            color: #28a745;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 35px;
+            margin: 0 auto;
+            animation: scaleIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        /* Boutons personnalisés */
+        .btn-sanfeni-fill {
+            background-color: #082C6A;
+            color: white !important;
+            padding: 14px 30px;
+            border-radius: 12px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-sanfeni-outline {
+            background-color: transparent;
+            color: #082C6A !important;
+            border: 2px solid #082C6A;
+            padding: 12px 28px;
+            border-radius: 12px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-sanfeni-fill:hover { transform: translateY(-2px); filter: brightness(1.2); }
+        .btn-sanfeni-outline:hover { background: #f0f4ff; }
+
+        @keyframes scaleIn {
+            0% { transform: scale(0); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+    </style>
+{% endblock %}
+
 {% block body %}
- <h2>Confirmation de commande</h2>
-    Bonjour {{ order.user.firstname }} {{ order.user.lastname }}, <br><br>
-    Nous vous remercions pour votre commande n {{ order.reference }}. <br>
-    Une confirmation vient de vous être envoyeée par email à l'adresse {{ order.user.email }}.
-    <hr>
-    Pour suivre votre commande, rendez-vous dans votre <a href="{{ path('app_account') }}">Compte</a>
+    <section class="order-confirmation footer-padding" style="background-color: #f6f6f9; min-height: 80vh; display: flex; align-items: center;">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-7">
+                    <div class="confirmation-card text-center" style="background: #fff; border-radius: 24px; padding: 50px 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
+
+                        <div class="success-icon-wrapper mb-4">
+                            <div class="success-circle">
+                                <i class="fas fa-check"></i>
+                            </div>
+                        </div>
+
+                        <h2 class="mb-3" style="font-weight: 800; color: #082C6A; font-size: 32px;">Commande confirmée !</h2>
+
+                        <p class="mb-4" style="color: #666; font-size: 16px; line-height: 1.6;">
+                            Merci <strong>{{ order.user.firstname }}</strong>, votre commande est enregistrée.<br>
+                            Un e-mail de confirmation vient d'être envoyé à <span style="color: #082C6A; font-weight: 600;">{{ order.user.email }}</span>.
+                        </p>
+
+                        <div class="order-info-box mb-5" style="background: #f8f9fa; border-radius: 16px; padding: 20px; display: inline-block; min-width: 300px;">
+                            <span style="display: block; color: #888; font-size: 12px; text-transform: uppercase; letter-spacing: 1px;">Référence de commande</span>
+                            <span style="display: block; color: #1a1a1a; font-size: 20px; font-weight: 700;">#{{ order.reference }}</span>
+                        </div>
+
+                        <hr style="border: 0; border-top: 1px solid #eee; margin: 30px 0;">
+
+                        <div class="action-buttons">
+                            <p class="mb-4" style="color: #666; font-size: 14px;">
+                                Vous pouvez suivre l'état de votre colis depuis votre espace client.
+                            </p>
+                            <div class="d-flex flex-column flex-md-row gap-3 justify-content-center">
+                                <a href="{{ path('app_account') }}" class="btn-sanfeni-outline">
+                                    Suivre ma commande
+                                </a>
+                                <a href="{{ path('app_home') }}" class="btn-sanfeni-fill">
+                                    Continuer mes achats
+                                </a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
 {% endblock %}
