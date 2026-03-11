@@ -2,6 +2,60 @@
 
 {% block title %}Détails - Produits{% endblock %}
 
+{% block stylesheets %}
+    <style>
+        /* Bouton Panier Massif */
+        .btn-sanfeni-cart {
+            background-color: #082C6A; /* Votre bleu */
+            color: #fff;
+            border: none;
+            border-radius: 16px;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .btn-sanfeni-cart:hover {
+            background-color: orange;
+            color:#fff;
+            transform: scale(1.02);
+            box-shadow: 0 10px 20px rgba(8, 44, 106, 0.2);
+        }
+
+        /* Style des Puces de Taille (Chips) */
+        .size-chip {
+            cursor: pointer;
+        }
+
+        .size-chip .chip-label {
+            display: inline-block;
+            padding: 10px 20px;
+            border: 1.5px solid #e0e0e0;
+            border-radius: 10px;
+            font-weight: 600;
+            color: #333;
+            transition: all 0.2s ease;
+        }
+
+        .size-chip input:checked + .chip-label {
+            background-color: #082C6A;
+            border-color: #082C6A;
+            color: #fff;
+        }
+
+        .size-chip:hover .chip-label {
+            border-color: #082C6A;
+        }
+
+        /* Image arrondie */
+        .rounded-xl {
+            border-radius: 20px;
+        }
+
+        .product-bottom .swiper-slide-thumb-active img {
+            border: 2px solid orange;
+        }
+    </style>
+{% endblock %}
+
 {% block body %}
     <!--------------- header-section-end --------------->
 

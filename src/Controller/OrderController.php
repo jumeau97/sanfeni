@@ -8,6 +8,7 @@ use App\Entity\OrderDetails;
 use App\Form\OrderType;
 use App\Form\PaymentMethodType;
 use App\Model\Cart;
+use App\Payload\OrderDetailsUpdateRequest;
 use App\Payload\OrderUpdateRequest;
 use App\Payload\Utils\DtoMapperService;
 use App\Payload\Utils\GlobalResponse;
@@ -180,12 +181,43 @@ final class OrderController extends AbstractController
                 return GlobalResponse::errorWith("erreur", $errorMessages);
             }
 
-//            $entity = $this->mapperService->mapDtoToEntity($data, new Order());
-//            $this->objectUpdater->updateObject($existData, $entity);
-//            dd($data);
-//            $this->entityManager->flush();
+            $entity = $this->mapperService->mapDtoToEntity($data, new Order());
+            $this->utilisService->updateObject($existData, $entity);
+            $this->entityManager->flush();
         } catch (\Exception $exception) {
-            return GlobalResponse::error("Une erreur est survenue, veuillez réessayer !");
+            dd($exception->getMessage());
+//            return GlobalResponse::error("Une erreur est survenue, veuillez réessayer ! ");
+
+        }
+
+        return GlobalResponse::success("Mise à jour de la commande reussie!.");
+    }
+
+    #[Route('/dashboard/update-order-details/{id}', name: 'update_order', methods: ['PUT'])]
+    public function updateOrderDetails($id, Request $request): JsonResponse
+    {
+        try {
+            $existData = $this->entityManager->getRepository(OrderDetails::class)->findOneBy(["id" => $id]);
+            if (!$existData) {
+                return GlobalResponse::error("Aucune information avec cette information");
+            }
+            $data = $this->serializer->deserialize($request->getContent(), OrderDetailsUpdateRequest::class, 'json');
+
+            $errors = $this->validator->validate($data);
+            if ($errors->count() > 0) {
+                $errorMessages = [];
+                foreach ($errors as $error) {
+                    $errorMessages[] = $error->getMessage();
+                }
+                return GlobalResponse::errorWith("erreur", $errorMessages);
+            }
+
+            $entity = $this->mapperService->mapDtoToEntity($data, new OrderDetails());
+            $this->utilisService->updateObject($existData, $entity);
+            $this->entityManager->flush();
+        } catch (\Exception $exception) {
+            dd($exception->getMessage());
+//            return GlobalResponse::error("Une erreur est survenue, veuillez réessayer ! ");
 
         }
 

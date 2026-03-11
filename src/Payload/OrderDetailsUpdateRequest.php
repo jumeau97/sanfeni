@@ -4,7 +4,7 @@ namespace App\Payload;
 
 use App\Entity\User;
 
-class OrderUpdateRequest
+class OrderDetailsUpdateRequest
 {
 
     public ?string $state = null;

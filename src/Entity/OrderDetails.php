@@ -40,7 +40,7 @@ class OrderDetails
 
     #[ORM\Column]
     #[Groups(['getOrder', 'getOrderDetails'])]
-    private ?bool $state = null;
+    private ?string $state = null;
 
 //    public function __toString(): string
 //    {
@@ -124,15 +124,21 @@ class OrderDetails
         return $this;
     }
 
-    public function isState(): ?bool
+    /**
+     * @return string|null
+     */
+    public function getState(): ?string
     {
         return $this->state;
     }
 
-    public function setState(bool $state): static
+    /**
+     * @param string|null $state
+     */
+    public function setState(?string $state): void
     {
         $this->state = $state;
-
-        return $this;
     }
+
+
 }

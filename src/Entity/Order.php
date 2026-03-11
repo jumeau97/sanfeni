@@ -8,7 +8,6 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
-use function Symfony\Component\Translation\t;
 
 #[ORM\Entity(repositoryClass: OrderRepository::class)]
 #[ORM\Table(name: '`order`')]
@@ -199,7 +198,7 @@ class Order
 
     public function getStripeSessionId(): ?string
     {
-        return $this->StripeSessionId;
+        return $this->stripeSessionId;
     }
 
     public function setStripeSessionId(string $stripeSessionId): static
