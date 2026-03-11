@@ -430,6 +430,150 @@
         }
     </style>
 
+    {#    // les categories sur mobile #}
+    <style>
+        /* Style du menu mobile */
+        .category-mobile-menu {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .cat-icon-wrapper {
+            width: 40px;
+            height: 40px;
+            background: #fdfdfd;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border: 1px solid #eee;
+        }
+
+        .cat-icon-wrapper img {
+            width: 80%;
+            height: 80%;
+            object-fit: contain;
+        }
+
+        .expand-trigger {
+            padding: 10px;
+            cursor: pointer;
+            color: #082C6A; /* Votre couleur violette */
+        }
+
+        /* Animation de l'icône de flèche */
+        .expand-trigger[aria-expanded="true"] .transition-icon {
+            transform: rotate(90deg);
+        }
+
+        .transition-icon {
+            transition: transform 0.3s ease;
+        }
+
+        .sub-cat-item {
+            border-left: 2px solid #eee !important;
+            position: relative;
+        }
+
+        .smaller {
+            font-size: 0.85rem;
+        }
+
+        /* Effet au clic */
+        .cat-item:active {
+            background-color: #f1f1f1;
+        }
+
+        /* Niveau 2 : On rend le texte un peu plus "gras" pour qu'il ne se perde pas */
+        .category-mobile-menu .fs-6 {
+            font-size: 1.05rem !important; /* Légèrement plus grand que la taille standard */
+        }
+
+        /* Niveau 3 : On garde une taille lisible mais on joue sur la couleur */
+        .category-mobile-menu .text-secondary {
+            font-size: 0.95rem !important;
+            color: #6c757d !important;
+        }
+
+        /* Augmenter la zone de clic pour les boutons */
+        .category-mobile-menu .btn {
+            min-width: 44px; /* Taille recommandée pour l'accessibilité mobile */
+            min-height: 44px;
+        }
+
+        /* Indentation visuelle pour le niveau 3 */
+        .category-mobile-menu .ps-5 {
+            padding-left: 3rem !important;
+            border-left: 2px solid #082C6A; /* Rappel de votre couleur violette */
+            margin-left: 1.5rem;
+        }
+    </style>
+
+    {#    //menu close #}
+    <style>
+        /*.header-top {*/
+        /*    background-color: #fff;*/
+        /*    position: sticky;*/
+        /*    top: 0;*/
+        /*    z-index: 10;*/
+        /*}*/
+
+        .btn-close-custom {
+            background: #f8f9fa;
+            border: none;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6E6D79;
+            transition: all 0.3s ease;
+        }
+
+        .btn-close-custom:hover {
+            background: #082C6A;
+            color: #fff;
+            transform: rotate(90deg);
+        }
+
+        .btn-close-custom i {
+            font-size: 1.2rem;
+        }
+    </style>
+    {#    Panier sur mobile #}
+    <style>
+        .header-cart-wb {
+            display: inline-flex;
+            padding: 8px;
+            text-decoration: none;
+        }
+
+        .wb-cart-badge {
+            position: absolute;
+            top: 4px;
+            right: 2px;
+            background: linear-gradient(135deg, #082C6A 0%, #020a1e 100%); /* Le dégradé signature de WB */
+            color: white;
+            font-size: 10px;
+            font-weight: 600;
+            min-width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 4px;
+            box-shadow: 0 2px 4px rgba(11, 26, 63, 0.3);
+        }
+
+        /* Effet de clic natif mobile */
+        .header-cart-wb:active {
+            transform: scale(0.9);
+            transition: transform 0.1s ease;
+        }
+    </style>
+
 
 </head>
 <body>
