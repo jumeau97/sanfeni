@@ -1,0 +1,16 @@
+/*!**************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[1].use[1]!./vendor/symfony/ux-live-component/assets/dist/live.min.css ***!
+  \**************************************************************************************************************************************************/
+[data-loading=""],[data-loading=show],[data-loading*=\|show]{display:none}
+/*!**************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[1].oneOf[1].use[1]!./assets/styles/app.css ***!
+  \**************************************************************************************************************/
+/*@import "~bootstrap/scss";*/
+
+body {
+    /*background-color: skyblue;*/
+}
+
+
+
+/*# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiYXBwLmNzcyIsIm1hcHBpbmdzIjoiOzs7QUFBQSw2REFBNkQsWUFBWSxDOzs7O0FDQXpFLDZCQUE2Qjs7QUFFN0I7SUFDSSw2QkFBNkI7QUFDakMiLCJzb3VyY2VzIjpbIndlYnBhY2s6Ly8vLi92ZW5kb3Ivc3ltZm9ueS91eC1saXZlLWNvbXBvbmVudC9hc3NldHMvZGlzdC9saXZlLm1pbi5jc3MiLCJ3ZWJwYWNrOi8vLy4vYXNzZXRzL3N0eWxlcy9hcHAuY3NzIl0sInNvdXJjZXNDb250ZW50IjpbIltkYXRhLWxvYWRpbmc9XCJcIl0sW2RhdGEtbG9hZGluZz1zaG93XSxbZGF0YS1sb2FkaW5nKj1cXHxzaG93XXtkaXNwbGF5Om5vbmV9IiwiLypAaW1wb3J0IFwifmJvb3RzdHJhcC9zY3NzXCI7Ki9cblxuYm9keSB7XG4gICAgLypiYWNrZ3JvdW5kLWNvbG9yOiBza3libHVlOyovXG59XG5cbiJdLCJuYW1lcyI6W10sInNvdXJjZVJvb3QiOiIifQ==*/
