@@ -17,7 +17,7 @@
         <div class="header-top">
             <div class="header-profile">
                 <a href="{{ path('app_account') }}"><span>Mon compte</span></a>
-                <a href="#"><span>Commande</span></a>
+                <a href="{{ path('account_order') }}"><span>Commande</span></a>
                 <a href="#"><span>Support</span></a>
             </div>
             <div class="header-contact d-none d-lg-block">
@@ -99,7 +99,7 @@
                         </svg>
                     </span>
             </button>
-            <a href="index.html" class="mobile-header-logo">
+            <a href="{{ path('app_home') }}" class="mobile-header-logo">
                 <img src="{{ asset('assets/images/logos/logo_orig_1.png') }}" width="100px" alt="logo">
             </a>
             {{ component('HeaderCartComponent', {
