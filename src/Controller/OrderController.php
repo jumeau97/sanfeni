@@ -193,7 +193,7 @@ final class OrderController extends AbstractController
         return GlobalResponse::success("Mise à jour de la commande reussie!.");
     }
 
-    #[Route('/dashboard/update-order-details/{id}', name: 'update_order', methods: ['PUT'])]
+    #[Route('/dashboard/update-order-details/{id}', name: 'update_order_details', methods: ['PUT'])]
     public function updateOrderDetails($id, Request $request): JsonResponse
     {
         try {
