@@ -38,7 +38,6 @@
     {% endblock %}
 
     <style>
-
         .search-section .shop-btn {
             border-top-left-radius: 0;
             border-bottom-left-radius: 0;
@@ -111,47 +110,86 @@
             background: #e8e8e8;
         }
     </style>
+    {#    // slider #}
     <style>
-        .hero .swiper {
+        /*.hero .swiper {*/
+        /*    width: 100%;*/
+        /*    !* Hauteur auto ou fixe selon tes besoins *!*/
+        /*    height: auto;*/
+        /*}*/
+
+        /*.hero .swiper-slide {*/
+        /*    !* Hauteur sur mobile *!*/
+        /*    height: 250px;*/
+        /*    display: flex;*/
+        /*    justify-content: center;*/
+        /*    align-items: center;*/
+        /*    border-radius: 12px;*/
+        /*    overflow: hidden;*/
+        /*    background: #444;*/
+        /*}*/
+
+        /*!* Ajustement de la hauteur pour tablettes et PC *!*/
+        /*@media (min-width: 768px) {*/
+        /*    .hero .swiper-slide {*/
+        /*        height: 30.5rem; !* On reprend ta hauteur d'origine *!*/
+        /*    }*/
+        /*}*/
+
+        /*.hero .swiper-slide {*/
+        /*    height: auto; !* On annule la hauteur fixe *!*/
+        /*    aspect-ratio: 16 / 9; !* Force le slider à garder ce format *!*/
+        /*    border-radius: 12px;*/
+        /*    overflow: hidden;*/
+        /*}*/
+
+        /*.hero .swiper-slide img {*/
+        /*    width: 100%;*/
+        /*    height: 100%;*/
+        /*    object-fit: cover; !* Ici, il ne coupera presque rien car le cadre a la même forme que l'image *!*/
+        /*}*/
+
+        .hero-slim .hero-swiper {
+            border-radius: 15px; /* Coins arrondis style App */
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .hero-banner-wrapper {
+            position: relative;
             width: 100%;
-            /* Hauteur auto ou fixe selon tes besoins */
-            height: auto;
+            /* Ratio 3:1 ou 21:9 pour une hauteur réduite (Slim) */
+            aspect-ratio: 3 / 1;
         }
 
-        .hero .swiper-slide {
-            /* Hauteur sur mobile */
-            height: 250px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border-radius: 12px;
-            overflow: hidden;
-            background: #444;
-        }
-
-        /* Ajustement de la hauteur pour tablettes et PC */
-        @media (min-width: 768px) {
-            .hero .swiper-slide {
-                height: 30.5rem; /* On reprend ta hauteur d'origine */
-            }
-        }
-
-        .hero .swiper-slide {
-            height: auto; /* On annule la hauteur fixe */
-            aspect-ratio: 16 / 9; /* Force le slider à garder ce format */
-            border-radius: 12px;
-            overflow: hidden;
-        }
-
-        .hero .swiper-slide img {
+        .hero-img {
             width: 100%;
             height: 100%;
-            object-fit: cover; /* Ici, il ne coupera presque rien car le cadre a la même forme que l'image */
+            object-fit: cover; /* Important pour ne pas déformer l'image */
         }
 
+        /* Badge impactant style WB */
+        .hero-overlay {
+            position: absolute;
+            bottom: 15px;
+            left: 15px;
+        }
 
-        /* On supprime les width: 60%, 40%, etc.
-           C'est le JS (slidesPerView) qui doit gérer ça pour être responsive. */
+        .badge-promo {
+            background: linear-gradient(135deg, #CB11AB 0%, #481173 100%);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.8rem;
+            box-shadow: 0 4px 8px rgba(203, 17, 171, 0.3);
+        }
+
+        /* Personnalisation des points du slider */
+        .hero-slim .swiper-pagination-bullet-active {
+            background: #AE1C9A !important;
+        }
+
     </style>
 
     <style>
@@ -328,7 +366,7 @@
             border-radius: 10px;
         }
     </style>
-
+    {# Champs de recherche au niveau du header #}
     <style>
         /* Container de recherche */
         .search-section-wb {
@@ -574,6 +612,91 @@
         }
     </style>
 
+    {#    Panier mode mobile #}
+    <style>
+        .header-cart-wb {
+            padding: 5px;
+        }
+
+        .wb-cart-badge {
+            position: absolute;
+            top: -2px; /* Ajustement vers le haut */
+            right: -5px; /* Ajustement vers la droite */
+            background: linear-gradient(135deg, #082C6A 0%, #041921 100%);
+            color: #ffffff;
+            font-size: 10px;
+            font-weight: bold;
+            min-width: 17px;
+            height: 17px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 4px;
+            line-height: 1;
+        }
+
+    </style>
+    {#    mobile alert product added to cart #}
+    <style>
+        .mobile-popup {
+            position: fixed;
+            top: 20px; /* Positionnée en haut avec un petit écart */
+            left: 15px;
+            right: 15px;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+            z-index: 10000; /* Doit être au-dessus de tout, même du header */
+
+            /* On la cache au-dessus de la zone visible */
+            transform: translateY(-150%);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.2);
+
+            border-bottom: 3px solid #082C6A; /* Touche de rappel de votre couleur */
+        }
+
+        .mobile-popup.active {
+            transform: translateY(0); /* Descend pour devenir visible */
+        }
+
+        .popup-content {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+        }
+
+        /* Style de l'icône WB */
+        .icon-box {
+            width: 35px;
+            height: 35px;
+            background: #082C6A;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            margin-right: 12px;
+        }
+
+        .popup-title {
+            font-weight: 700;
+            font-size: 13px;
+            color: #242424;
+            display: block;
+        }
+
+        .btn-close-popup {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            color: orange;
+            font-size: 12px;
+        }
+    </style>
+
 
 </head>
 <body>
@@ -616,36 +739,69 @@
 
 <!-- Initialize Swiper -->
 <script>
-    var swiper = new Swiper(".mySwiper", {
+    // Initialisation du Swiper
+    const swiper = new Swiper('.mySwiper', {
+        // Effet de fondu au lieu du slide (très élégant pour les bannières)
+        effect: 'fade',
+        fadeEffect: {
+            crossFade: true
+        },
+
+        // Lecture automatique
+        autoplay: {
+            delay: 4000, // Change toutes les 4 secondes
+            disableOnInteraction: false, // Continue après un clic
+        },
+
+        // Boucle infinie
         loop: true,
-        spaceBetween: 20, // Espace plus petit sur mobile
 
-        // Configuration par défaut (Mobile)
-        slidesPerView: 1,
+        // Vitesse de la transition
+        speed: 800,
 
+        // Pagination (les petits points)
         pagination: {
-            el: ".swiper-pagination",
+            el: '.swiper-pagination',
             clickable: true,
-        },
-        navigation: {
-            nextEl: ".swiper-button-next",
-            prevEl: ".swiper-button-prev",
+            dynamicBullets: true, // Les points changent de taille (Style moderne)
         },
 
-        // Points de rupture
-        breakpoints: {
-            // Quand l'écran est >= 768px (Tablette/PC)
-            768: {
-                slidesPerView: 2,
-                spaceBetween: 30,
-            },
-            // Optionnel : Quand l'écran est >= 1200px (Grand écran)
-            1200: {
-                slidesPerView: 2, // Permet de voir un bout de la slide suivante
-                spaceBetween: 40,
-            }
-        }
+        // Navigation (Flèches - optionnel sur mobile)
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
     });
+    // var swiper = new Swiper(".mySwiper", {
+    //     loop: true,
+    //     spaceBetween: 20, // Espace plus petit sur mobile
+    //
+    //     // Configuration par défaut (Mobile)
+    //     slidesPerView: 1,
+    //
+    //     pagination: {
+    //         el: ".swiper-pagination",
+    //         clickable: true,
+    //     },
+    //     navigation: {
+    //         nextEl: ".swiper-button-next",
+    //         prevEl: ".swiper-button-prev",
+    //     },
+    //
+    //     // Points de rupture
+    //     breakpoints: {
+    //         // Quand l'écran est >= 768px (Tablette/PC)
+    //         768: {
+    //             slidesPerView: 2,
+    //             spaceBetween: 30,
+    //         },
+    //         // Optionnel : Quand l'écran est >= 1200px (Grand écran)
+    //         1200: {
+    //             slidesPerView: 2, // Permet de voir un bout de la slide suivante
+    //             spaceBetween: 40,
+    //         }
+    //     }
+    // });
 </script>
 <script>
     document

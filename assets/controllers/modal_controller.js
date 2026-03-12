@@ -3,6 +3,7 @@ import {Controller} from '@hotwired/stimulus';
 export default class extends Controller {
     static targets = ['modalElement'];
     component = null;
+    alertBox = null;
 
     initialize() {
 
@@ -11,6 +12,19 @@ export default class extends Controller {
 
     connect() {
         window.addEventListener('modal:open', (event) => {
+            // -----------------------
+            if (window.innerWidth < 992) {
+                 this.alertBox = document.getElementById('mobile-cart-popup');
+
+                // On affiche le bandeau
+                this.alertBox.classList.add('active');
+                console.log("event", this.element);
+                // On le cache automatiquement après 3 secondes
+                setTimeout(() => {
+                    this.alertBox.classList.remove('active');
+                }, 3000);
+            }
+            // ----------------
             this.component = document.getElementById('header-cart');
             this.component.addEventListener('click', this.openModal());
             // console.log("component",component);
@@ -19,6 +33,8 @@ export default class extends Controller {
                 this.component.classList.remove('isVisible');
             }, 5000);
         });
+
+
     }
 
 

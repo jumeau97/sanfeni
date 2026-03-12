@@ -14,6 +14,7 @@ use Symfony\UX\LiveComponent\LiveResponder;
 final class HeaderCartComponent
 {
     use DefaultActionTrait;
+
 //    use ComponentToolsTrait;
 
     public function __construct(private LiveResponder $liveResponder)
@@ -33,7 +34,7 @@ final class HeaderCartComponent
 //        dd($this->previewCart);
 
         $this->currentCart = count($cartService->get());
-//        $this->dispatchBrowserEvent('modal:open', []);
+
         $this->liveResponder->dispatchBrowserEvent('modal:open', []);
 
     }

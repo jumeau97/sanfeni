@@ -10,40 +10,115 @@
 
 {% block body %}
     <!--------------- hero-section --------------->
-    <section class="hero mt-4">
-        <div class="container">
-            <div class="swiper mySwiper">
-                <div class="swiper-wrapper">
-                    <div class="swiper-slide">
-                        <img
-                            src="{{ asset('/assets/images/slide2.png') }}"
-                            alt="Image produit"
-                            class="img-fluid w-100"
-                        >
-                    </div>
-                    <div class="swiper-slide">
-                        <img
-                            src="{{ asset('/assets/images/slide2.png') }}"
-                            alt="Image produit"
-                            class="img-fluid w-100"
-                        >
-                    </div>
-                    <div class="swiper-slide">
-                        <img
-                            src="{{ asset('/assets/images/slide2.png') }}"
-                            alt="Image produit"
-                            class="img-fluid w-100"
-                        >
+    {#    <section class="hero mt-4"> #}
+    {#        <div class="container"> #}
+    {#            <div class="swiper mySwiper"> #}
+    {#                <div class="swiper-wrapper"> #}
+    {#                    <div class="swiper-slide"> #}
+    {#                        <img #}
+    {#                            src="{{ asset('/assets/images/slide2.png') }}" #}
+    {#                            alt="Image produit" #}
+    {#                            class="img-fluid w-100" #}
+    {#                        > #}
+    {#                    </div> #}
+    {#                    <div class="swiper-slide"> #}
+    {#                        <img #}
+    {#                            src="{{ asset('/assets/images/slide2.png') }}" #}
+    {#                            alt="Image produit" #}
+    {#                            class="img-fluid w-100" #}
+    {#                        > #}
+    {#                    </div> #}
+    {#                    <div class="swiper-slide"> #}
+    {#                        <img #}
+    {#                            src="{{ asset('/assets/images/slide2.png') }}" #}
+    {#                            alt="Image produit" #}
+    {#                            class="img-fluid w-100" #}
+    {#                        > #}
 
-                    </div>
-                </div>
-                {#            <div class="swiper-button-next"></div> #}
-                {#            <div class="swiper-button-prev"></div> #}
-                <div class="swiper-pagination"></div>
-            </div>
-        </div>
+    {#                    </div> #}
+    {#                </div> #}
+    {#                #}{#            <div class="swiper-button-next"></div> #}
+    {#                #}{#            <div class="swiper-button-prev"></div> #}
+    {#                <div class="swiper-pagination"></div> #}
+    {#            </div> #}
+    {#        </div> #}
 
-    </section>
+    {#    <section class="hero-slim mt-2"> #}
+    {#        <div class="container"> #}
+    {#            <div class="swiper mySwiper hero-swiper"> #}
+    {#                <div class="swiper-wrapper"> #}
+    {#                    {% for i in 1..3 %} #}
+    {#                        <div class="swiper-slide"> #}
+    {#                            <div class="hero-banner-wrapper"> #}
+    {#                                <img #}
+    {#                                    src="{{ asset('/assets/images/slide2.png') }}" #}
+    {#                                    alt="Promotion" #}
+    {#                                    class="hero-img" #}
+    {#                                > #}
+    {#                                #}{# Optionnel : Un overlay discret pour le texte #}
+    {#                                <div class="hero-overlay"> #}
+    {#                                    <span class="badge-promo">-50% sur l'IA</span> #}
+    {#                                </div> #}
+    {#                            </div> #}
+    {#                        </div> #}
+    {#                    {% endfor %} #}
+    {#                </div> #}
+    {#                <div class="swiper-pagination"></div> #}
+    {#            </div> #}
+    {#        </div> #}
+    {#    </section> #}
+
+
+    {#    <section class="hero-slim mt-2"> #}
+    {#        <div class="container"> #}
+    {#            <div class="swiper mySwiper hero-swiper"> #}
+    {#                <div class="swiper-wrapper"> #}
+    {#                        <div class="swiper-slide"> #}
+    {#                            <div class="hero-banner-wrapper"> #}
+    {#                                <img #}
+    {#                                    src="{{ asset('/assets/images/slide2.png') }}" #}
+    {#                                    alt="Promotion" #}
+    {#                                    class="hero-img" #}
+    {#                                > #}
+    {#                                #}{# Optionnel : Un overlay discret pour le texte #}
+    {#                                <div class="hero-overlay"> #}
+    {#                                    <span class="badge-promo">-50% sur l'IA</span> #}
+    {#                                </div> #}
+    {#                            </div> #}
+    {#                        </div> #}
+    {#                    <div class="swiper-slide"> #}
+    {#                        <div class="hero-banner-wrapper"> #}
+    {#                            <img #}
+    {#                                src="{{ asset('/assets/images/slide2.png') }}" #}
+    {#                                alt="Promotion" #}
+    {#                                class="hero-img" #}
+    {#                            > #}
+    {#                            #}{# Optionnel : Un overlay discret pour le texte #}
+    {#                            <div class="hero-overlay"> #}
+    {#                                <span class="badge-promo">-50% sur l'IA</span> #}
+    {#                            </div> #}
+    {#                        </div> #}
+    {#                    </div> #}
+    {#                    <div class="swiper-slide"> #}
+    {#                        <div class="hero-banner-wrapper"> #}
+    {#                            <img #}
+    {#                                src="{{ asset('/assets/images/slide2.png') }}" #}
+    {#                                alt="Promotion" #}
+    {#                                class="hero-img" #}
+    {#                            > #}
+    {#                            #}{# Optionnel : Un overlay discret pour le texte #}
+    {#                            <div class="hero-overlay"> #}
+    {#                                <span class="badge-promo">-50% sur l'IA</span> #}
+    {#                            </div> #}
+    {#                        </div> #}
+    {#                    </div> #}
+    {#                </div> #}
+    {#                <div class="swiper-pagination"></div> #}
+    {#            </div> #}
+    {#        </div> #}
+    {#    </section> #}
+
+    {#    </section> #}
 
 
     <!--------------- hero-section-end --------------->

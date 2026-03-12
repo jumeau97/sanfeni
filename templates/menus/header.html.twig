@@ -1,3 +1,17 @@
+<div id="mobile-cart-popup" class="mobile-popup d-lg-none">
+    <div class="popup-content">
+        <div class="icon-box">
+            <i class="fas fa-shopping-bag"></i>
+        </div>
+        <div class="text-box">
+            <span class="popup-title">Ajouté au panier !</span>
+            <span class="popup-subtitle">Votre article a été bien ajouté.</span>
+        </div>
+        <button class="btn-close-popup" onclick="this.parentElement.parentElement.classList.remove('active')">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+</div>
 <div class="header-top-section">
     <div class="container">
         <div class="header-top">
@@ -88,26 +102,10 @@
             <a href="index.html" class="mobile-header-logo">
                 <img src="{{ asset('assets/images/logos/logo_orig_1.png') }}" width="100px" alt="logo">
             </a>
-            <a href="{{ path('cart') }}" class="header-cart-wb position-relative">
-                {# Icône panier minimaliste style WB #}
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path
-                        d="M7.5 18C8.32843 18 9 18.6716 9 19.5C9 20.3284 8.32843 21 7.5 21C6.67157 21 6 20.3284 6 19.5C6 18.6716 6.67157 18 7.5 18Z"
-                        stroke="#242424" stroke-width="1.5"/>
-                    <path
-                        d="M16.5 18C17.3284 18 18 18.6716 18 19.5C18 20.3284 17.3284 21 16.5 21C15.6716 21 15 20.3284 15 19.5C15 18.6716 15.6716 18 16.5 18Z"
-                        stroke="#242424" stroke-width="1.5"/>
-                    <path d="M2 3H4.5L6.5 15H19L21.5 6H7" stroke="#242424" stroke-width="1.5" stroke-linecap="round"
-                          stroke-linejoin="round"/>
-                </svg>
-
-                {# Le badge WB : Petit, vif et sans bordure épaisse #}
-{#                {% if currentCart|length > 0 %}#}
-                    <span class="wb-cart-badge">
-            {{ currentCart }}
-        </span>
-{#                {% endif %}#}
-            </a>
+            {{ component('HeaderCartComponent', {
+                previewCart : previewCart,
+                currentCart : currentCart,
+            }) }}
         </div>
 
         <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions">
