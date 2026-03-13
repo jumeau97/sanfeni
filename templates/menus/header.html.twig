@@ -137,72 +137,89 @@
 
                 <div class="category-mobile-menu">
                     <ul class="list-unstyled">
-                        {% for cat in categories %}
-                            <li class="border-bottom">
-                                {# --- NIVEAU 1 (Principal) --- #}
-                                <div class="d-flex align-items-center justify-content-between p-3 bg-white">
-                                    <a href="{{ path('app_home', {'slug': cat.name}) }}"
-                                       class="d-flex align-items-center text-decoration-none">
-                                        {#                                        <img src="{{ asset('images/categories/' ~ cat.illustration) }}" width="35" class="me-3"> #}
-                                        <span
-                                            class="text-dark fw-bold fs-5">{{ cat.name }}</span> {# fs-5 pour un titre bien visible #}
-                                    </a>
+                        <ul class="list-unstyled custom-elevated-menu">
+                            {% for cat in categories %}
+                                <li class="border-bottom">
+                                    {# --- NIVEAU 1 (Principal) --- #}
+                                    <div class="d-flex align-items-center justify-content-between p-3 bg-white">
+                                        <a href="{{ path('app_home', {'slug': cat.name}) }}"
+                                           class="d-flex align-items-center text-decoration-none">
+                                            <span class="text-dark fw-bold fs-5">{{ cat.name }}</span>
+                                        </a>
 
-                                    {% if cat.categories is not empty %}
-                                        <button class="btn border-0 p-3" type="button" data-bs-toggle="collapse"
-                                                data-bs-target="#collapse-{{ loop.index }}">
-                                            <i class="fas fa-chevron-down text-primary"></i>
-                                        </button>
-                                    {% endif %}
-                                </div>
-
-                                {# --- NIVEAU 2 (Sous-menus) --- #}
-                                {% if cat.categories is not empty %}
-                                    <div class="collapse bg-light" id="collapse-{{ loop.index }}">
-                                        <ul class="list-unstyled ps-0 pb-2">
-                                            {% for subCat in cat.categories %}
-                                                <li class="py-2 border-bottom border-white">
-                                                    <div
-                                                        class="d-flex justify-content-between align-items-center px-4 py-2">
-                                                        <a href="{{ path('app_home', {'slug': subCat.name}) }}"
-                                                           class="text-dark text-decoration-none fw-medium fs-6">
-                                                            {{ subCat.name }}
-                                                        </a>
-
-                                                        {% if subCat.categories is not empty %}
-                                                            <button
-                                                                class="btn btn-sm btn-outline-secondary rounded-circle"
-                                                                style="width: 10px; height: 10px; padding: 0;"
-                                                                data-bs-toggle="collapse"
-                                                                data-bs-target="#sub-collapse-{{ loop.parent.loop.index }}-{{ loop.index }}">
-                                                                <i class="fas fa-plus" style="font-size: 0.7rem;"></i>
-                                                            </button>
-                                                        {% endif %}
-                                                    </div>
-
-                                                    {# --- NIVEAU 3 (Petits-enfants) --- #}
-                                                    {% if subCat.categories is not empty %}
-                                                        <div class="collapse bg-white-50"
-                                                             id="sub-collapse-{{ loop.parent.loop.index }}-{{ loop.index }}">
-                                                            <ul class="list-unstyled ps-5 mt-1">
-                                                                {% for subCat2 in subCat.categories %}
-                                                                    <li class="py-2">
-                                                                        <a href="{{ path('app_home', {'slug': subCat2.name}) }}"
-                                                                           class="text-secondary text-decoration-none fs-6 d-block">
-                                                                            <i class="fas fa-angle-right me-2 text-muted"></i>{{ subCat2.name }}
-                                                                        </a>
-                                                                    </li>
-                                                                {% endfor %}
-                                                            </ul>
-                                                        </div>
-                                                    {% endif %}
-                                                </li>
-                                            {% endfor %}
-                                        </ul>
+                                        {% if cat.categories is not empty %}
+                                            <button class="btn border-0 p-3" type="button" data-bs-toggle="collapse"
+                                                    data-bs-target="#collapse-{{ loop.index }}">
+                                                <i class="fas fa-chevron-down text-primary"></i>
+                                            </button>
+                                        {% endif %}
                                     </div>
-                                {% endif %}
-                            </li>
-                        {% endfor %}
+                                    {# --- NIVEAU 2 (Sous-menus) --- #}
+                                    {% if cat.categories is not empty %}
+                                        <div class="collapse bg-light" id="collapse-{{ loop.index }}">
+                                            <ul class="list-unstyled ps-0 pb-2">
+                                                {% for subCat in cat.categories %}
+                                                    <li class="py-2 border-bottom border-white">
+                                                        <div
+                                                            class="d-flex justify-content-between align-items-center px-4 py-2">
+                                                            <a href="{{ path('app_home', {'slug': subCat.name}) }}"
+                                                               class="text-dark text-decoration-none fw-medium fs-6">
+                                                                {{ subCat.name }}
+                                                            </a>
+
+                                                            {% if subCat.categories is not empty %}
+                                                                <button
+                                                                    class="btn btn-sm btn-outline-secondary rounded-circle"
+                                                                    style="width: 10px; height: 10px; padding: 0;"
+                                                                    data-bs-toggle="collapse"
+                                                                    data-bs-target="#sub-collapse-{{ loop.parent.loop.index }}-{{ loop.index }}">
+                                                                    <i class="fas fa-plus"
+                                                                       style="font-size: 0.7rem;"></i>
+                                                                </button>
+                                                            {% endif %}
+                                                        </div>
+
+                                                        {# --- NIVEAU 3 (Petits-enfants) --- #}
+                                                        {% if subCat.categories is not empty %}
+                                                            <div class="collapse bg-white-50"
+                                                                 id="sub-collapse-{{ loop.parent.loop.index }}-{{ loop.index }}">
+                                                                <ul class="list-unstyled ps-5 mt-1">
+                                                                    {% for subCat2 in subCat.categories %}
+                                                                        <li class="py-2">
+                                                                            <a href="{{ path('app_home', {'slug': subCat2.name}) }}"
+                                                                               class="text-secondary text-decoration-none fs-6 d-block">
+                                                                                <i class="fas fa-angle-right me-2 text-muted"></i>{{ subCat2.name }}
+                                                                            </a>
+                                                                        </li>
+                                                                    {% endfor %}
+                                                                </ul>
+                                                            </div>
+                                                        {% endif %}
+                                                    </li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                    {% endif %}
+                                </li>
+                            {% else %}
+                                {# --- MESSAGE SI VIDE --- #}
+                                <li class="empty-menu-placeholder">
+                                    <div class="empty-content text-center py-5 px-3">
+                                        <div class="empty-icon mb-3">
+                                            <i class="fas fa-th-large text-muted opacity-25"
+                                               style="font-size: 3rem;"></i>
+                                        </div>
+                                        <h6 class="fw-bold text-dark">Aucune catégorie</h6>
+                                        <p class="text-muted small">Les rayons sont en cours de mise à jour.</p>
+                                        <button class="btn btn-sm rounded-pill mt-2 px-4"
+                                                style="background: #082C6A; color: white;"
+                                                onclick="window.location.reload();">
+                                            Actualiser
+                                        </button>
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        </ul>
                     </ul>
                 </div>
             </div>
@@ -281,6 +298,24 @@
                                                        class="dropdown-item">{{ cat.name }}</a>
                                                 </li>
                                             {% endif %}
+                                        {% else %}
+                                            {# --- MESSAGE SI VIDE --- #}
+                                            <li class="empty-menu-placeholder">
+                                                <div class="empty-content text-center py-5 px-3">
+                                                    <div class="empty-icon mb-3">
+                                                        <i class="fas fa-th-large text-muted opacity-25"
+                                                           style="font-size: 3rem;"></i>
+                                                    </div>
+                                                    <h6 class="fw-bold text-dark">Aucune catégorie</h6>
+                                                    <p class="text-muted small">Les rayons sont en cours de mise à
+                                                        jour.</p>
+                                                    <button class="btn btn-sm rounded-pill mt-2 px-4"
+                                                            style="background: #082C6A; color: white;"
+                                                            onclick="window.location.reload();">
+                                                        Actualiser
+                                                    </button>
+                                                </div>
+                                            </li>
                                         {% endfor %}
                                         <!-- End Level two -->
                                     </ul>

@@ -3,7 +3,27 @@
 {% block title %}Nos produits{% endblock %}
 
   {% block stylesheets %}
+      <style>
+          .empty-state {
+              padding: 40px 20px;
+          }
 
+          .icon-circle {
+              width: 80px;
+              height: 80px;
+              background-color: #f8f9fa;
+              border-radius: 50%;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              color: #dee2e6;
+          }
+
+          .empty-state h4 {
+              color: #242424;
+              margin-bottom: 10px;
+          }
+      </style>
   {% endblock %}
 
 
@@ -150,6 +170,22 @@
                         {{ component('ProductItem', {
                             product: product
                         }) }}
+                    {% else %}
+                        {# Ce bloc s'affiche UNIQUEMENT si products.items est vide #}
+                        <div class="col-12 text-center py-5">
+                            <div class="empty-state">
+                                <div class="icon-circle mb-3 mx-auto">
+                                    <i class="fas fa-search text-muted" style="font-size: 2rem;"></i>
+                                </div>
+                                <h4 class="fw-bold">Aucun produit trouvé</h4>
+                                <p class="text-muted">Désolé, nous n'avons trouvé aucun article correspondant à votre
+                                    sélection.</p>
+                                <a href="" class="btn btn-primary rounded-pill px-4 mt-2"
+                                   style="background-color: #082C6A; border: none;">
+                                    Voir tout le catalogue
+                                </a>
+                            </div>
+                        </div>
                     {% endfor %}
                 </div>
             </div>

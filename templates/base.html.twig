@@ -29,6 +29,12 @@
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('dist/css/adminlte.min.css') }}">
     <link rel="stylesheet" href="{{ asset('plugins/fontawesome-free/css/all.min.css') }}">
+
+    {#    Police motserrat et inter #}
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Montserrat:wght@600;700;800&display=swap"
+        rel="stylesheet">
     {% block stylesheets %}
         {{ encore_entry_link_tags('app') }}
     {% endblock %}
@@ -637,6 +643,54 @@
         }
 
     </style>
+
+    {#    cart sub menu #}
+    <style>
+        /* Élévation de la carte (z-index et ombre) */
+        .custom-elevated-cart {
+            position: absolute;
+            z-index: 9999 !important; /* Force l'élévation au-dessus de tout */
+            background: #ffffff;
+            border-radius: 12px;
+            /* Ombre profonde pour l'effet de hauteur */
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.15), 0 5px 15px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            right: 0;
+            width: 320px;
+        }
+
+        /* Container du message vide pour le centrage parfait */
+        .empty-cart-container {
+            display: flex;
+            align-items: center; /* Centrage vertical */
+            justify-content: center; /* Centrage horizontal */
+            min-height: 250px; /* Hauteur suffisante pour voir le centrage */
+            padding: 20px;
+        }
+
+        .empty-icon-box {
+            font-size: 3rem;
+            color: #f0f0f0;
+            position: relative;
+        }
+
+        /* Optionnel : petite animation d'entrée pour la carte */
+        .cart-submenu {
+            animation: slideInDown 0.3s ease-out;
+        }
+
+        @keyframes slideInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
     {#    mobile alert product added to cart #}
     <style>
         .mobile-popup {
@@ -694,6 +748,178 @@
             border: none;
             color: orange;
             font-size: 12px;
+        }
+    </style>
+
+    {#    customiser le footer #}
+    <style>
+        :root {
+            --primary-color: #082C6A;
+            --dark-text: #1A1A1A;
+            --light-text: #666666;
+            --bg-footer: #F8F9FB;
+        }
+
+        .footer-premium {
+            background-color: var(--bg-footer);
+            font-family: 'Inter', sans-serif;
+            color: var(--dark-text);
+        }
+
+        /* Titres en Montserrat */
+        .footer-headline {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 1.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 25px;
+            color: var(--dark-text);
+        }
+
+        .brand-description {
+            color: var(--light-text);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            max-width: 300px;
+        }
+
+        /* Liens avec effet de survol moderne */
+        .footer-nav {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-nav li {
+            margin-bottom: 12px;
+        }
+
+        .footer-nav a {
+            color: var(--light-text);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.3rem;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .footer-nav a:hover {
+            color: var(--primary-color);
+            transform: translateX(8px);
+        }
+
+        /* Carte de contact style "Glassmorphism" léger */
+        .contact-card-premium {
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+        }
+
+        .icon-wrap {
+            color: var(--primary-color);
+            font-size: 1.8rem;
+            margin-right: 15px;
+            margin-top: 3px;
+        }
+
+        .contact-card-premium .label {
+            display: block;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #AAA;
+            text-transform: uppercase;
+        }
+
+        .contact-card-premium .value {
+            font-size: 1rem;
+            font-weight: 500;
+            margin: 0;
+        }
+
+        /* Réseaux sociaux */
+        .social-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--dark-text);
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .social-circle:hover {
+            background: var(--primary-color);
+            color: #fff;
+            transform: scale(1.1);
+        }
+
+        /* Copyright & Payment */
+        .footer-separator {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #E0E0E0, transparent);
+        }
+
+        .copyright-text {
+            font-size: 1.2rem;
+            color: var(--light-text);
+        }
+
+        .orange-money-badge {
+            background: #FF6600;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+    </style>
+
+
+    {#    categories header dropdown #}
+    <style>
+        /* Élévation du conteneur du menu */
+        .custom-elevated-menu {
+            position: relative;
+            z-index: 1050; /* Au-dessus du contenu standard */
+            background: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1); /* Ombre douce et profonde */
+            overflow: hidden;
+        }
+
+        /* Centrage parfait du message vide */
+        .empty-menu-placeholder {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 300px; /* Assure un espace vertical pour le centrage */
+            background: #fff;
+        }
+
+        .empty-content .empty-icon i {
+            animation: pulse 2s infinite;
+        }
+
+        /* Animation douce pour l'icône */
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 0.25;
+            }
+            50% {
+                transform: scale(1.1);
+                opacity: 0.5;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 0.25;
+            }
         }
     </style>
 
