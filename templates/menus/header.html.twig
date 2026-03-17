@@ -294,7 +294,7 @@
                                                     {% endif %}
                                                 </li>
                                             {% else %}
-                                                <li><a href="#"
+                                                <li><a href="{{ path('app_home',{slug:cat.name}) }}"
                                                        class="dropdown-item">{{ cat.name }}</a>
                                                 </li>
                                             {% endif %}

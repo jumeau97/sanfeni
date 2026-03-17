@@ -32,7 +32,7 @@ final class OrderSuccesController extends AbstractController
             //vider la session
 
 //            $order->setIsPaid(1);
-            $order->setState(1); //paiement effectué
+//            $order->setState(1); //paiement effectué
             $this->entityManager->flush();
 
             //envoyer un email au client
@@ -57,7 +57,7 @@ final class OrderSuccesController extends AbstractController
         if (!$order->isPaid()) {
             //vider la session
 
-            $order->setIsPaid(1);
+//            $order->setIsPaid(1);
             $this->entityManager->flush();
 
             //envoyer un email au client

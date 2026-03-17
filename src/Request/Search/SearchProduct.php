@@ -10,6 +10,24 @@ class SearchProduct
 
     public ?string $category = null;
 
+    public ?string $state = null;
+
+    /**
+     * @return string|null
+     */
+    public function getState(): ?string
+    {
+        return $this->state;
+    }
+
+    /**
+     * @param string|null $state
+     */
+    public function setState(?string $state): void
+    {
+        $this->state = $state;
+    }
+
     /**
      * @return string|null
      */

@@ -60,7 +60,7 @@ class Order
 
     #[ORM\Column]
     #[Groups(['getOrder'])]
-    private ?string $state = null;
+    private ?string $state = "En attente";
 
     public function getTotal()
     {

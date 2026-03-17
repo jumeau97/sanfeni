@@ -288,9 +288,9 @@
                                     {% set total = 0 %}
                                     {% for product in cart %}
                                         {% if product.product.offPercent is defined and product.product.offPercent > 0 %}
-                                            {% set unitPrice = (product.product.price / 100) * (1 - (product.product.offPercent / 100)) %}
+                                            {% set unitPrice = (product.product.price ) * (1 - (product.product.offPercent / 100)) %}
                                         {% else %}
-                                            {% set unitPrice = (product.product.price / 100) %}
+                                            {% set unitPrice = (product.product.price) %}
                                         {% endif %}
                                         {% set rowTotal = unitPrice * product.quantity %}
                                         {% set total = total + rowTotal %}
@@ -343,7 +343,7 @@
                                 </div>
 
                                 <button type="submit" class="btn btn-wb-pay w-100 py-3 fs-4 fw-bold shadow">
-                                    Confirmer et Payer
+                                    Confirmer
                                 </button>
                                 {{ form_end(form) }}
 

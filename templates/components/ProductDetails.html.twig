@@ -177,15 +177,15 @@
                 <div class="price-section d-flex align-items-center gap-3 mb-4">
                     {% if product.isPromotion %}
                         <span class="fs-2 fw-bolder" style="color: #FF3E3E;">
-                            {{ ((product.price/100) * (1 - (product.offPercent / 100))) | number_format(0, ',', ' ') }} FCFA
+                            {{ ((product.price) * (1 - (product.offPercent / 100))) | number_format(0, ',', ' ') }} FCFA
                         </span>
                         <span class="text-decoration-line-through text-muted fs-5">
-                            {{ (product.price/100) | number_format(0, ',', ' ') }} FCFA
+                            {{ (product.price) | number_format(0, ',', ' ') }} FCFA
                         </span>
                         <span class="badge bg-danger rounded-pill">-{{ product.offPercent }}%</span>
                     {% else %}
                         <span class="fs-2 fw-bolder text-dark">
-                            {{ (product.price/100) | number_format(0, ',', ' ') }} FCFA
+                            {{ (product.price) | number_format(0, ',', ' ') }} FCFA
                         </span>
                     {% endif %}
                 </div>

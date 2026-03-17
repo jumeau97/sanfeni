@@ -54,6 +54,9 @@ class Boutique
     #[ORM\OneToMany(targetEntity: Product::class, mappedBy: 'shop')]
     private Collection $products;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $state = "actif";
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
@@ -200,5 +203,17 @@ class Boutique
     public function __toString(): string
     {
         return $this->getName();
+    }
+
+    public function getState(): ?string
+    {
+        return $this->state;
+    }
+
+    public function setState(?string $state): static
+    {
+        $this->state = $state;
+
+        return $this;
     }
 }

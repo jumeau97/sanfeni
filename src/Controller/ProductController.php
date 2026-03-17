@@ -13,6 +13,7 @@ use App\Request\ProductRequest;
 use App\Request\Search\SearchCategory;
 use App\Request\Search\SearchProduct;
 use App\Service\Product\ProductInterface;
+use Doctrine\DBAL\Exception\ConstraintViolationException;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -143,5 +144,30 @@ final class ProductController extends AbstractController
         $dataArray = json_decode($jsonData, true);
         $array = $this->utilisService->paginationResp($dataArray, $result, $limit);
         return GlobalResponse::successWith("La liste des produits", $array);
+    }
+
+
+    #[Route('/delete-product/{id}', name: 'delete-product', methods: ['DELETE'])]
+    public function delete($id, Request $request)
+    {
+
+        try {
+            $product = $this->entityManager->getRepository(Product::class)->findOneBy(['id' => $id]);
+
+            if (!$product) {
+                return GlobalResponse::error("Aucune information avec cet identifiant");
+            }
+
+//            if ($category->getEnterprises()->getValues() || $category->getOffers()->getValues()) {
+//                return GlobalResponse::error("Suppression impossible : cette donnée est encore liée à d’autres éléments");
+//            }
+            $this->entityManager->remove($product);
+            $this->entityManager->flush();
+        } catch (ConstraintViolationException $exception) {
+            return GlobalResponse::error("Suppression impossible : cette donnée est encore liée à d’autres éléments");
+        } catch (\Exception $exception) {
+            return GlobalResponse::error("Une erreur est survenue $exception");
+        }
+        return GlobalResponse::success("Suppresion reussie !");
     }
 }

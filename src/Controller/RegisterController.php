@@ -88,7 +88,7 @@ final class RegisterController extends AbstractController
 
 
             } catch (\Exception $exception) {
-                return GlobalResponse::success("Compte créé. Vérifiez vos e-mails (y compris spam) ou contactez l’administrateur $exception");
+//                return GlobalResponse::success("Compte créé. Vérifiez vos e-mails (y compris spam) ou contactez l’administrateur $exception");
             }
 
 

@@ -30,13 +30,14 @@ final class CartItemRowComponent
     private ?Product $product = null;
 
     public function __construct(
-        private Cart $cartService,
+        private Cart                   $cartService,
         private EntityManagerInterface $entityManager // <-- Injection de l'EntityManager
     )
     {
     }
 
     // Méthode pour charger l'entité Product une seule fois
+
     /**
      * Charge l'entité Product. Rendu PUBLIC pour être accessible par Twig (this.productEntity).
      */
@@ -52,9 +53,11 @@ final class CartItemRowComponent
     public function getFinalUnitPrice(): float
     {
         $product = $this->getProductEntity();
-        if (!$product) { return 0.0; }
+        if (!$product) {
+            return 0.0;
+        }
 
-        $price = $product->getPrice() / 100;
+        $price = $product->getPrice();
 
         if ($product->isPromotion()) {
             return $price * (1 - ($product->getOffPercent() / 100));
@@ -97,5 +100,7 @@ final class CartItemRowComponent
     {
         $this->cartService->delete($this->productId);
         $liveResponder->emitUp('cartUpdated');
+//        rafraichir le contenu du panier
+        $liveResponder->emit('CartUpdateWithoutPop', componentName: 'HeaderCartComponent');
     }
 }

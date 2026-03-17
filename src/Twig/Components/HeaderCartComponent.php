@@ -38,4 +38,15 @@ final class HeaderCartComponent
         $this->liveResponder->dispatchBrowserEvent('modal:open', []);
 
     }
+
+    #[LiveListener('CartUpdateWithoutPop')]
+    public function onCartUpdateWithoutPop(Cart $cartService): void
+    {
+        // 1. Recharge les données fraîches depuis la session (via le service)
+        $this->previewCart = $cartService->getFull();
+//        dd($this->previewCart);
+
+        $this->currentCart = count($cartService->get());
+
+    }
 }

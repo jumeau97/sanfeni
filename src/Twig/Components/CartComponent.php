@@ -47,7 +47,7 @@ final class CartComponent
             $product = $item['product'];
             $quantity = $item['quantity'];
 
-            $price = $product->getPrice() / 100;
+            $price = $product->getPrice();
             if ($product->isPromotion()) {
                 $price = $price * (1 - ($product->getOffPercent() / 100));
             }

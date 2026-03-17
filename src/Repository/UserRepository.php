@@ -36,8 +36,19 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 
     public function findAllByCriteria(SearchUser $data, $pageNumber, $limit)
     {
-        $qb = $this->createQueryBuilder('u');
+        $qb = $this->createQueryBuilder('u')
+            ->leftJoin('u.shop', 'shop');
 
+        if (!empty($data->getShopName())) {
+            $qb = $qb->andWhere('shop.name=:name')
+                ->setParameter('name', $data->getShopName());
+        }
+
+        if (!empty($data->getShopId())) {
+            $qb = $qb
+                ->andWhere('shop.id= :shopId')
+                ->setParameter('shopId', $data->getShopId());
+        }
 
         $qb->setFirstResult($pageNumber - 1)->setMaxResults($limit);
         return $qb;

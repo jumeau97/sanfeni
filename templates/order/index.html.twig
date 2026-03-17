@@ -217,9 +217,9 @@
                                             </div>
                                             <div class="text-end ps-3">
                                                 {% if product.product.isPromotion %}
-                                                    {% set itemPrice = ((product.product.price / 100) * (1 - (product.product.offPercent / 100))) * product.quantity %}
+                                                    {% set itemPrice = ((product.product.price) * (1 - (product.product.offPercent / 100))) * product.quantity %}
                                                 {% else %}
-                                                    {% set itemPrice = (product.product.price * product.quantity) / 100 %}
+                                                    {% set itemPrice = (product.product.price * product.quantity)  %}
                                                 {% endif %}
                                                 <span
                                                     class="fw-bold fs-6 text-dark">{{ itemPrice | format_currency('XOF') }}</span>

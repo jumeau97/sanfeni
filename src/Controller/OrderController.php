@@ -92,7 +92,7 @@ final class OrderController extends AbstractController
             $order->setCarrierPrice($carriers->getPrice());
             $order->setDelivery($delivery_content);
 //            $order->setIsPaid(false);
-            $order->setState(1);
+            $order->setState("En attente");
 //            dd($order);
             $this->entityManager->persist($order);
 
@@ -103,7 +103,7 @@ final class OrderController extends AbstractController
                 $orderDetails->setProduct($product['product']->getName());
                 $orderDetails->setProduit($product['product']);
                 $orderDetails->setQuantity($product['quantity']);
-                $orderDetails->setState(0);
+                $orderDetails->setState("En attente");
                 $price = $product['product']->getPrice(); // Prix brut (en centimes ?)
 
                 if ($product['product']->getOffPercent() > 0) {
@@ -183,6 +183,11 @@ final class OrderController extends AbstractController
 
             $entity = $this->mapperService->mapDtoToEntity($data, new Order());
             $this->utilisService->updateObject($existData, $entity);
+            if ($existData->getState() == "Livrée")
+                $existData->setIsPaid(1);
+
+//            dd($existData);
+
             $this->entityManager->flush();
         } catch (\Exception $exception) {
             dd($exception->getMessage());

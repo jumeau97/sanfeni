@@ -29,7 +29,7 @@ final class HomeController extends AbstractController
     }
 
     #[Route('/', name: 'app_home')]
-    public function index( Request $request, Cart $cart): Response
+    public function index(Request $request, Cart $cart): Response
     {
 
         $pageNumb = $request->query->getInt('page', 1);
@@ -44,6 +44,7 @@ final class HomeController extends AbstractController
                 ->getRepository(Category::class)->findOneBy(['name' => $slug]);
             if ($categ) $search->setCategory($categ);
         }
+        $search->setState("actif");
 //        dd($search);
 
 

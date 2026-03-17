@@ -21,6 +21,10 @@ class BoutiqueRepository extends ServiceEntityRepository
     public function findAllByCriteria(SearchShop $data, $pageNumber, $limit)
     {
         $qb = $this->createQueryBuilder('o');
+        if (!empty($data->getName())) {
+            $qb = $qb->andWhere('o.name LIKE :name')
+                ->setParameter('name', "%{$data->getName() }%");
+        }
 
         $qb->setFirstResult($pageNumber - 1)->setMaxResults($limit);
         return $qb;

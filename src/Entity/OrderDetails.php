@@ -40,7 +40,7 @@ class OrderDetails
 
     #[ORM\Column]
     #[Groups(['getOrder', 'getOrderDetails'])]
-    private ?string $state = null;
+    private ?string $state = "En attente";
 
 //    public function __toString(): string
 //    {

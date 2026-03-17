@@ -40,12 +40,12 @@
                                 <div class="price">
                                     {% if c.product.isPromotion %}
                                         <span
-                                            class="price-cut">{{ (c.product.price/100)|format_currency('XOF') }}</span>
+                                            class="price-cut">{{ (c.product.price)|format_currency('XOF') }}</span>
                                         <span
-                                            class="new-price">{{ ((c.product.price/100) * (1 - (c.product.offPercent / 100))) | format_currency('XOF') }}</span>
+                                            class="new-price">{{ ((c.product.price) * (1 - (c.product.offPercent / 100))) | format_currency('XOF') }}</span>
                                     {% else %}
                                         <span
-                                            class="new-price">{{ (c.product.price/100)|format_currency('XOF') }}</span>
+                                            class="new-price">{{ (c.product.price)|format_currency('XOF') }}</span>
                                     {% endif %}
                                 </div>
                             </div>
@@ -59,7 +59,7 @@
                     </div>
 
                     {# Calcul du prix unitaire pour le total #}
-                    {% set price = c.product.isPromotion ? (c.product.price / 100) * (1 - (c.product.offPercent / 100)) : (c.product.price / 100) %}
+                    {% set price = c.product.isPromotion ? (c.product.price ) * (1 - (c.product.offPercent / 100)) : (c.product.price) %}
                     {% set total = total + (price * c.quantity) %}
                 {% else %}
                     {# MESSAGE PANIER VIDE CENTRÉ #}

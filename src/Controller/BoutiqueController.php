@@ -15,6 +15,7 @@ use App\Request\Search\SearchProduct;
 use App\Request\Search\SearchShop;
 use App\Service\Product\ProductInterface;
 use App\Service\Shop\ShopInterface;
+use Doctrine\DBAL\Exception\ConstraintViolationException;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -87,5 +88,29 @@ final class BoutiqueController extends AbstractController
         }
 
         return GlobalResponse::success("Boutique enregistrée avec succès");
+    }
+
+    #[Route('/delete-boutique/{id}', name: 'delete-boutique', methods: ['DELETE'])]
+    public function delete($id, Request $request)
+    {
+
+        try {
+            $boutique = $this->entityManager->getRepository(Boutique::class)->findOneBy(['id' => $id]);
+
+            if (!$boutique) {
+                return GlobalResponse::error("Aucune information avec cet identifiant");
+            }
+
+//            if ($category->getEnterprises()->getValues() || $category->getOffers()->getValues()) {
+//                return GlobalResponse::error("Suppression impossible : cette donnée est encore liée à d’autres éléments");
+//            }
+            $this->entityManager->remove($boutique);
+            $this->entityManager->flush();
+        } catch (ConstraintViolationException $exception) {
+            return GlobalResponse::error("Suppression impossible : cette donnée est encore liée à d’autres éléments");
+        } catch (\Exception $exception) {
+            return GlobalResponse::error("Une erreur est survenue $exception");
+        }
+        return GlobalResponse::success("Suppresion reussie !");
     }
 }

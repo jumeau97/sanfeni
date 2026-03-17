@@ -18,13 +18,13 @@
 
         /* Typographie augmentée */
         .small-caps {
-            font-size: 0.75rem;
+            font-size: 1.2rem;
             letter-spacing: 0.8px;
             text-transform: uppercase;
             font-weight: 700;
         }
 
-        .fs-5 { font-size: 1.15rem !important; }
+        .fs-5 { font-size: 1.3rem !important; }
         .fs-4 { font-size: 1.4rem !important; }
 
         /* Badges de statut doux */
@@ -188,14 +188,14 @@
                                     <div class="col-6 col-md-3 text-md-center border-start-md">
                                         <span class="text-muted small-caps d-block mb-1">Montant Total</span>
                                         <h5 class="fw-bold mb-0 fs-4 text-dark">
-                                            {{ ((order.carrierPrice + order.getTotal) / 100)|number_format(0,',','.') }}
+                                            {{ ((order.carrierPrice + order.getTotal) )|number_format(0,',','.') }}
                                             <small>F CFA</small>
                                         </h5>
                                     </div>
 
                                     <div class="col-6 col-md-2 text-md-center">
                                     <span class="badge bg-soft-success text-success px-3 py-2 rounded-pill fw-bold">
-                                        Payée
+                                       {{ order.state }}
                                     </span>
                                     </div>
 

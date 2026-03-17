@@ -103,6 +103,10 @@ class Product
     #[ORM\OneToMany(targetEntity: OrderDetails::class, mappedBy: 'produit')]
     private Collection $orderDetails;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['getProducts'])]
+    private ?string $state = "actif";
+
     public function __construct()
     {
         $this->categories = new ArrayCollection();
@@ -386,6 +390,18 @@ class Product
                 $orderDetail->setProduit(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getState(): ?string
+    {
+        return $this->state;
+    }
+
+    public function setState(?string $state): static
+    {
+        $this->state = $state;
 
         return $this;
     }

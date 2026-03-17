@@ -69,7 +69,7 @@ final class StripeController extends AbstractController
             $product_for_stripe[] = [
                 'price_data' => [
                     'currency' => 'XOF',
-                    'unit_amount' => $product->getPrice() / 100,
+                    'unit_amount' => $product->getPrice() ,
                     'product_data' => [
                         'name' => $product->getProduct(),
                         'images' => [$YOUR_DOMAIN . "/uploads" . $product_object->getIllustration()]

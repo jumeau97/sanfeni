@@ -35,6 +35,16 @@ class ProductRepository extends ServiceEntityRepository
                 ->setParameter('name', "%{$data->getName()}%");
         }
 
+//        dd($data->getState());
+
+        if (!empty($data->getState())) {
+            $qb = $qb
+                ->andWhere('p.state = :state')
+                ->setParameter('state', $data->getState());
+        }
+
+//        dd($qb->getFirstResult());
+
         if (!empty($data->getShopId())) {
             $qb = $qb
                 ->andWhere('shop.id= :shopId')
