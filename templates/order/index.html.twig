@@ -183,7 +183,7 @@
                                 </a>
                             </div>
                             <div class="custom-form-radio fs-6"> {# fs-6 pour les labels d'adresse #}
-                                {{ form_widget(form.adresses) }}
+                                {{ form_widget(form.adresses) |replace({'[br]': "<br>"})|raw }}
                             </div>
                         </div>
                     </div>
@@ -195,7 +195,7 @@
                         </div>
                         <div class="card-body-wb p-4">
                             <div class="custom-form-radio fs-6">
-                                {{ form_widget(form.carriers) }}
+                                {{ form_widget(form.carriers) |replace({'[br]': "<br>"})|raw }}
                             </div>
                         </div>
                     </div>
@@ -219,7 +219,7 @@
                                                 {% if product.product.isPromotion %}
                                                     {% set itemPrice = ((product.product.price) * (1 - (product.product.offPercent / 100))) * product.quantity %}
                                                 {% else %}
-                                                    {% set itemPrice = (product.product.price * product.quantity)  %}
+                                                    {% set itemPrice = (product.product.price * product.quantity) %}
                                                 {% endif %}
                                                 <span
                                                     class="fw-bold fs-6 text-dark">{{ itemPrice | format_currency('XOF') }}</span>

@@ -21,7 +21,6 @@ final class HeaderCartComponent
     {
     }
 
-
     public array $previewCart = [];
     #[LiveProp]
     public ?int $currentCart = 0;

@@ -923,8 +923,171 @@
         }
     </style>
 
+    {#    header contact #}
+    <style>
+        .header-contact-premium {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .contact-info-wrapper {
+            display: flex;
+            flex-direction: column;
+            text-align: right;
+        }
+
+        .contact-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #999;
+            font-weight: 600;
+            line-height: 1;
+            margin-bottom: 3px;
+        }
+
+        .contact-link {
+            text-decoration: none;
+            color: #1A1A1A;
+            font-weight: 700;
+            font-size: 15px;
+            transition: color 0.3s ease;
+        }
+
+        .contact-link:hover {
+            color: #082C6A; /* Votre violet */
+        }
+
+        .contact-link i {
+            font-size: 13px;
+            color: #082C6A;
+        }
+
+        /* Badge WhatsApp Style "Live" */
+        .whatsapp-badge {
+            display: flex;
+            align-items: center;
+            background: #f0fff4; /* Vert très pâle */
+            color: #25D366; /* Vert WhatsApp */
+            padding: 6px 12px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(37, 211, 102, 0.2);
+        }
+
+        .whatsapp-badge .badge-text {
+            font-size: 11px;
+            margin-left: 8px;
+            color: #128C7E;
+            text-transform: uppercase;
+        }
+
+        /* Petit point clignotant "En ligne" */
+        .whatsapp-badge::after {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: #25D366;
+            border-radius: 50%;
+            margin-left: 6px;
+            box-shadow: 0 0 0 rgba(37, 211, 102, 0.4);
+            animation: pulse-green 2s infinite;
+        }
+
+        .whatsapp-badge:hover {
+            background: #25D366;
+            color: #fff;
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 5px 15px rgba(37, 211, 102, 0.3);
+        }
+
+        .whatsapp-badge:hover .badge-text {
+            color: #fff;
+        }
+
+        @keyframes pulse-green {
+            0% {
+                box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(37, 211, 102, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+            }
+        }
+    </style>
+
+    <style>
+        /* Bouton flottant uniquement MOBILE */
+        .whatsapp-sticky-btn {
+            position: fixed;
+            bottom: 20px; /* Distance du bas */
+            right: 20px; /* Distance de la droite */
+            z-index: 9999; /* Toujours au-dessus */
+            text-decoration: none;
+        }
+
+        .whatsapp-icon-wrapper {
+            width: 60px;
+            height: 60px;
+            background-color: #25D366;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 30px;
+            box-shadow: 0 10px 20px rgba(37, 211, 102, 0.4);
+            position: relative;
+            /* Animation de pulsation pour attirer l'attention sur mobile */
+            animation: wa-pulse-mobile 2s infinite;
+        }
+
+        /* Point vert "En ligne" */
+        .online-indicator {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            width: 12px;
+            height: 12px;
+            background-color: #00e676;
+            border: 2px solid white;
+            border-radius: 50%;
+        }
+
+        /* Animation de pulsation douce */
+        @keyframes wa-pulse-mobile {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7);
+            }
+            70% {
+                transform: scale(1.05);
+                box-shadow: 0 0 0 15px rgba(37, 211, 102, 0);
+            }
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+            }
+        }
+
+        /* Optionnel : évite que le bouton cache le dernier élément d'une liste */
+        body {
+            padding-bottom: 80px;
+        }
+
+        @media (min-width: 992px) {
+            body {
+                padding-bottom: 0;
+            }
+        }
+    </style>
 
 </head>
+
 <body>
 
 {% block header %}{% endblock %}
@@ -936,6 +1099,14 @@
 {% include 'menus/footer.html.twig' %}
 {# <button id="myBtn">Open Modal</button> #}
 
+<a href="https://wa.me/22374741745?text={{ "Bonjour Sanfeni, j'aimerais avoir plus d'informations sur vos produits"|url_encode }}"
+   class="whatsapp-sticky-btn d-flex d-lg-none"
+   target="_blank">
+    <div class="whatsapp-icon-wrapper">
+        <i class="fab fa-whatsapp"></i>
+        <span class="online-indicator"></span>
+    </div>
+</a>
 
 <!--------------- jQuery ---------------->
 <script src="{{ asset('assets/js/jquery_3.7.1.min.js') }}"></script>
