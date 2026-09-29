@@ -23,25 +23,33 @@ security:
         main:
             lazy: true
             provider: app_user_provider
+            # Formulaire de connexion classique (navigateur, session)
             form_login:
                 login_path: app_login
                 check_path: app_login
 #                enable_csrf: true
+            # Authentification par token JWT (frontend externe : Authorization: Bearer <token>)
+            jwt: ~
+            # Il y a deux authenticators sur ce firewall : on choisit explicitement
+            # ce qui se passe pour un visiteur non connecté.
+            #  -> navigateur : redirection vers /login
+            #  -> API        : réponse 401 JSON (voir App\Security\AppAuthenticationEntryPoint)
+            entry_point: App\Security\AppAuthenticationEntryPoint
             logout:
                 path: app_logout
                 # where to redirect after logout
                 # target: app_any_route
 
-            # activate different ways to authenticate
-            # https://symfony.com/doc/current/security.html#the-firewall
-
-            # https://symfony.com/doc/current/security/impersonating_user.html
-            # switch_user: true
-
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-         - { path: ^/dashboard, roles: PUBLIC_ACCESS }
+         # json_login (POST /dashboard/login_check) : doit rester public
+         - { path: ^/dashboard/login, roles: PUBLIC_ACCESS }
+         # Back-office : réservé à un utilisateur connecté
+         - { path: ^/dashboard, roles: IS_AUTHENTICATED_FULLY }
+         - { path: ^/admin, roles: IS_AUTHENTICATED_FULLY }
+         # Endpoint de suppression de produit (méthode DELETE, racine de l'arborescence)
+         - { path: ^/delete-product, roles: IS_AUTHENTICATED_FULLY }
          - { path: ^/account, roles: ROLE_USER }
          - { path: ^/commande, roles: ROLE_USER }
 

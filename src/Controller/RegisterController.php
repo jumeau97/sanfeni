@@ -9,6 +9,8 @@ use App\Payload\Utils\GlobalResponse;
 use App\Payload\Utils\UtilisService;
 use App\Request\Search\SearchUser;
 use App\Request\UserRequest;
+use App\Security\CredentialsMailer;
+use App\Security\TemporaryPasswordGenerator;
 use App\Service\Utilisateur\UserInterface;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManagerInterface;
@@ -34,7 +36,9 @@ final class RegisterController extends AbstractController
         private ValidatorInterface     $validator,
         private UserInterface          $userInterface,
         private UtilisService          $utilisService,
-        private MailerInterface        $mailer
+        private MailerInterface        $mailer,
+        private TemporaryPasswordGenerator $passwordGenerator,
+        private CredentialsMailer      $credentialsMailer
     )
     {
     }
@@ -143,29 +147,19 @@ final class RegisterController extends AbstractController
                 ->setEmail($data->getEmail())
                 ->setShop($shop)
                 ->setRoles($data->getRoles());
-            $password = $passwordHasher->hashPassword(
-                $user,
-                "12345678"
-            );
-            $user->setPassword($password);
 
+            // Mot de passe provisoire unique, envoyé au titulaire du compte.
+            $plainPassword = $this->passwordGenerator->generate();
+            $user->setPassword(
+                $passwordHasher->hashPassword($user, $plainPassword)
+            );
 
             $this->entityManager->persist($user);
             $this->entityManager->flush();
 
-            try {
-                //send email
-                $this->userInterface->sendingEmailTo(
-                    [new Address($user->getEmail())],
-                    'Création de boutique',
-                    ['user' => $user, 'plainPassword' => '12345678'],
-                    'register/register_shop_email.html.twig'
-                );
+            // Absorbe déjà toute erreur d'envoi : le compte est créé dans tous les cas.
+            $this->credentialsMailer->send($user, $plainPassword);
 
-
-            } catch (\Exception $exception) {
-                return GlobalResponse::success("Compte créé. Vérifiez vos e-mails (y compris spam) ou contactez l’administrateur $exception");
-            }
         } catch (UniqueConstraintViolationException $exception) {
             return GlobalResponse::error("Cet utilisateur existe déjà");
 

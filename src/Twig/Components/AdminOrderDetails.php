@@ -18,7 +18,6 @@ final class AdminOrderDetails
     #[LiveAction]
     public function updateStatus(LiveResponder $liveResponder): void
     {
-        dd($this->field);
-//        $liveResponder->dispatchBrowserEvent('toggle:status', []);
+        $liveResponder->dispatchBrowserEvent('toggle:status', []);
     }
 }

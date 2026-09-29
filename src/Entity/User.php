@@ -38,6 +38,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
+    /**
+     * Mot de passe en clair, uniquement pendant la création/la modification
+     * d'un compte depuis le back-office. Non mappé en base : il n'est ni
+     * stocké ni sérialisé dans les réponses API.
+     */
+    private ?string $plainPassword = null;
+
     #[ORM\ManyToOne(inversedBy: 'users')]
     #[Groups(['getUsers'])]
     private ?Boutique $shop = null;
@@ -134,6 +141,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPassword(string $password): static
     {
         $this->password = $password;
+
+        return $this;
+    }
+
+    public function getPlainPassword(): ?string
+    {
+        return $this->plainPassword;
+    }
+
+    public function setPlainPassword(?string $plainPassword): static
+    {
+        $this->plainPassword = $plainPassword;
 
         return $this;
     }

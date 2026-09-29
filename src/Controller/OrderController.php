@@ -19,6 +19,7 @@ use App\Request\Search\SearchOrderDetails;
 use App\Service\Order\OrderInterface;
 use App\Service\OrderDetails\OrderDetailsInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -38,6 +39,7 @@ final class OrderController extends AbstractController
         private ValidatorInterface     $validator,
         private DtoMapperService       $mapperService,
         private ObjectUpdater          $objectUpdater,
+        private LoggerInterface        $logger,
     )
     {
     }
@@ -190,9 +192,11 @@ final class OrderController extends AbstractController
 
             $this->entityManager->flush();
         } catch (\Exception $exception) {
-            dd($exception->getMessage());
-//            return GlobalResponse::error("Une erreur est survenue, veuillez réessayer ! ");
+            $this->logger->error('Mise à jour de la commande impossible (id: '.$id.') : '.$exception->getMessage(), [
+                'exception' => $exception,
+            ]);
 
+            return GlobalResponse::error("Une erreur est survenue, veuillez réessayer ! ");
         }
 
         return GlobalResponse::success("Mise à jour de la commande reussie!.");
@@ -221,9 +225,11 @@ final class OrderController extends AbstractController
             $this->utilisService->updateObject($existData, $entity);
             $this->entityManager->flush();
         } catch (\Exception $exception) {
-            dd($exception->getMessage());
-//            return GlobalResponse::error("Une erreur est survenue, veuillez réessayer ! ");
+            $this->logger->error('Mise à jour du détail de commande impossible (id: '.$id.') : '.$exception->getMessage(), [
+                'exception' => $exception,
+            ]);
 
+            return GlobalResponse::error("Une erreur est survenue, veuillez réessayer ! ");
         }
 
         return GlobalResponse::success("Mise à jour de la commande reussie!.");
