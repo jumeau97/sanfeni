@@ -1,173 +1,82 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Log in!{% endblock %}
+{% block title %}Connexion{% endblock %}
 
 {% block stylesheets %}
-    <style>
-
-
-        /* Carte Auth */
-        .auth-card {
-            border-radius: 24px;
-            border: none;
-        }
-
-        /* Inputs flottants XL */
-        .custom-input {
-            border: 2px solid #f0f0f0 !important;
-            border-radius: 16px !important;
-            height: 65px !important; /* Plus haut pour la lisibilité */
-            font-size: 1.1rem !important;
-            padding-left: 20px !important;
-            transition: all 0.3s ease;
-        }
-
-        .custom-input:focus {
-            border-color: var(--wb-purple) !important;
-            box-shadow: 0 0 0 4px rgba(138, 63, 252, 0.1) !important;
-        }
-
-        /* Étiquettes flottantes */
-        .form-floating > label {
-            padding-left: 20px;
-            color: #888;
-        }
-
-        /* Checkbox personnalisée */
-        .custom-check {
-            width: 1.2em;
-            height: 1.2em;
-            margin-top: 0.15em;
-            cursor: pointer;
-        }
-
-        .custom-check:checked {
-            background-color: var(--wb-purple);
-            border-color: var(--wb-purple);
-        }
-
-        /* Bouton de connexion */
-        .btn-wb-auth {
-            background-color: var(--wb-purple);
-            color: white;
-            border: none;
-            border-radius: 16px;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        .btn-wb-auth:hover {
-            background-color: var(--wb-purple-hover);
-            color: white;
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(252, 214, 63, 0.2) !important;
-        }
-
-        /* Typographie */
-        .text-primary {
-            color: var(--wb-purple) !important;
-        }
-
-        .fs-2 { font-size: 2.2rem !important; }
-    </style>
+    {% include 'auth/_styles.html.twig' %}
 {% endblock %}
 
 {% block body %}
+    <!--------------- login-section --------------->
+    <section class="auth-page">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-7 col-lg-5">
+                    <div class="auth-card">
 
-    <form method="post">
-        <!--------------- login-section --------------->
-{#        <section class="login-page py-5 bg-light min-vh-100 d-flex align-items-center">#}
-        <section class="py-5 bg-light d-flex align-items-center">
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-md-7 col-lg-5">
-                        <div class="auth-card shadow-sm bg-white p-4 p-md-5 rounded-4">
+                        <div class="auth-head">
+                            <h1 class="auth-title">Se connecter</h1>
+                            <p class="auth-sub">Bon retour parmi nous !</p>
+                        </div>
 
-                            <div class="text-center mb-5">
-                                <h2 class="fw-bold fs-2 mb-2">Se connecter</h2>
-                                <p class="text-muted fs-6">Bon retour parmi nous !</p>
+                        {% if error %}
+                            <div class="auth-alert" role="alert">
+                                {{ error.messageKey|trans(error.messageData, 'security') }}
                             </div>
+                        {% endif %}
 
-                            {% if error %}
-                                <div class="alert alert-danger rounded-3 mb-4 border-0 shadow-sm fs-6">
-                                    {{ error.messageKey|trans(error.messageData, 'security') }}
-                                </div>
-                            {% endif %}
-
-                            <form method="post">
-                                <div class="review-inner-form">
-                                    {# Email #}
-                                    <div class="form-floating mb-3">
+                        {# UN seul <form> : la page en contenait deux imbriqués
+                           (invalide — le navigateur ignorait le 2ᵉ balisage
+                           de départ et le </form> final de trop). #}
+                        <form method="post" class="auth-form">
+                            <div class="auth-fields">
+                                {# Email #}
+                                <div class="auth-field">
+                                    <div class="form-floating">
                                         <input type="email" value="{{ last_username }}" name="_username" id="username"
-                                               class="form-control custom-input" placeholder="Email"
+                                               class="form-control" placeholder="Adresse e-mail"
                                                autocomplete="email" required autofocus>
                                         <label for="username">Adresse e-mail</label>
                                     </div>
+                                </div>
 
-                                    {# Mot de passe #}
-                                    <div class="form-floating mb-3">
+                                {# Mot de passe #}
+                                <div class="auth-field">
+                                    <div class="form-floating">
                                         <input type="password" name="_password" id="password"
-                                               class="form-control custom-input"
-                                               placeholder="Mot de passe" autocomplete="current-password" required>
+                                               class="form-control" placeholder="Mot de passe"
+                                               autocomplete="current-password" required>
                                         <label for="password">Mot de passe</label>
                                     </div>
-
-                                    <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-
-                                    {# Options : Remember me & Forgot Pass #}
-                                    <div class="d-flex justify-content-between align-items-center mb-4 px-2">
-                                        <div class="form-check">
-                                            <input class="form-check-input custom-check" type="checkbox" name="_remember_me" id="remember_me">
-                                            <label class="form-check-label small fw-bold text-muted" for="remember_me">
-                                                Se rappeler de moi
-                                            </label>
-                                        </div>
-                                        <div class="forget-pass">
-                                            <a href="#" class="small fw-bold text-primary text-decoration-none">Mot de passe oublié ?</a>
-                                        </div>
-                                    </div>
                                 </div>
+                            </div>
 
-                                <div class="login-btn text-center">
-                                    <button class="btn btn-wb-auth w-100 py-3 fs-5 fw-bold mb-4 shadow-sm" type="submit">
-                                        Se connecter
-                                    </button>
+                            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
-                                    <p class="mb-0 text-muted">
-                                        Vous n'avez pas de compte ?
-                                        <a href="{{ path('register_customer') }}" class="text-primary fw-bold text-decoration-none">Créer un compte</a>
-                                    </p>
+                            {# Options #}
+                            <div class="auth-options">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox"
+                                           name="_remember_me" id="remember_me">
+                                    <label class="form-check-label" for="remember_me">
+                                        Se rappeler de moi
+                                    </label>
                                 </div>
-                            </form>
+                                <a href="#" class="auth-link">Mot de passe oublié ?</a>
+                            </div>
 
-                        </div>
+                            <button class="auth-btn" type="submit">Se connecter</button>
+
+                            <p class="auth-note">
+                                Vous n'avez pas de compte ?
+                                <a href="{{ path('register_customer') }}" class="auth-link">Créer un compte</a>
+                            </p>
+                        </form>
+
                     </div>
                 </div>
             </div>
-        </section>
-        <!--------------- login-section-end --------------->
-
-        {#        <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1> #}
-        {#        <label for="username">Email</label> #}
-        {#        <input type="email" value="{{ last_username }}" name="_username" id="username" class="form-control" #}
-        {#               autocomplete="email" required autofocus> #}
-        {#        <label for="password">Password</label> #}
-        {#        <input type="password" name="_password" id="password" class="form-control" autocomplete="current-password" #}
-        {#               required> #}
-        {#        <input type="hidden" name="_csrf_token" data-controller="csrf-protection" #}
-        {#               value="{{ csrf_token('authenticate') }}"> #}
-
-        {#
-        Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
-        See https://symfony.com/doc/current/security/remember_me.html
-
-        <div class="checkbox mb-3">
-            <input type="checkbox" name="_remember_me" id="_remember_me">
-            <label for="_remember_me">Remember me</label>
         </div>
-        #}
-
-        {#        <button class="btn btn-lg btn-primary" type="submit"> #}
-        {#            Sign in #}
-        {#        </button> #}
-    </form>
+    </section>
+    <!--------------- login-section-end --------------->
 {% endblock %}

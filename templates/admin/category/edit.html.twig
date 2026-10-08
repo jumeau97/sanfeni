@@ -1,0 +1,25 @@
+{% extends 'base_admin.html.twig' %}
+
+{% block title %}Modifier {{ category.name }}{% endblock %}
+{% block page_title %}Modifier la catégorie{% endblock %}
+
+{% import 'admin/_macros.html.twig' as ui %}
+
+{% block body %}
+    <div class="admin-card" style="max-width: 760px;">
+        <div class="admin-card-header">
+            <div>
+                <h2 class="admin-card-title">{{ category.name }}</h2>
+                <p class="admin-card-sub mb-0">Modification de la catégorie.</p>
+            </div>
+            {{ ui.back(path('admin_category_show', {id: category.id}), 'Retour à la catégorie') }}
+        </div>
+
+        {% include 'admin/category/_form.html.twig' with {
+            'form': form,
+            'category': category,
+            'submit_label': 'Enregistrer les modifications',
+            'back_url': path('admin_category_show', {id: category.id})
+        } %}
+    </div>
+{% endblock %}

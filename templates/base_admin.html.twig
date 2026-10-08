@@ -1,0 +1,220 @@
+{# ============================================================================
+   base_admin.html.twig — Layout DÉDIÉ À L'ADMINISTRATION (back-office sur mesure)
+
+   Interface d'administration développée maison : EasyAdmin a été retiré du
+   projet. Ce template est volontairement INDÉPENDANT de base.html.twig :
+
+      · base.html.twig       → strictement réservé aux visiteurs du site
+                               (vitrine, panier, compte, paiement…)
+      · base_admin.html.twig → back-office uniquement
+
+   Il ne charge AUCUN des styles de la vitrine (style.css, nouislider, aos,
+   swiper, header/footer/WhatsApp) afin qu'aucune règle de la boutique ne
+   puisse contaminer l'administration, et inversement. Tout le design vit
+   dans public/css/admin.css.
+
+   Blocs exposés aux pages enfants :
+      · {% block title %}        onglet du navigateur
+      · {% block stylesheets %}  CSS spécifique à une page
+      · {% block page_title %}   titre affiché dans la barre supérieure
+      · {% block body %}         contenu principal (obligatoire)
+      · {% block script %}       JS spécifique à la page
+      · {% block sidebar_nav %}  menu latéral (personnalisable par page)
+
+   Variables exposées par le service `admin_scope` (Twig global) :
+      · admin_scope.isSuperAdmin / isVendor / shop
+   ============================================================================ #}
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {# Le back-office ne doit pas être indexé par les moteurs de recherche #}
+    <meta name="robots" content="noindex, nofollow">
+
+    <title>{% block title %}Administration{% endblock %} · Sanfeni</title>
+
+    {# Bootstrap 5 — le seul framework CSS commun avec la vitrine #}
+    <link rel="stylesheet" href="{{ asset('css/bootstrap-5.3.2.min.css') }}">
+
+    {# Design system du back-office #}
+    <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
+
+    {# Icônes #}
+    <link rel="stylesheet" href="{{ asset('plugins/fontawesome-free/css/all.min.css') }}">
+
+    {# Police du site (identité typographique conservée) #}
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+
+    {% block stylesheets %}{% endblock %}
+</head>
+
+<body class="admin-body">
+
+{# Voile mobile (ferme le menu en cliquant à côté) #}
+<div class="admin-backdrop" id="admin-backdrop" hidden></div>
+
+<div class="admin-shell">
+
+    {# ------------------------------------------------------------------
+       Barre latérale — surchargeable avec {% block sidebar_nav %}
+       ------------------------------------------------------------------ #}
+    <aside class="admin-sidebar" id="admin-sidebar">
+        <a class="admin-brand" href="{{ path('admin_dashboard') }}">
+            <span class="admin-brand-badge"><i class="fas fa-bolt"></i></span>
+            <span class="admin-brand-text">
+                Sanfeni
+                <small>Administration</small>
+            </span>
+        </a>
+
+        {% set route = app.request.attributes.get('_route') %}
+
+        {% block sidebar_nav %}
+            <nav class="admin-nav" aria-label="Navigation administration">
+                <div class="admin-nav-label">Général</div>
+
+                <a href="{{ path('admin_dashboard') }}"
+                   class="{{ route == 'admin_dashboard' ? 'active' }}"
+                   title="Tableau de bord">
+                    <i class="fas fa-tachometer-alt"></i><span>Tableau de bord</span>
+                </a>
+
+                <div class="admin-nav-label">Catalogue</div>
+
+                <a href="{{ path('admin_product_index') }}"
+                   class="{{ route starts with 'admin_product' ? 'active' }}"
+                   title="Produits">
+                    <i class="fas fa-box-open"></i><span>Produits</span>
+                </a>
+
+                <a href="{{ path('admin_category_index') }}"
+                   class="{{ route starts with 'admin_category' ? 'active' }}"
+                   title="Catégories">
+                    <i class="fas fa-layer-group"></i><span>Catégories</span>
+                </a>
+
+                <div class="admin-nav-label">Ventes</div>
+
+                <a href="{{ path('admin_order_index') }}"
+                   class="{{ route starts with 'admin_order' ? 'active' }}"
+                   title="Commandes">
+                    <i class="fas fa-receipt"></i><span>Commandes</span>
+                </a>
+
+                <a href="{{ path('admin_boutique_index') }}"
+                   class="{{ route starts with 'admin_boutique' ? 'active' }}"
+                   title="Boutiques">
+                    <i class="fas fa-store"></i><span>Boutiques</span>
+                </a>
+
+                <div class="admin-nav-label">Comptes</div>
+
+                <a href="{{ path('admin_user_index') }}"
+                   class="{{ route starts with 'admin_user' ? 'active' }}"
+                   title="Utilisateurs">
+                    <i class="fas fa-users"></i><span>Utilisateurs</span>
+                </a>
+
+                {# Configuration globale : réservée aux administrateurs #}
+                {% if admin_scope.isSuperAdmin %}
+                    <div class="admin-nav-label">Configuration</div>
+
+                    <a href="{{ path('admin_carrier_index') }}"
+                       class="{{ route starts with 'admin_carrier' ? 'active' }}"
+                       title="Transporteurs">
+                        <i class="fas fa-shipping-fast"></i><span>Transporteurs</span>
+                    </a>
+                {% endif %}
+            </nav>
+        {% endblock %}
+
+        <div class="admin-sidebar-foot">
+            {% if admin_scope.isVendor and admin_scope.shop %}
+                Boutique : {{ admin_scope.shop.name }}
+            {% else %}
+                Sanfeni · back-office
+            {% endif %}
+        </div>
+    </aside>
+
+    {# ------------------------------------------------------------------
+       Zone principale
+       ------------------------------------------------------------------ #}
+    <div class="admin-main">
+
+        <header class="admin-topbar">
+            <div class="d-flex align-items-center gap-2">
+                {# Bouton menu (mobile) : ouvre la sidebar en tiroir #}
+                <button class="admin-menu-btn" id="admin-menu-btn" type="button"
+                        aria-label="Ouvrir le menu" aria-controls="admin-sidebar">
+                    <i class="fas fa-bars"></i>
+                </button>
+
+                <h1>{% block page_title %}Tableau de bord{% endblock %}</h1>
+            </div>
+
+            <div class="admin-topbar-actions">
+                <a href="{{ path('app_home') }}" class="btn btn-sm btn-outline-secondary rounded-pill"
+                   target="_blank" rel="noopener">
+                    <i class="fas fa-external-link-alt me-1"></i>
+                    <span class="d-none d-sm-inline">Voir le site</span>
+                </a>
+
+                <span class="admin-user" title="{{ app.user ? app.user.email : '' }}">
+                    <span class="admin-avatar">
+                        {{ app.user ? (app.user.firstname|default(app.user.email))|first|upper : 'A' }}
+                    </span>
+                    <span class="admin-user-meta d-none d-md-flex">
+                        <span>{{ app.user ? (app.user.firstname ~ ' ' ~ app.user.lastname)|trim|default(app.user.email) : 'Invité' }}</span>
+                        <small>
+                            {% if admin_scope.isSuperAdmin %}Administrateur
+                            {% elseif admin_scope.isVendor %}Vendeur
+                            {% else %}Membre{% endif %}
+                        </small>
+                    </span>
+                </span>
+
+                <a href="{{ path('app_logout') }}" class="admin-logout" title="Se déconnecter">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Déconnexion</span>
+                </a>
+            </div>
+        </header>
+
+        <main class="admin-content">
+            {# Messages flash (succès / erreurs / infos) #}
+            {% include 'admin/_flash.html.twig' %}
+
+            {% block body %}{% endblock %}
+        </main>
+
+    </div>
+</div>
+
+{% block script %}
+    <script>
+        (function () {
+            const btn = document.getElementById('admin-menu-btn');
+            const backdrop = document.getElementById('admin-backdrop');
+
+            if (btn) {
+                btn.addEventListener('click', function () {
+                    document.body.classList.toggle('admin-nav-open');
+                    if (backdrop) backdrop.hidden = !document.body.classList.contains('admin-nav-open');
+                });
+            }
+
+            if (backdrop) {
+                backdrop.addEventListener('click', function () {
+                    document.body.classList.remove('admin-nav-open');
+                    backdrop.hidden = true;
+                });
+            }
+        })();
+    </script>
+{% endblock %}
+
+</body>
+</html>

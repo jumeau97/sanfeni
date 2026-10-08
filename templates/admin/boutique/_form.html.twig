@@ -1,0 +1,39 @@
+{% import 'admin/_macros.html.twig' as ui %}
+
+{{ form_start(form, {'attr': {'class': 'admin-form', 'novalidate': 'novalidate'}}) }}
+
+{% if not form.vars.valid %}
+    <div class="admin-flash admin-flash-error">
+        <i class="fas fa-times-circle mt-1"></i>
+        <div><strong>Le formulaire contient des erreurs.</strong>{{ form_errors(form) }}</div>
+    </div>
+{% endif %}
+
+<fieldset class="admin-form-fieldset">
+    <legend>Identité de la boutique</legend>
+    <div class="row g-3">
+        <div class="col-md-6">{{ form_row(form.name) }}</div>
+        <div class="col-md-6">{{ form_row(form.proprietaire) }}</div>
+        <div class="col-12">{{ form_row(form.description) }}</div>
+    </div>
+</fieldset>
+
+<fieldset class="admin-form-fieldset">
+    <legend>Contact</legend>
+    <div class="row g-3">
+        <div class="col-md-6">{{ form_row(form.email) }}</div>
+        <div class="col-md-6">{{ form_row(form.phoneNumber) }}</div>
+        <div class="col-md-6">{{ form_row(form.propPhoneNumber) }}</div>
+        <div class="col-md-6">{{ form_row(form.state) }}</div>
+    </div>
+</fieldset>
+
+<div class="admin-form-actions">
+    <button type="submit" class="btn btn-admin btn-admin-accent">
+        <i class="fas fa-check"></i> {{ submit_label|default('Enregistrer') }}
+    </button>
+    {{ ui.back(back_url|default(path('admin_boutique_index')), 'Annuler') }}
+</div>
+
+{{ form_widget(form._token) }}
+{{ form_end(form, {'render_rest': false}) }}

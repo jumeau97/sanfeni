@@ -1,0 +1,103 @@
+{% extends 'base_admin.html.twig' %}
+
+{% block title %}{{ account.email }}{% endblock %}
+{% block page_title %}Fiche utilisateur{% endblock %}
+
+{% import 'admin/_macros.html.twig' as ui %}
+
+{% block body %}
+
+    <div class="admin-card-header">
+        <div>
+            <h2 class="admin-card-title mb-1" style="font-size:1.1rem;">
+                {{ (account.firstname ~ ' ' ~ account.lastname)|trim|default(account.email) }}
+            </h2>
+            <p class="admin-card-sub mb-0">{{ account.email }}</p>
+        </div>
+        <div class="d-flex gap-2 flex-wrap">
+            {{ ui.back(path('admin_user_index'), 'Retour à la liste') }}
+            <a href="{{ path('admin_user_edit', {id: account.id}) }}" class="btn btn-admin">
+                <i class="fas fa-pen"></i> Modifier
+            </a>
+            {% if account.id != app.user.id %}
+                {{ ui.delete_button(
+                    path('admin_user_delete', {id: account.id}),
+                    'Supprimer',
+                    'Supprimer définitivement le compte ' ~ account.email ~ ' ?'
+                ) }}
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="row g-3">
+        <div class="col-lg-6">
+            <div class="admin-card">
+                <h3 class="admin-card-title">Informations</h3>
+                <dl class="admin-meta">
+                    <div>
+                        <dt>Prénom</dt>
+                        <dd>{{ account.firstname ?: '—' }}</dd>
+                    </div>
+                    <div>
+                        <dt>Nom</dt>
+                        <dd>{{ account.lastname ?: '—' }}</dd>
+                    </div>
+                    <div>
+                        <dt>E-mail</dt>
+                        <dd>{{ account.email }}</dd>
+                    </div>
+                    <div>
+                        <dt>Boutique</dt>
+                        <dd>{{ account.shop ? account.shop.name : '—' }}</dd>
+                    </div>
+                    <div>
+                        <dt>Rôles</dt>
+                        <dd>
+                            {% for role in account.roles %}
+                                <span class="admin-badge-soft">{{ role|replace({'ROLE_': ''}) }}</span>
+                            {% endfor %}
+                        </dd>
+                    </div>
+                </dl>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="admin-card">
+                <h3 class="admin-card-title">Commandes du compte</h3>
+                <div class="admin-table-wrap">
+                    <table class="admin-table">
+                        <thead>
+                        <tr>
+                            <th>Référence</th>
+                            <th>Date</th>
+                            <th>Total</th>
+                            <th>Statut</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for order in account.orders
+                            |filter(o => admin_scope.orderInScope(o))
+                            |sort((a, b) => b.id <=> a.id)
+                            |slice(0, 10) %}
+                            <tr>
+                                <td>
+                                    <a class="admin-cell-main" href="{{ path('admin_order_show', {id: order.id}) }}">
+                                        #{{ order.reference }}
+                                    </a>
+                                </td>
+                                <td>{{ order.createdAt|date('d/m/Y') }}</td>
+                                <td>{{ admin_scope.scopedTotal(order)|fcfa }}</td>
+                                <td>{{ ui.tag(order.state) }}</td>
+                            </tr>
+                        {% else %}
+                            {{ ui.empty(4, 'Aucune commande', 'Ce compte n’a encore rien commandé.') }}
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

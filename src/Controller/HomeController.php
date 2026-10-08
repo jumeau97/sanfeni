@@ -63,6 +63,8 @@ final class HomeController extends AbstractController
 
         return $this->render('home/index.html.twig', [
             'products' => $products,
+            // Barre de raccourcis de catégories de la page d'accueil.
+            'categories' => $this->entityManager->getRepository(Category::class)->findCategoryTree(),
         ]);
     }
 

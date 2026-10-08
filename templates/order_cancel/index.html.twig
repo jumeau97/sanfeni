@@ -1,107 +1,197 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Erreur de paiement{% endblock %}
+{% block title %}Paiement échoué{% endblock %}
 
 {% block stylesheets %}
     <style>
-        /* Design de l'icône d'erreur */
-        .error-circle {
+        /* ===========================================================
+           Échec de paiement — même structure que les deux écrans de
+           confirmation, en variante rouge.
+           =========================================================== */
+        .wb-confirm {
+            background: #f6f6f9;
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+        }
+
+        .wb-confirm__card {
+            background: #fff;
+            border-radius: 24px;
+            padding: 50px 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, .05);
+        }
+
+        .wb-confirm__circle {
             width: 80px;
             height: 80px;
-            background: #fff5f5;
+            background: #fdecec;
             color: #d9534f;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             margin: 0 auto;
-            animation: shake 0.5s cubic-bezier(.36, .07, .19, .97) both;
+            animation: wbConfirmPop .5s cubic-bezier(.34, 1.56, .64, 1);
         }
 
-        .error-circle svg {
-            width: 40px;
-            height: 40px;
+        .wb-confirm__circle svg {
+            width: 34px;
+            height: 34px;
         }
 
-        /* Boutons Sanfeni Style */
-        .btn-sanfeni-fill {
-            color: white !important;
-            padding: 16px 32px;
-            border-radius: 14px;
+        .wb-confirm__title {
+            margin: 0 0 14px;
+            font-size: 3rem;
+            font-weight: 800;
+            letter-spacing: -.02em;
+            color: #d9534f;
+        }
+
+        .wb-confirm__lead {
+            margin: 0 0 22px;
+            font-size: 1.6rem;
+            line-height: 1.6;
+            color: #666;
+        }
+
+        /* Encadré explicatif — aligné à gauche, le texte justifié à
+           gauche se lit mieux qu'un centre pour une phrase longue. */
+        .wb-confirm__alert {
+            margin-bottom: 34px;
+            padding: 20px;
+            background: #fff5f5;
+            border: 1px solid #fed7d7;
+            border-radius: 16px;
+            text-align: left;
+        }
+
+        .wb-confirm__alert p {
+            margin: 0;
+            color: #c53030;
+            font-size: 1.4rem;
+            line-height: 1.6;
+        }
+
+        .wb-confirm__btn {
+            display: inline-block;
+            padding: 14px 30px;
+            border-radius: 12px;
             font-weight: 700;
             text-decoration: none;
-            transition: all 0.3s ease;
-            border: none;
+            text-align: center;
+            transition: transform .2s ease, filter .2s ease,
+                        background-color .2s ease;
         }
 
-        .btn-sanfeni-outline {
-            background-color: transparent;
+        .wb-confirm__btn--danger {
+            background: #d9534f;
+            color: #fff !important;
+        }
+
+        .wb-confirm__btn--danger:hover {
+            color: #fff !important;
+            transform: translateY(-2px);
+            filter: brightness(1.1);
+        }
+
+        .wb-confirm__btn--ghost {
+            background: transparent;
             color: #082C6A !important;
             border: 2px solid #082C6A;
-            padding: 14px 30px;
-            border-radius: 14px;
-            font-weight: 700;
-            text-decoration: none;
-            transition: all 0.3s ease;
+            padding: 12px 28px;
         }
 
-        .btn-sanfeni-fill:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(217, 83, 79, 0.2);
-        }
-
-        .btn-sanfeni-outline:hover {
+        .wb-confirm__btn--ghost:hover {
             background: #f0f4ff;
         }
 
-        /* Animation de secousse pour l'erreur */
-        @keyframes shake {
-            10%, 90% {
-                transform: translate3d(-1px, 0, 0);
+        .wb-confirm__support {
+            margin-top: 18px;
+            font-size: 1.3rem;
+            color: #888;
+        }
+
+        .wb-confirm__support a {
+            color: #082C6A;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        @keyframes wbConfirmPop {
+            0% { transform: scale(0); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* ----------------------------------------------------------
+           Mobile : la carte faisait 300px de largeur minimale dans un
+           conteneur qui n'en offre plus que ~280 → débordement
+           horizontal. On passe tout en pleine largeur.
+           ---------------------------------------------------------- */
+        @media (max-width: 575px) {
+            .wb-confirm {
+                min-height: 0;
+                padding: 32px 0;
             }
-            20%, 80% {
-                transform: translate3d(2px, 0, 0);
+
+            .wb-confirm__card {
+                padding: 30px 18px;
+                border-radius: 18px;
             }
-            30%, 50%, 70% {
-                transform: translate3d(-4px, 0, 0);
+
+            .wb-confirm__circle {
+                width: 64px;
+                height: 64px;
             }
-            40%, 60% {
-                transform: translate3d(4px, 0, 0);
+
+            .wb-confirm__title {
+                font-size: 2.2rem;
+            }
+
+            .wb-confirm__lead {
+                font-size: 1.45rem;
+            }
+
+            .wb-confirm__alert {
+                padding: 16px;
+            }
+
+            .wb-confirm__btn {
+                display: block;
+                width: 100%;
+                padding-left: 16px;
+                padding-right: 16px;
             }
         }
     </style>
 {% endblock %}
 
 {% block body %}
-    <section class="product privacy footer-padding"
-             style="background-color: #f6f6f9; min-height: 80vh; display: flex; align-items: center;">
+    <section class="product privacy wb-confirm footer-padding">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-7">
-                    <div class="confirmation-card text-center"
-                         style="background: #fff; border-radius: 24px; padding: 50px 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
+                    <div class="wb-confirm__card text-center">
 
-                        <div class="error-icon-wrapper mb-4">
-                            <div class="error-circle">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none"
-                                     viewBox="0 0 24 24" stroke="currentColor">
+                        <div class="mb-4">
+                            <div class="wb-confirm__circle">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                     stroke="currentColor" aria-hidden="true">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3"
                                           d="M6 18L18 6M6 6l12 12"/>
                                 </svg>
                             </div>
                         </div>
 
-                        <h1 class="intro-heading mb-3" style="font-weight: 800; color: #d9534f; font-size: 30px;">
-                            Paiement échoué</h1>
+                        <h1 class="wb-confirm__title">Paiement échoué</h1>
 
-                        <p class="policy-details mb-4" style="color: #666; font-size: 16px; line-height: 1.6;">
+                        <p class="wb-confirm__lead">
                             Désolé <strong>{{ order.user.firstname }}</strong>, la transaction a été refusée.<br>
                             Votre commande <strong>#{{ order.reference }}</strong> est en attente de paiement.
                         </p>
 
-                        <div class="alert-box mb-5"
-                             style="background: #fff5f5; border: 1px solid #fed7d7; border-radius: 16px; padding: 20px; text-align: left;">
-                            <p style="margin: 0; color: #c53030; font-size: 14px;">
+                        <div class="wb-confirm__alert">
+                            <p>
                                 <strong>Pourquoi cela a échoué ?</strong><br>
                                 Cela peut être dû à un solde insuffisant, une erreur de saisie ou une expiration de
                                 session. Aucun montant n'a été débité.
@@ -110,17 +200,16 @@
 
                         <div class="action-buttons">
                             <div class="d-flex flex-column flex-md-row gap-3 justify-content-center">
-                                {# Bouton pour retourner au paiement ou panier #}
-                                <a href="{{ path('app_order') }}" class="btn-sanfeni-fill"
-                                   style="background-color: #d9534f;">
+                                <a href="{{ path('app_order') }}" class="wb-confirm__btn wb-confirm__btn--danger">
                                     Réessayer le paiement
                                 </a>
-                                <a href="{{ path('app_account') }}" class="btn-sanfeni-outline">
+                                <a href="{{ path('app_account') }}" class="wb-confirm__btn wb-confirm__btn--ghost">
                                     Voir ma commande
                                 </a>
                             </div>
-                            <p class="mt-4" style="color: #888; font-size: 13px;">
-                                Besoin d'aide ? Contactez notre support au <span style="color: #082C6A;">+223 74 74 17 45</span>
+                            <p class="wb-confirm__support">
+                                Besoin d'aide ? Contactez notre support au
+                                <a href="tel:+22374741745">+223 74 74 17 45</a>
                             </p>
                         </div>
 
@@ -129,7 +218,4 @@
             </div>
         </div>
     </section>
-
-
-
 {% endblock %}

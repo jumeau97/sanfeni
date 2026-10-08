@@ -4,8 +4,25 @@
 
 {% block stylesheets %}
     <style>
-        /* Icône de succès Sanfeni */
-        .success-circle {
+        /* ===========================================================
+           Confirmation de commande — visuel unique
+           (même structure que pay_on_delivery et order_cancel)
+           =========================================================== */
+        .wb-confirm {
+            background: #f6f6f9;
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+        }
+
+        .wb-confirm__card {
+            background: #fff;
+            border-radius: 24px;
+            padding: 50px 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, .05);
+        }
+
+        .wb-confirm__circle {
             width: 80px;
             height: 80px;
             background: #e7f6ed;
@@ -16,77 +33,192 @@
             justify-content: center;
             font-size: 35px;
             margin: 0 auto;
-            animation: scaleIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            animation: wbConfirmPop .5s cubic-bezier(.34, 1.56, .64, 1);
         }
 
-        /* Boutons personnalisés */
-        .btn-sanfeni-fill {
-            background-color: #082C6A;
-            color: white !important;
+        .wb-confirm__title {
+            margin: 0 0 14px;
+            font-size: 3.2rem;
+            font-weight: 800;
+            letter-spacing: -.02em;
+            color: #082C6A;
+        }
+
+        .wb-confirm__lead {
+            margin: 0 0 22px;
+            font-size: 1.6rem;
+            line-height: 1.6;
+            color: #666;
+        }
+
+        .wb-confirm__lead strong {
+            color: #082C6A;
+        }
+
+        .wb-confirm__ref {
+            display: inline-block;
+            min-width: 300px;
+            margin-bottom: 34px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 16px;
+        }
+
+        .wb-confirm__ref-label {
+            display: block;
+            color: #888;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .wb-confirm__ref-value {
+            display: block;
+            color: #1a1a1a;
+            font-size: 2rem;
+            font-weight: 700;
+            word-break: break-all;
+        }
+
+        .wb-confirm__rule {
+            margin: 30px 0;
+            border: 0;
+            border-top: 1px solid #eee;
+        }
+
+        .wb-confirm__note {
+            margin-bottom: 18px;
+            font-size: 1.4rem;
+            color: #666;
+        }
+
+        /* Boutons */
+        .wb-confirm__btn {
+            display: inline-block;
             padding: 14px 30px;
             border-radius: 12px;
             font-weight: 700;
             text-decoration: none;
-            transition: all 0.3s ease;
+            text-align: center;
+            transition: transform .2s ease, filter .2s ease,
+                        background-color .2s ease;
         }
 
-        .btn-sanfeni-outline {
-            background-color: transparent;
+        .wb-confirm__btn--fill {
+            background: #082C6A;
+            color: #fff !important;
+        }
+
+        .wb-confirm__btn--fill:hover {
+            color: #fff !important;
+            transform: translateY(-2px);
+            filter: brightness(1.15);
+        }
+
+        .wb-confirm__btn--ghost {
+            background: transparent;
             color: #082C6A !important;
             border: 2px solid #082C6A;
             padding: 12px 28px;
-            border-radius: 12px;
-            font-weight: 700;
-            text-decoration: none;
-            transition: all 0.3s ease;
         }
 
-        .btn-sanfeni-fill:hover { transform: translateY(-2px); filter: brightness(1.2); }
-        .btn-sanfeni-outline:hover { background: #f0f4ff; }
+        .wb-confirm__btn--ghost:hover {
+            background: #f0f4ff;
+        }
 
-        @keyframes scaleIn {
+        @keyframes wbConfirmPop {
             0% { transform: scale(0); opacity: 0; }
             100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* ----------------------------------------------------------
+           Mobile : la carte faisait 300px de largeur minimale dans un
+           conteneur qui n'en offre plus que ~280 → débordement
+           horizontal. On passe tout en pleine largeur.
+           ---------------------------------------------------------- */
+        @media (max-width: 575px) {
+            .wb-confirm {
+                min-height: 0;
+                padding: 32px 0;
+            }
+
+            .wb-confirm__card {
+                padding: 30px 18px;
+                border-radius: 18px;
+            }
+
+            .wb-confirm__circle {
+                width: 64px;
+                height: 64px;
+                font-size: 26px;
+            }
+
+            .wb-confirm__title {
+                font-size: 2.2rem;
+            }
+
+            .wb-confirm__lead {
+                font-size: 1.45rem;
+            }
+
+            .wb-confirm__ref {
+                display: block;
+                min-width: 0;
+                width: 100%;
+                padding: 16px;
+            }
+
+            .wb-confirm__ref-value {
+                font-size: 1.8rem;
+            }
+
+            .wb-confirm__btn {
+                display: block;
+                width: 100%;
+                padding-left: 16px;
+                padding-right: 16px;
+            }
         }
     </style>
 {% endblock %}
 
 {% block body %}
-    <section class="order-confirmation footer-padding" style="background-color: #f6f6f9; min-height: 80vh; display: flex; align-items: center;">
+    <section class="order-confirmation wb-confirm footer-padding">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-7">
-                    <div class="confirmation-card text-center" style="background: #fff; border-radius: 24px; padding: 50px 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
+                    <div class="wb-confirm__card text-center">
 
-                        <div class="success-icon-wrapper mb-4">
-                            <div class="success-circle">
-                                <i class="fas fa-check"></i>
+                        <div class="mb-4">
+                            <div class="wb-confirm__circle">
+                                <i class="fas fa-check" aria-hidden="true"></i>
                             </div>
                         </div>
 
-                        <h2 class="mb-3" style="font-weight: 800; color: #082C6A; font-size: 32px;">Commande confirmée !</h2>
+                        <h1 class="wb-confirm__title">Commande confirmée !</h1>
 
-                        <p class="mb-4" style="color: #666; font-size: 16px; line-height: 1.6;">
+                        <p class="wb-confirm__lead">
                             Merci <strong>{{ order.user.firstname }}</strong>, votre commande est enregistrée.<br>
-                            Un e-mail de confirmation vient d'être envoyé à <span style="color: #082C6A; font-weight: 600;">{{ order.user.email }}</span>.
+                            Un e-mail de confirmation vient d'être envoyé à
+                            <strong>{{ order.user.email }}</strong>.
                         </p>
 
-                        <div class="order-info-box mb-5" style="background: #f8f9fa; border-radius: 16px; padding: 20px; display: inline-block; min-width: 300px;">
-                            <span style="display: block; color: #888; font-size: 12px; text-transform: uppercase; letter-spacing: 1px;">Référence de commande</span>
-                            <span style="display: block; color: #1a1a1a; font-size: 20px; font-weight: 700;">#{{ order.reference }}</span>
+                        <div class="wb-confirm__ref">
+                            <span class="wb-confirm__ref-label">Référence de commande</span>
+                            <span class="wb-confirm__ref-value">#{{ order.reference }}</span>
                         </div>
 
-                        <hr style="border: 0; border-top: 1px solid #eee; margin: 30px 0;">
+                        <hr class="wb-confirm__rule">
 
                         <div class="action-buttons">
-                            <p class="mb-4" style="color: #666; font-size: 14px;">
+                            <p class="wb-confirm__note">
                                 Vous pouvez suivre l'état de votre colis depuis votre espace client.
                             </p>
                             <div class="d-flex flex-column flex-md-row gap-3 justify-content-center">
-                                <a href="{{ path('app_account') }}" class="btn-sanfeni-outline">
+                                <a href="{{ path('app_account') }}" class="wb-confirm__btn wb-confirm__btn--ghost">
                                     Suivre ma commande
                                 </a>
-                                <a href="{{ path('app_home') }}" class="btn-sanfeni-fill">
+                                <a href="{{ path('app_home') }}" class="wb-confirm__btn wb-confirm__btn--fill">
                                     Continuer mes achats
                                 </a>
                             </div>
@@ -97,6 +229,4 @@
             </div>
         </div>
     </section>
-
-
 {% endblock %}

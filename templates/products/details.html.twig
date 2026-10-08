@@ -4,63 +4,719 @@
 
 {% block stylesheets %}
     <style>
-        /* Bouton Panier Massif */
-        .btn-sanfeni-cart {
-            background-color: orange; /* Votre bleu */
-            color: #fff;
-            border: none;
-            border-radius: 16px;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        /* ============================================================
+           PAGE DÉTAILS PRODUIT — même langage visuel que l'accueil
+           (codes e-commerce façon Wildberries, identité conservée).
+
+           ⚠️  CONVENTION DE TAILLE DU PROJET
+               public/css/style.css déclare `html { font-size: 10px; }`
+               → 1rem = 10px (et NON 16px).
+
+           Rappel des couleurs :
+             · #082C6A bleu nuit  → structure, sélection, survols, CTA
+             · #FFA500 orange     → accent, badge promo, CTA (fond)
+             · #ff3b30 rouge      → prix remisé, rupture de stock
+
+           Portée : tout est scopé sous .wb-details, ajouté sur la
+           <section> ci-dessous. Aucun autre écran n'est impacté.
+           ============================================================ */
+        .wb-details {
+            --wb-navy: #082C6A;
+            --wb-orange: #FFA500;
+            --wb-red: #ff3b30;
+            --wb-ink: #1b1d21;
+            --wb-muted: #767b83;
+            --wb-line: #e8eaee;
+            --wb-surface: #ffffff;
+            --wb-soft: #f5f6f8;
+
+            /* Garde-fou : la racine est à 10px, un texte sans font-size
+               explicite tomberait à 10px. */
+            font-size: 1.5rem;
+
+            padding-bottom: 46px;
         }
 
-        .btn-sanfeni-cart:hover {
-            background-color: orange; /* #082C6A;*/
-            color: #fff;
-            transform: scale(1.02);
-            box-shadow: 0 10px 20px rgba(8, 44, 106, 0.2);
+        /* ---------- Conteneur : mêmes gouttières que l'accueil ---------- */
+        .wb-details .container {
+            max-width: 1440px;
+            margin-inline: auto;
+            padding-inline: clamp(14px, 3vw, 40px);
         }
 
-        /* Style des Puces de Taille (Chips) */
-        .size-chip {
-            cursor: pointer;
+        /* ===========================================================
+           1. GALERIE
+           =========================================================== */
+        .wb-details .product-info-section {
+            margin-top: 26px;
         }
 
-        .size-chip .chip-label {
-            display: inline-block;
-            padding: 10px 20px;
-            border: 1.5px solid #e0e0e0;
+        .wb-details .product-info-section .row > * {
+            --bs-gutter-y: 40px;
+        }
+
+        /* Format rectangle 4:3 (et non 4:5 portrait) : le cadre passe de
+           1,25 x la largeur à 0,75 x la largeur → ~40 % de hauteur en moins.
+           Conteneur borné pour que la galerie reste lisible sur grand écran. */
+        .wb-details .wb-gallery {
+            position: relative;
+            max-width: 58rem;
+            width: 100%;
+        }
+
+        .wb-details .product-top .swiper-slide {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            aspect-ratio: 4 / 3;
+            background: var(--wb-soft);
+            border: 1px solid var(--wb-line);
+            border-radius: 16px !important;
+            overflow: hidden;
+            box-shadow: none !important;
+        }
+
+        /* cover : le visuel remplit le rectangle sans déformation
+           (ratio source préservé, simple recadrage au centre).
+           object-position: center = cadrage symétrique. */
+        .wb-details .product-top .swiper-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            transition: transform .35s ease;
+        }
+
+        .wb-details .product-top .swiper-slide:hover img {
+            transform: scale(1.03);
+        }
+
+        /* Badge promo en haut à gauche du visuel */
+        .wb-details .wb-flag {
+            position: absolute;
+            top: 14px;
+            left: 14px;
+            z-index: 3;
+            padding: 6px 12px;
             border-radius: 10px;
-            font-weight: 600;
-            color: #333;
-            transition: all 0.2s ease;
+            background: var(--wb-orange);
+            color: var(--wb-ink);
+            font-size: 1.5rem;
+            font-weight: 800;
+            line-height: 1.3;
+            pointer-events: none;
         }
 
-        .size-chip input:checked + .chip-label {
-            background-color: #082C6A;
-            border-color: #082C6A;
+        /* Miniatures : opacité douce, sélection en bleu nuit */
+        .wb-details .product-bottom {
+            margin-top: 12px;
+        }
+
+        .wb-details .product-bottom .swiper-slide {
+            border-radius: 10px;
+            overflow: hidden;
+            border: 2px solid transparent;
+            background: var(--wb-soft);
+            opacity: .55;
+            cursor: pointer;
+            transition: opacity .2s ease, border-color .2s ease;
+        }
+
+        /* Aperçus : même géométrie rectangle que le visuel principal.
+           object-fit: contain (et non cover) : à ~90 px de large, un
+           recadrage supprimerait le produit du cadre — l'aperçu doit
+           rester identifiable. Le fond --wb-soft comble les bandes. */
+        .wb-details .product-bottom .swiper-slide img {
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            object-fit: contain;
+            object-position: center;
+            padding: 4px;
+            border-radius: 8px !important;
+        }
+
+        .wb-details .product-bottom .swiper-slide:hover {
+            opacity: 1;
+        }
+
+        .wb-details .product-bottom .swiper-slide-thumb-active {
+            opacity: 1;
+            border-color: var(--wb-navy);
+        }
+
+        /* ===========================================================
+           2. PANNEAU D'ACHAT — typographie (1rem = 10px)
+           =========================================================== */
+        .wb-details .wb-buy {
+            padding-left: 0;
+        }
+
+        .wb-details .wb-shop-badge {
+            display: inline-block;
+            margin-bottom: 12px;
+            background: rgba(8, 44, 106, .06);
+            color: var(--wb-navy);
+            font-size: 1.3rem;          /* 13px */
+            font-weight: 650;
+            padding: 7px 13px;
+            border-radius: 9px;
+        }
+
+        .wb-details .wb-title {
+            margin: 0 0 14px;
+            font-size: 2.4rem;          /* 24px */
+            font-weight: 800;
+            line-height: 1.28;
+            letter-spacing: -.02em;
+            color: var(--wb-ink);
+        }
+
+        /* ---------- Prix : l'élément le plus percutant ---------- */
+        .wb-details .price-section {
+            display: flex;
+            align-items: baseline;
+            flex-wrap: wrap;
+            gap: 8px 14px;
+            margin-bottom: 10px;
+        }
+
+        .wb-details .wb-price {
+            font-size: 3rem;            /* 30px */
+            font-weight: 800;
+            line-height: 1.15;
+            letter-spacing: -.02em;
+            color: var(--wb-red);
+        }
+
+        .wb-details .wb-price--plain {
+            color: var(--wb-ink);
+        }
+
+        .wb-details .wb-price-old {
+            font-size: 1.5rem;          /* 15px */
+            font-weight: 500;
+            color: var(--wb-muted);
+            text-decoration: line-through;
+        }
+
+        .wb-details .wb-price-badge {
+            background: var(--wb-orange);
+            color: var(--wb-ink);
+            font-size: 1.3rem;          /* 13px */
+            font-weight: 800;
+            line-height: 1.3;
+            padding: 5px 11px;
+            border-radius: 9px;
+        }
+
+        .wb-details .wb-save {
+            flex-basis: 100%;
+            display: inline-block;
+            width: max-content;
+            padding: 4px 10px;
+            border-radius: 7px;
+            background: rgba(8, 44, 106, .07);
+            color: var(--wb-navy);
+            font-size: 1.3rem;          /* 13px */
+            font-weight: 700;
+        }
+
+        /* ---------- Disponibilité ---------- */
+        /* min-height : évite le saut de mise en page quand le libellé
+           passe du vide à « En stock » au fil des sélections. */
+        .wb-details .wb-stock {
+            display: block;
+            min-height: 1.9rem;
+            margin-bottom: 6px;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--wb-muted);
+        }
+
+        .wb-details .wb-stock.is-ok    { color: #0f8a4d; }
+        .wb-details .wb-stock.is-low   { color: #b45309; }
+        .wb-details .wb-stock.is-out   { color: var(--wb-red); }
+
+        /* ---------- Refus serveur (combinaison en rupture…) ---------- */
+        .wb-details .wb-option-error {
+            margin: 10px 0 0;
+            padding: 11px 14px;
+            border: 1px solid rgba(255, 59, 48, .35);
+            border-radius: 10px;
+            background: rgba(255, 59, 48, .07);
+            color: var(--wb-red);
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+
+        .wb-details .wb-option-error.is-hidden {
+            display: none;
+        }
+
+        /* ---------- Description : carte douce, aérée ---------- */
+        .wb-details .wb-desc-wrap {
+            margin-top: 16px;
+            padding: 16px 18px;
+            background: var(--wb-soft);
+            border-radius: 12px;
+        }
+
+        .wb-details .wb-desc {
+            margin: 0;
+            font-size: 1.5rem;          /* 15px */
+            line-height: 1.7;
+            color: var(--wb-muted);
+        }
+
+        /* ---------- Séparateur ---------- */
+        .wb-details .wb-rule {
+            border: 0;
+            border-top: 1px solid var(--wb-line);
+            margin: 24px 0;
+            opacity: 1;
+        }
+
+        /* ===========================================================
+           3. SÉLECTEURS D'OPTIONS
+           =========================================================== */
+        .wb-details .wb-option-group {
+            margin: 0 0 22px;
+            padding: 0;
+            border: 0;
+        }
+
+        .wb-details .wb-option-legend {
+            display: flex;
+            align-items: baseline;
+            flex-wrap: wrap;
+            gap: 4px 10px;
+            width: 100%;
+            margin-bottom: 12px;
+            padding: 0;
+            font-size: inherit;
+        }
+
+        .wb-details .wb-option-name {
+            font-size: 1.6rem;
+            font-weight: 750;
+            color: var(--wb-ink);
+        }
+
+        .wb-details .wb-option-required {
+            font-size: 1.3rem;
+            font-weight: 500;
+            color: var(--wb-muted);
+        }
+
+        /* ---------- Puces (tailles, références) ---------- */
+        .wb-details .wb-chips,
+        .wb-details .wb-swatches {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 9px;
+        }
+
+        .wb-details .wb-chip {
+            position: relative;
+            padding: 11px 16px;
+            border: 1.5px solid var(--wb-line);
+            border-radius: 11px;
+            background: var(--wb-surface);
+            color: var(--wb-ink);
+            font-size: 1.5rem;
+            font-weight: 650;
+            line-height: 1.3;
+            cursor: pointer;
+            transition: border-color .16s ease, background-color .16s ease,
+                        color .16s ease, opacity .16s ease;
+        }
+
+        .wb-details .wb-chip:hover:not(:disabled) {
+            border-color: var(--wb-navy);
+        }
+
+        .wb-details .wb-chip:focus-visible {
+            outline: 2px solid var(--wb-navy);
+            outline-offset: 2px;
+        }
+
+        .wb-details .wb-chip.is-selected {
+            background: var(--wb-navy);
+            border-color: var(--wb-navy);
             color: #fff;
         }
 
-        .size-chip:hover .chip-label {
-            border-color: #082C6A;
+        /* ---------- Pastilles (couleurs) ---------- */
+        .wb-details .wb-swatch {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            padding: 8px 15px 8px 9px;
+            border: 1.5px solid var(--wb-line);
+            border-radius: 999px;
+            background: var(--wb-surface);
+            color: var(--wb-ink);
+            font-size: 1.4rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: border-color .16s ease, background-color .16s ease,
+                        opacity .16s ease;
         }
 
-        /* Image arrondie */
-        .rounded-xl {
-            border-radius: 20px;
+        .wb-details .wb-swatch__dot {
+            width: 2.4rem;
+            height: 2.4rem;
+            flex: 0 0 auto;
+            border-radius: 50%;
+            border: 1px solid rgba(0, 0, 0, .14);
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .5);
         }
 
-        .product-bottom .swiper-slide-thumb-active img {
-            border: 2px solid orange;
+        .wb-details .wb-swatch:hover:not(:disabled) {
+            border-color: var(--wb-navy);
+        }
+
+        .wb-details .wb-swatch:focus-visible {
+            outline: 2px solid var(--wb-navy);
+            outline-offset: 2px;
+        }
+
+        .wb-details .wb-swatch.is-selected {
+            background: rgba(8, 44, 106, .07);
+            border-color: var(--wb-navy);
+            border-width: 2px;
+            padding: 7.5px 14.5px 7.5px 8.5px; /* compense le +0.5px de bord */
+        }
+
+        /* ---------- Option indisponible : rupture ---------- */
+        .wb-details .wb-chip:disabled,
+        .wb-details .wb-swatch:disabled,
+        .wb-details .wb-chip.is-unavailable,
+        .wb-details .wb-swatch.is-unavailable {
+            opacity: .5;
+            cursor: not-allowed;
+            background: var(--wb-soft);
+            border-color: var(--wb-line);
+            color: var(--wb-muted);
+        }
+
+        .wb-details .wb-chip.is-unavailable .wb-chip__label,
+        .wb-details .wb-swatch.is-unavailable .wb-swatch__label {
+            text-decoration: line-through;
+        }
+
+        .wb-details .wb-chip.is-unavailable.is-selected,
+        .wb-details .wb-swatch.is-unavailable.is-selected {
+            background: var(--wb-soft);
+            border-color: var(--wb-line);
+            color: var(--wb-muted);
+        }
+
+        .wb-details .wb-out-badge {
+            display: none;
+            margin-left: 7px;
+            font-size: 1.1rem;          /* 11px */
+            font-weight: 700;
+            text-decoration: none;
+            color: var(--wb-red);
+        }
+
+        .wb-details .wb-chip.is-unavailable .wb-out-badge,
+        .wb-details .wb-swatch.is-unavailable .wb-out-badge {
+            display: inline;
+        }
+
+        /* ---------- Récapitulatif de sélection ---------- */
+        .wb-details .wb-selection {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+            gap: 4px 10px;
+            padding: 13px 16px;
+            border-radius: 11px;
+            background: var(--wb-soft);
+        }
+
+        .wb-details .wb-selection__label {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--wb-muted);
+        }
+
+        .wb-details .wb-selection__value {
+            font-size: 1.5rem;
+            font-weight: 750;
+            color: var(--wb-navy);
+        }
+
+        .wb-details .wb-selection__value.is-empty {
+            font-weight: 500;
+            color: var(--wb-muted);
+        }
+
+        /* ===========================================================
+           4. QUANTITÉ + CTA
+           =========================================================== */
+        .wb-details .wb-cta-row {
+            display: flex;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 14px;
+            margin-top: 26px;
+        }
+
+        .wb-details .wb-qty {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+        }
+
+        .wb-details .wb-qty__label {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--wb-muted);
+        }
+
+        .wb-details .wb-stepper {
+            display: inline-flex;
+            align-items: stretch;
+            height: 5.4rem;
+            border: 1.5px solid var(--wb-line);
+            border-radius: 12px;
+            overflow: hidden;
+            background: var(--wb-surface);
+        }
+
+        .wb-details .wb-stepper__btn {
+            width: 4.4rem;
+            border: 0;
+            background: var(--wb-surface);
+            color: var(--wb-navy);
+            font-size: 2.1rem;
+            line-height: 1;
+            cursor: pointer;
+            transition: background-color .15s ease;
+        }
+
+        .wb-details .wb-stepper__btn:hover:not(:disabled) {
+            background: var(--wb-soft);
+        }
+
+        .wb-details .wb-stepper__btn:disabled {
+            opacity: .35;
+            cursor: not-allowed;
+        }
+
+        .wb-details .wb-stepper__value {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 4.2rem;
+            padding: 0 4px;
+            border-inline: 1.5px solid var(--wb-line);
+            font-size: 1.7rem;
+            font-weight: 750;
+            color: var(--wb-ink);
+            font-variant-numeric: tabular-nums;
+        }
+
+        /*
+          CTA — fond orange + texte encre.
+          Contraste mesuré : #FFA500 (L=0,4815) sur #1b1d21 (L=0,0121)
+          → 8,56:1, très au-dessus des 4,5:1 exigés. Le blanc sur orange
+          (2,2:1) avait été écarté pour cette raison.
+        */
+        .wb-details .wb-cta {
+            flex: 1 1 26rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            min-height: 5.4rem;
+            padding: 14px 22px;
+            border: none;
+            border-radius: 12px;
+            background: var(--wb-orange);
+            color: var(--wb-ink);
+            font-size: 1.7rem;          /* 17px */
+            font-weight: 800;
+            letter-spacing: -.01em;
+            cursor: pointer;
+            transition: transform .2s ease, box-shadow .2s ease,
+                        background-color .2s ease, opacity .2s ease;
+        }
+
+        .wb-details .wb-cta:hover:not(:disabled),
+        .wb-details .wb-cta:focus-visible:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 22px rgba(8, 44, 106, .22);
+        }
+
+        .wb-details .wb-cta:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        .wb-details .wb-cta:disabled {
+            background: var(--wb-line);
+            color: var(--wb-muted);
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .wb-details .wb-cta__icon {
+            flex: 0 0 auto;
+        }
+
+        .wb-details .wb-pay {
+            margin: 14px 0 0;
+            font-size: 1.3rem;
+            color: var(--wb-muted);
+        }
+
+        /* ---------- Catégories ---------- */
+        .wb-details .wb-cats {
+            margin-top: 20px;
+            padding-top: 18px;
+            border-top: 1px solid var(--wb-line);
+        }
+
+        .wb-details .wb-cats-label {
+            margin: 0;
+            font-size: 1.4rem;          /* 14px */
+            color: var(--wb-muted);
+        }
+
+        .wb-details .wb-cats-label a {
+            color: var(--wb-ink);
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .wb-details .wb-cats-label a:hover {
+            color: var(--wb-navy);
+            text-decoration: underline;
+            text-underline-offset: 3px;
+        }
+
+        /* ===========================================================
+           5. RESPONSIVE
+           =========================================================== */
+
+        /* ----------------------------------------------------------
+           Barre d'action fixe en bas de l'écran (mobile / tablette)
+           ----------------------------------------------------------
+           Ce n'est PAS un second bouton : c'est .wb-cta-row lui-même,
+           le conteneur réel du stepper + du CTA, qui passe en fixe.
+           Le bouton garde donc ses data-product-options-target, son
+           libellé dynamique et son état disabled — Stimulus ne voit
+           qu'une seule occurrence.
+           ---------------------------------------------------------- */
+        @media (max-width: 991px) {
+            .wb-details .wb-cta-row {
+                position: fixed;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                z-index: 1000;
+                margin: 0;
+                flex-wrap: nowrap;
+                align-items: center;
+                gap: 10px;
+                padding: 10px 12px calc(10px + env(safe-area-inset-bottom));
+                background: var(--wb-surface);
+                border-top: 1px solid var(--wb-line);
+                box-shadow: 0 -8px 24px rgba(8, 44, 106, .12);
+            }
+
+            /* Le libellé « Quantité » prendrait la place du CTA ;
+               le stepper garde role="group" aria-label="Quantité". */
+            .wb-details .wb-qty {
+                width: auto;
+                flex-direction: row;
+                gap: 0;
+            }
+
+            .wb-details .wb-qty__label {
+                display: none;
+            }
+
+            .wb-details .wb-stepper {
+                width: auto;
+                height: 4.6rem;
+            }
+
+            .wb-details .wb-stepper__btn {
+                width: 3.8rem;
+            }
+
+            .wb-details .wb-stepper__value {
+                flex: 0 0 auto;
+                min-width: 3.4rem;
+            }
+
+            .wb-details .wb-cta {
+                flex: 1;
+                min-width: 0;
+                min-height: 4.6rem;
+                padding: 12px 14px;
+                font-size: 1.55rem;
+            }
+
+            /* Le libellé du CTA est dynamique (« Choisissez vos options »
+               est le plus long) : il passe en ellipsis plutôt que de
+               pousser le stepper hors de la barre. */
+            .wb-details .wb-cta span[data-role="cta-label"] {
+                display: block;
+                min-width: 0;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+
+            .wb-details .wb-cta__icon {
+                display: none;
+                flex: 0 0 auto;
+            }
+
+            /* .wb-cta-row quitte le flux : la barre de réserve est
+               fournie par body{padding-bottom} de base.html.twig
+               (80px + safe-area), déjà recalculée pour ces barres. */
+
+            /* Le bouton WhatsApp (base.html.twig, fixe en bas à droite)
+               remonte au-dessus de la barre au lieu d'être masqué.
+
+               `html body` n'est pas décoratif : le bloc
+               « stylesheets » de base.html.twig est rendu AVANT
+               tous les <style> de la page de base, donc la règle
+               `.whatsapp-sticky-btn { bottom: 20px }` de base arrive
+               plus tard dans le document. À spécificité égale elle
+               l'emporterait et le bouton resterait au sol, sous la
+               barre fixe. html body porte la spécificité à (0,1,2) et
+               l'emporte donc quel que soit l'ordre. */
+            html body .whatsapp-sticky-btn {
+                bottom: calc(84px + env(safe-area-inset-bottom));
+            }
+        }
+
+        @media (max-width: 767px) {
+            .wb-details .wb-title {
+                font-size: 2rem;        /* 20px */
+            }
+
+            .wb-details .wb-price {
+                font-size: 2.6rem;      /* 26px */
+            }
+
+            .wb-details .product-info-section {
+                margin-top: 18px;
+            }
         }
     </style>
 {% endblock %}
 
 {% block body %}
-    <!--------------- header-section-end --------------->
-
-    <!--------------- products-info-section--------------->
-    <section class="product product-info">
+    <!--------------- products-info-section --------------->
+    <section class="product product-info wb-details">
         <div class="container">
             {{ component('ProductDetails', {
                 product: product
@@ -68,6 +724,42 @@
 
         </div>
     </section>
-    <!--------------- products-info-end--------------->
+    <!--------------- products-info-end --------------->
 
+{% endblock %}
+
+{% block script %}
+    {# Galerie : le thème n'initialisait AUCUN Swiper sur cette page
+       (l'init globale cible '.mySwiper', absent du markup). Les
+       miniatures ne changeaient donc jamais l'image principale. #}
+    <script>
+        (function () {
+            function wbInitGallery() {
+                var mainEl = document.querySelector('.product-top');
+                var thumbEl = document.querySelector('.product-bottom');
+
+                // Hors page détail, ou galerie déjà montée (Turbo)
+                if (!mainEl || !thumbEl || mainEl.swiper) return;
+
+                var wbThumbs = new Swiper(thumbEl, {
+                    spaceBetween: 10,
+                    slidesPerView: 4,
+                    freeMode: true,
+                    watchSlidesProgress: true,
+                });
+
+                new Swiper(mainEl, {
+                    spaceBetween: 12,
+                    thumbs: { swiper: wbThumbs },
+                });
+            }
+
+            // Turbo peut recharger le corps sans rejouer DOMContentLoaded
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', wbInitGallery);
+            } else {
+                wbInitGallery();
+            }
+        })();
+    </script>
 {% endblock %}

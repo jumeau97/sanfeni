@@ -43,7 +43,13 @@ final class ProductController extends AbstractController
     public function details($slug, Request $request): Response
     {
         $product = $this->entityManager->getRepository(Product::class)->findOneBy(['slug' => $slug]);
-//        dd($product->getAlbums());
+
+        // Sans ce garde-fou, un slug inconnu arrivait jusqu'au composant avec
+        // `product: null` → erreur de typage 500 au lieu d'une vraie 404.
+        if (!$product) {
+            throw $this->createNotFoundException(sprintf('Produit "%s" introuvable.', $slug));
+        }
+
         return $this->render('products/details.html.twig', [
             'product' => $product
         ]);

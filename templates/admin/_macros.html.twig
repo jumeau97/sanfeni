@@ -1,0 +1,67 @@
+{# ============================================================================
+   Macros partagées du back-office (importer avec :
+   {% import 'admin/_macros.html.twig' as ui %})
+   ============================================================================ #}
+
+{# Pastille de statut colorée selon la valeur #}
+{% macro tag(value) %}
+    {% if value %}
+        <span class="admin-tag {{ value|admin_badge }}">{{ value }}</span>
+    {% else %}
+        <span class="admin-tag admin-tag-neutral">—</span>
+    {% endif %}
+{% endmacro %}
+
+{# Montant au format F CFA #}
+{% macro amount(value) %}
+    <span class="admin-amount">{{ value|fcfa }}</span>
+{% endmacro %}
+
+{# Bouton « retour » #}
+{% macro back(url, label) %}
+    <a href="{{ url }}" class="btn btn-admin btn-admin-light btn-admin-sm">
+        <i class="fas fa-arrow-left"></i> {{ label|default('Retour') }}
+    </a>
+{% endmacro %}
+
+{# Lien d'action (voir / modifier) #}
+{% macro action(url, icon, label) %}
+    <a href="{{ url }}" class="btn btn-admin btn-admin-light btn-admin-sm">
+        <i class="fas {{ icon }}"></i> <span class="d-none d-xl-inline">{{ label }}</span>
+    </a>
+{% endmacro %}
+
+{# Formulaire de suppression (POST + CSRF + confirmation JS) #}
+{% macro delete_button(action, label, confirm_message) %}
+    <form method="post" action="{{ action }}" class="d-inline"
+          onsubmit="return confirm({{ (confirm_message|default('Confirmer la suppression ?'))|json_encode|raw }})">
+        <input type="hidden" name="_token" value="{{ csrf_token('submit') }}">
+        <button type="submit" class="btn btn-admin btn-admin-danger btn-admin-sm">
+            <i class="fas fa-trash"></i> <span class="d-none d-xl-inline">{{ label|default('Supprimer') }}</span>
+        </button>
+    </form>
+{% endmacro %}
+
+{# État vide d'un tableau #}
+{% macro empty(colspan, title, hint) %}
+    <tr>
+        <td colspan="{{ colspan }}">
+            <div class="admin-empty">
+                <i class="fas fa-inbox"></i>
+                <h3>{{ title }}</h3>
+                {% if hint %}<p>{{ hint }}</p>{% endif %}
+            </div>
+        </td>
+    </tr>
+{% endmacro %}
+
+{# En-tête de page : titre + boutons d'action alignés à droite #}
+{% macro page_header(title, subtitle, actions) %}
+    <div class="admin-card-header">
+        <div>
+            <h2 class="admin-card-title mb-1" style="font-size:1.1rem;">{{ title }}</h2>
+            {% if subtitle %}<p class="admin-card-sub mb-0">{{ subtitle }}</p>{% endif %}
+        </div>
+        {% if actions %}<div class="d-flex gap-2 flex-wrap">{{ actions|raw }}</div>{% endif %}
+    </div>
+{% endmacro %}

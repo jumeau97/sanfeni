@@ -1,0 +1,2008 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="keywords"
+          content="ShopUS, bootstrap-5, bootstrap, sass, css, HTML Template, HTML,html, bootstrap template, free template, figma, web design, web development,front end, bootstrap datepicker, bootstrap timepicker, javascript, ecommerce template">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ajouter une adresse</title>
+
+    <link rel="icon"
+          href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
+    <!--------------- swiper-css ---------------->
+    
+    <!--------------- bootstrap-css ---------------->
+    <link rel="stylesheet" href="/css/bootstrap-5.3.2.min.css?2026-10-02.1">
+
+    <!---------------------- Range Slider ------------------->
+    <link rel="stylesheet" href="/css/nouislider.min.css?2026-10-02.1">
+
+    <!---------------------- Scroll ------------------->
+    <link rel="stylesheet" href="/css/aos-3.0.0.css?2026-10-02.1">
+
+    <!-- Link Swiper's CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+
+    <!--------------- additional-css ---------------->
+    <link rel="stylesheet" href="/css/style.css?2026-10-02.1">
+        <style>
+        /* Menus "Catégories" (menus/header.html.twig) */
+        .dropdown-submenu {
+            position: relative;
+        }
+
+        .dropdown-submenu > a::after {
+            border-top: .3em solid transparent;
+            border-right: 0;
+            border-bottom: .3em solid transparent;
+            border-left: .3em solid;
+            float: right;
+            margin-left: .5rem;
+            margin-top: .5rem;
+        }
+
+        .dropdown-submenu > .dropdown-menu {
+            left: 100%;
+            margin-left: 0;
+            margin-top: 0;
+            top: 0;
+        }
+
+        .dropdown-hover .dropdown-submenu:hover > .dropdown-menu,
+        .dropdown-hover.dropdown-submenu:hover > .dropdown-menu,
+        .dropdown-hover.nav-item.dropdown:hover > .dropdown-menu,
+        .dropdown-hover:hover > .dropdown-menu {
+            display: block;
+        }
+
+        /* Utilitaires AdminLTE employés ailleurs dans la vitrine */
+        .description { color: #6c757d; font-size: 13px; margin-top: -3px; }
+        .rounded-lg { border-radius: .3rem !important; }
+        .text-purple { color: #6f42c1 !important; }
+        .text-sm { font-size: .875rem !important; }
+    </style>
+
+    <link rel="stylesheet" href="/plugins/fontawesome-free/css/all.min.css?2026-10-02.1">
+
+    
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap"
+        rel="stylesheet">
+        <link rel="stylesheet" href="/build/app.3bea292f.css?2026-10-02.1" data-turbo-track="reload">
+        <style>
+    .account-page {
+        --acc-primary: #082C6A;
+        --acc-accent: #FFA500;
+        --acc-title: #1A1A1A;
+        --acc-text: #797979;
+        --acc-line: #ECECF1;
+        --acc-field: #F6F7FA;
+
+        padding: 3rem 0 6rem;
+        font-family: 'Inter', sans-serif;
+        color: var(--acc-title);
+    }
+
+    /* --- En-tête de page --- */
+    .account-page .account-head {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 1.6rem;
+        margin-bottom: 3rem;
+    }
+
+    .account-page .account-head h1 {
+        font-family: 'Inter', sans-serif;
+        font-size: 3.2rem;
+        font-weight: 700;
+        color: #232532;
+        margin-bottom: 0.6rem;
+    }
+
+    .account-page .account-back {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.7rem;
+        font-size: 1.4rem;
+        font-weight: 500;
+        color: var(--acc-text);
+        transition: color .2s ease;
+    }
+
+    .account-page .account-back:hover {
+        color: var(--acc-primary);
+    }
+
+    .account-page .account-back i {
+        font-size: 1.2rem;
+    }
+
+    /* --- Cartes --- */
+    .account-page .acc-card {
+        background: #fff;
+        border: 1px solid var(--acc-line);
+        border-radius: 1.4rem;
+        padding: 2.4rem;
+    }
+
+    .account-page .acc-card__title {
+        font-family: 'Inter', sans-serif;
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: var(--acc-title);
+        margin: 0 0 2rem;
+    }
+
+    /* --- Petits libellés de colonne --- */
+    .account-page .acc-label {
+        display: block;
+        font-size: 1.2rem;
+        font-weight: 600;
+        letter-spacing: 0.6px;
+        text-transform: uppercase;
+        color: var(--acc-text);
+        margin-bottom: 0.6rem;
+    }
+
+    /* --- Badges --- */
+    .account-page .acc-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.7rem;
+        padding: 0.7rem 1.4rem;
+        border-radius: 99px;
+        font-size: 1.3rem;
+        font-weight: 600;
+        line-height: 1;
+        background: rgba(8, 44, 106, .07);
+        color: var(--acc-primary);
+    }
+
+    .account-page .acc-badge--accent {
+        background: rgba(255, 165, 0, .16);
+        color: #A56600;
+    }
+
+    .account-page .acc-badge--success {
+        background: #E9F7EF;
+        color: #1E8E5A;
+    }
+
+    .account-page .acc-badge--danger {
+        background: #FDEDEC;
+        color: #C0392B;
+    }
+
+    /* --- Boutons --- */
+    .account-page .acc-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.8rem;
+        padding: 1.3rem 2.2rem;
+        border: 1px solid transparent;
+        border-radius: 1rem;
+        font-family: 'Inter', sans-serif;
+        font-size: 1.4rem;
+        font-weight: 600;
+        line-height: 1;
+        text-decoration: none;
+        cursor: pointer;
+        transition: background-color .2s ease, border-color .2s ease, color .2s ease, box-shadow .2s ease;
+    }
+
+    .account-page .acc-btn i {
+        font-size: 1.3rem;
+    }
+
+    .account-page .acc-btn--primary {
+        background: var(--acc-primary);
+        color: #fff;
+    }
+
+    .account-page .acc-btn--primary:hover {
+        background: #041a42;
+        color: #fff;
+    }
+
+    .account-page .acc-btn--outline {
+        background: #fff;
+        color: var(--acc-primary);
+        border-color: rgba(8, 44, 106, .35);
+    }
+
+    .account-page .acc-btn--outline:hover {
+        background: var(--acc-primary);
+        border-color: var(--acc-primary);
+        color: #fff;
+    }
+
+    /* --- Formulaires --- */
+    /* Colonne centrée pour les pages à formulaire unique. */
+    .account-page .account-column {
+        width: 100%;
+        max-width: 64rem;
+        margin-inline: auto;
+    }
+
+    .account-page .form-label {
+        font-size: 1.3rem;
+        font-weight: 500;
+        color: var(--acc-text);
+        margin-bottom: 0.7rem;
+    }
+
+    .account-page .form-control {
+        width: 100%;
+        margin: 0; /* neutralise les utilitaires .m-2 posés sur les champs */
+        background: var(--acc-field);
+        border: 1.5px solid transparent;
+        border-radius: 1rem;
+        padding: 1.4rem 1.6rem;
+        font-size: 1.5rem;
+        color: var(--acc-title);
+        transition: background-color .2s ease, border-color .2s ease, box-shadow .2s ease;
+    }
+
+    .account-page .form-control:focus {
+        background: #fff;
+        border-color: var(--acc-primary);
+        box-shadow: 0 0 0 0.2rem rgba(8, 44, 106, .08);
+        color: var(--acc-title);
+    }
+
+    .account-page .form-control:disabled {
+        background: #F1F2F6;
+        color: #6B6B75;
+        opacity: 1;
+    }
+
+    .account-page .form-control::placeholder {
+        color: #A6A7B2;
+    }
+
+    .account-page .invalid-feedback,
+    .account-page .form-error {
+        font-size: 1.3rem;
+        color: #C0392B;
+    }
+
+    /* Actions de formulaire (bas de carte) */
+    .account-page .form-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 1.2rem;
+        margin-top: 2.4rem;
+        padding-top: 2.4rem;
+        border-top: 1px solid var(--acc-line);
+    }
+
+    /* --- Grille d'éléments (adresses, etc.) --- */
+    .account-page .acc-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
+        gap: 1.6rem;
+    }
+
+    /* --- État vide --- */
+    .account-page .acc-empty {
+        background: #fff;
+        border: 1px dashed var(--acc-line);
+        border-radius: 1.4rem;
+        padding: 5rem 2rem;
+        text-align: center;
+    }
+
+    .account-page .acc-empty i {
+        display: block;
+        font-size: 3.6rem;
+        color: #C9CBD6;
+        margin-bottom: 1.6rem;
+    }
+
+    .account-page .acc-empty p {
+        font-size: 1.5rem;
+        color: var(--acc-text);
+        margin-bottom: 2rem;
+    }
+
+    /* --- Message de notification --- */
+    .account-page .acc-alert {
+        max-width: 64rem;
+        background: rgba(8, 44, 106, .06);
+        border: 1px solid rgba(8, 44, 106, .15);
+        border-radius: 1rem;
+        padding: 1.4rem 1.8rem;
+        font-size: 1.4rem;
+        color: var(--acc-primary);
+        margin-bottom: 2rem;
+    }
+
+    /* --- Responsive --- */
+    @media (max-width: 576px) {
+        .account-page {
+            padding: 2rem 0 4rem;
+        }
+
+        .account-page .account-head {
+            align-items: flex-start;
+            margin-bottom: 2.4rem;
+        }
+
+        .account-page .account-head h1 {
+            font-size: 2.6rem;
+        }
+
+        .account-page .account-head .acc-btn {
+            width: 100%;
+        }
+
+        .account-page .acc-card {
+            padding: 1.8rem;
+        }
+
+        .account-page .acc-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .account-page .form-actions {
+            flex-direction: column-reverse;
+        }
+
+        .account-page .form-actions .acc-btn {
+            width: 100%;
+        }
+    }
+</style>
+    <style>
+        /* Page /account/add-address — formulaire unique centré.
+           La largeur, le centrage et le style des champs viennent de
+           account/_account_styles.html.twig (.account-column, .form-control).
+           Le correctif responsive n'est plus nécessaire : la grille est
+           fluide et .account-column n'a plus de largeur fixe. */
+
+        .account-page .acc-form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1.6rem 2rem;
+        }
+
+        .account-page .acc-form-grid .mb-3 {
+            margin-bottom: 0;
+        }
+
+        .account-page .acc-field--full {
+            grid-column: 1 / -1;
+        }
+
+        @media (max-width: 576px) {
+            .account-page .acc-form-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+
+    <script src="/build/runtime.9c4020e8.js?2026-10-02.1" defer data-turbo-track="reload"></script><script src="/build/83.e0c0c264.js?2026-10-02.1" defer data-turbo-track="reload"></script><script src="/build/app.70f469b1.js?2026-10-02.1" defer data-turbo-track="reload"></script>
+    
+    <style>
+        .search-section .shop-btn {
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+            padding: 2rem 3rem;
+        }
+
+        .shop-btn {
+            /*padding: 1.2rem 3.4rem;*/
+            margin: 4rem 0;
+            text-align: center;
+            border-radius: 3rem;
+            display: inline-block;
+            background: #FFA500FF;
+            font-size: 1.4rem;
+            font-weight: 500;
+            position: relative;
+            color: #FFFFFF;
+            font-family: "Inter", sans-serif;
+            transition: all 0.3s;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .search-section button {
+            border: none;
+            outline: none;
+            background: transparent;
+            height: 100%;
+            padding: 0 2rem;
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: #ffffff;
+            flex: 1 1 0%;
+        }
+
+
+        .search-section input {
+            border: none;
+            outline: none;
+            /*background: transparent;*/
+            height: 100%;
+            padding: 0 2rem;
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: #f1ca83;
+            flex: 1 1 0%;
+        }
+
+        .search-section {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0px;
+            width: 100%;
+            height: 100%;
+        }
+
+        .search-content {
+            width: 62rem;
+            height: 6rem;
+            border-radius: 3rem;
+            /*border: 1px solid #ffffff;*/
+            overflow: hidden;
+        }
+
+        .search-content .divider {
+            height: 3rem;
+            width: 1px;
+            background: #e8e8e8;
+        }
+    </style>
+        <style>
+        /*.hero .swiper {*/
+        /*    width: 100%;*/
+        /*    !* Hauteur auto ou fixe selon tes besoins *!*/
+        /*    height: auto;*/
+        /*}*/
+
+        /*.hero .swiper-slide {*/
+        /*    !* Hauteur sur mobile *!*/
+        /*    height: 250px;*/
+        /*    display: flex;*/
+        /*    justify-content: center;*/
+        /*    align-items: center;*/
+        /*    border-radius: 12px;*/
+        /*    overflow: hidden;*/
+        /*    background: #444;*/
+        /*}*/
+
+        /*!* Ajustement de la hauteur pour tablettes et PC *!*/
+        /*@media (min-width: 768px) {*/
+        /*    .hero .swiper-slide {*/
+        /*        height: 30.5rem; !* On reprend ta hauteur d'origine *!*/
+        /*    }*/
+        /*}*/
+
+        /*.hero .swiper-slide {*/
+        /*    height: auto; !* On annule la hauteur fixe *!*/
+        /*    aspect-ratio: 16 / 9; !* Force le slider à garder ce format *!*/
+        /*    border-radius: 12px;*/
+        /*    overflow: hidden;*/
+        /*}*/
+
+        /*.hero .swiper-slide img {*/
+        /*    width: 100%;*/
+        /*    height: 100%;*/
+        /*    object-fit: cover; !* Ici, il ne coupera presque rien car le cadre a la même forme que l'image *!*/
+        /*}*/
+
+        .hero-slim .hero-swiper {
+            border-radius: 15px; /* Coins arrondis style App */
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .hero-banner-wrapper {
+            position: relative;
+            width: 100%;
+            /* Ratio 3:1 ou 21:9 pour une hauteur réduite (Slim) */
+            aspect-ratio: 3 / 1;
+        }
+
+        .hero-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Important pour ne pas déformer l'image */
+        }
+
+        /* Badge impactant style WB */
+        .hero-overlay {
+            position: absolute;
+            bottom: 15px;
+            left: 15px;
+        }
+
+        .badge-promo {
+            background: linear-gradient(135deg, #CB11AB 0%, #481173 100%);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.8rem;
+            box-shadow: 0 4px 8px rgba(203, 17, 171, 0.3);
+        }
+
+        /* Personnalisation des points du slider */
+        .hero-slim .swiper-pagination-bullet-active {
+            background: #AE1C9A !important;
+        }
+
+    </style>
+
+    <style>
+        :root {
+            --wb-purple: #FFA500FF;
+            --wb-purple-hover: #eea41e;
+        }
+
+        /* Grille et Conteneur */
+        .product-card {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .img-container {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            background-color: #f1f1f1;
+        }
+
+        .product-img {
+            width: 100%;
+            aspect-ratio: 3 / 4; /* Format vertical type marketplace */
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .product-card:hover .product-img {
+            transform: scale(1.05);
+        }
+
+        /* Badges */
+        .discount-badge {
+            position: absolute;
+            bottom: 8px;
+            left: 8px;
+            background-color: #ff3b30;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: bold;
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        .wishlist-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: rgba(255, 255, 255, 0.7);
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #333;
+        }
+
+        /* Typographie */
+        .price-current {
+            color: #ff3b30;
+            font-size: 1.5rem;
+            font-weight: 800;
+        }
+
+        .price-old {
+            color: #999;
+            text-decoration: line-through;
+            font-size: 0.9rem;
+        }
+
+        /* Titre du produit : Augmenté et plus d'espace */
+        .product-title {
+            display: block;
+            font-size: 1.2rem; /* Taille standard bien lisible */
+            line-height: 1.3;
+            font-weight: 500;
+            margin-top: 6px;
+            height: 2.6em; /* Fixe la hauteur pour 2 lignes */
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .brand-name {
+            display: block;
+            font-size: 0.85rem;
+            line-height: 1.2;
+            margin-top: 4px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2; /* Limite à 2 lignes */
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .btn-wb {
+            background-color: #FFA500FF; /* Violet Wildberries */
+            color: white;
+            border: none;
+            border-radius: 12px; /* Coins arrondis modernes */
+            padding: 10px 15px;
+            font-size: 1.3rem;
+            transition: all 0.2s ease-in-out;
+            box-shadow: 0 4px 10px rgba(234, 62, 46, 0.2);
+        }
+
+        .btn-wb:hover {
+            background-color: #FFA500FF;
+            color: white;
+            transform: translateY(-2px); /* Petit effet de levier au survol */
+            box-shadow: 0 6px 15px rgba(239, 59, 42, 0.3);
+        }
+
+        .btn-wb:active {
+            transform: translateY(0);
+        }
+
+        /* Ajustement pour les petits écrans */
+        @media (max-width: 576px) {
+            .btn-wb {
+                font-size: 1rem;
+                padding: 8px 10px;
+            }
+
+            .btn-wb span {
+                /* On peut cacher le texte long sur très petit mobile si besoin */
+                /* display: none; */
+            }
+        }
+    </style>
+    <style>
+        /* Animation de chargement */
+        @keyframes shimmer {
+            0% {
+                background-position: -468px 0;
+            }
+            100% {
+                background-position: 468px 0;
+            }
+        }
+
+        .skeleton-img, .skeleton-text, .skeleton-btn {
+            background: #f6f7f8;
+            background-image: linear-gradient(to right, #f6f7f8 0%, #edeef1 20%, #f6f7f8 40%, #f6f7f8 100%);
+            background-repeat: no-repeat;
+            background-size: 800px 100%;
+            display: inline-block;
+            position: relative;
+            animation: shimmer 1.2s infinite linear;
+            border-radius: 8px;
+        }
+
+        .skeleton-img {
+            width: 100%;
+            aspect-ratio: 3/4;
+        }
+
+        .skeleton-price {
+            width: 60%;
+            height: 24px;
+        }
+
+        .skeleton-title {
+            width: 100%;
+            height: 14px;
+        }
+
+        .skeleton-btn {
+            width: 100%;
+            height: 40px;
+            border-radius: 10px;
+        }
+    </style>
+        <style>
+        /* Container de recherche */
+        .search-section-wb {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .search-section-wb .input-group {
+            background-color: #fff;
+            border-radius: 50px; /* Barre très arrondie style pilule */
+            /* L'espace (marge interne) qui entoure le bouton bleu */
+            padding: 6px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e0e0e0;
+            transition: all 0.2s ease;
+            align-items: center; /* Centre verticalement l'input et le bouton */
+        }
+
+        /* Effet au focus */
+        .search-section-wb .input-group:focus-within {
+            border-color: #FFA500FF;
+            box-shadow: 0 4px 25px rgba(13, 110, 253, 0.15);
+        }
+
+        /* L'input texte */
+        .search-section-wb .form-control {
+            border: none !important;
+            background: transparent;
+            height: 40px;
+            font-size: 1rem;
+            color: #333;
+            padding-left: 20px;
+        }
+
+        .search-section-wb .form-control:focus {
+            box-shadow: none;
+        }
+
+        /* Le bouton RECHERCHER (Style "Flottant" Arrondi) */
+        .btn-search-wb {
+            background-color: #082C6A;
+            color: #ffffff;
+            border: none;
+            font-weight: 600;
+            font-size: 1.4rem;
+            /* Arrondi complet pour faire un bouton ovale à l'intérieur */
+            border-radius: 40px !important;
+            padding: 10px 30px;
+            height: 100%; /* S'adapte à la hauteur du padding parent */
+            transition: all 0.3s ease;
+        }
+
+        .btn-search-wb:hover {
+            background-color: #FFA500FF;
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(232, 164, 60, 0.3);
+        }
+
+        /* Responsive Mobile */
+        @media (max-width: 576px) {
+            .search-section-wb .input-group {
+                padding: 4px;
+                border-radius: 30px;
+            }
+
+            .search-section-wb .form-control {
+                height: 35px;
+                font-size: 0.85rem;
+            }
+
+            .btn-search-wb {
+                padding: 8px 15px;
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+
+    <style>
+        .header-top-section {
+            border-bottom: 1px solid #ffab09;
+            background: #fff;
+        }
+
+        .header-top a {
+            color: #000;
+            text-decoration: none;
+            background-color: transparent;
+        }
+
+        .header-user a {
+            color: orange;
+            text-decoration: none;
+            background-color: transparent;
+        }
+
+        .mobile-menu {
+            padding: 10px;
+            background-color: rgb(255 255 255);
+        }
+    </style>
+
+        <style>
+        /* Style du menu mobile */
+        .category-mobile-menu {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .cat-icon-wrapper {
+            width: 40px;
+            height: 40px;
+            background: #fdfdfd;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border: 1px solid #eee;
+        }
+
+        .cat-icon-wrapper img {
+            width: 80%;
+            height: 80%;
+            object-fit: contain;
+        }
+
+        .expand-trigger {
+            padding: 10px;
+            cursor: pointer;
+            color: #082C6A; /* Votre couleur violette */
+        }
+
+        /* Animation de l'icône de flèche */
+        .expand-trigger[aria-expanded="true"] .transition-icon {
+            transform: rotate(90deg);
+        }
+
+        .transition-icon {
+            transition: transform 0.3s ease;
+        }
+
+        .sub-cat-item {
+            border-left: 2px solid #eee !important;
+            position: relative;
+        }
+
+        .smaller {
+            font-size: 0.85rem;
+        }
+
+        /* Effet au clic */
+        .cat-item:active {
+            background-color: #f1f1f1;
+        }
+
+        /* Niveau 2 : On rend le texte un peu plus "gras" pour qu'il ne se perde pas */
+        .category-mobile-menu .fs-6 {
+            font-size: 1.05rem !important; /* Légèrement plus grand que la taille standard */
+        }
+
+        /* Niveau 3 : On garde une taille lisible mais on joue sur la couleur */
+        .category-mobile-menu .text-secondary {
+            font-size: 0.95rem !important;
+            color: #6c757d !important;
+        }
+
+        /* Augmenter la zone de clic pour les boutons */
+        .category-mobile-menu .btn {
+            min-width: 44px; /* Taille recommandée pour l'accessibilité mobile */
+            min-height: 44px;
+        }
+
+        /* Indentation visuelle pour le niveau 3 */
+        .category-mobile-menu .ps-5 {
+            padding-left: 3rem !important;
+            border-left: 2px solid #082C6A; /* Rappel de votre couleur violette */
+            margin-left: 1.5rem;
+        }
+    </style>
+
+        <style>
+        /*.header-top {*/
+        /*    background-color: #fff;*/
+        /*    position: sticky;*/
+        /*    top: 0;*/
+        /*    z-index: 10;*/
+        /*}*/
+
+        .btn-close-custom {
+            background: #f8f9fa;
+            border: none;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6E6D79;
+            transition: all 0.3s ease;
+        }
+
+        .btn-close-custom:hover {
+            background: #082C6A;
+            color: #fff;
+            transform: rotate(90deg);
+        }
+
+        .btn-close-custom i {
+            font-size: 1.2rem;
+        }
+    </style>
+        <style>
+        .header-cart-wb {
+            display: inline-flex;
+            padding: 8px;
+            text-decoration: none;
+        }
+
+        .wb-cart-badge {
+            position: absolute;
+            top: 4px;
+            right: 2px;
+            background: linear-gradient(135deg, #082C6A 0%, #020a1e 100%); /* Le dégradé signature de WB */
+            color: white;
+            font-size: 10px;
+            font-weight: 600;
+            min-width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 4px;
+            box-shadow: 0 2px 4px rgba(11, 26, 63, 0.3);
+        }
+
+        /* Effet de clic natif mobile */
+        .header-cart-wb:active {
+            transform: scale(0.9);
+            transition: transform 0.1s ease;
+        }
+    </style>
+
+        <style>
+        .header-cart-wb {
+            padding: 5px;
+        }
+
+        .wb-cart-badge {
+            position: absolute;
+            top: -2px; /* Ajustement vers le haut */
+            right: -5px; /* Ajustement vers la droite */
+            background: linear-gradient(135deg, #082C6A 0%, #041921 100%);
+            color: #ffffff;
+            font-size: 10px;
+            font-weight: bold;
+            min-width: 17px;
+            height: 17px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 4px;
+            line-height: 1;
+        }
+
+    </style>
+
+        <style>
+        /* Élévation de la carte (z-index et ombre) */
+        .custom-elevated-cart {
+            position: absolute;
+            z-index: 9999 !important; /* Force l'élévation au-dessus de tout */
+            background: #ffffff;
+            border-radius: 12px;
+            /* Ombre profonde pour l'effet de hauteur */
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.15), 0 5px 15px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            right: 0;
+            width: 320px;
+        }
+
+        /* Container du message vide pour le centrage parfait */
+        .empty-cart-container {
+            display: flex;
+            align-items: center; /* Centrage vertical */
+            justify-content: center; /* Centrage horizontal */
+            min-height: 250px; /* Hauteur suffisante pour voir le centrage */
+            padding: 20px;
+        }
+
+        .empty-icon-box {
+            font-size: 3rem;
+            color: #f0f0f0;
+            position: relative;
+        }
+
+        /* Optionnel : petite animation d'entrée pour la carte */
+        .cart-submenu {
+            animation: slideInDown 0.3s ease-out;
+        }
+
+        @keyframes slideInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+        <style>
+        .mobile-popup {
+            position: fixed;
+            top: 20px; /* Positionnée en haut avec un petit écart */
+            left: 15px;
+            right: 15px;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+            z-index: 10000; /* Doit être au-dessus de tout, même du header */
+
+            /* On la cache au-dessus de la zone visible */
+            transform: translateY(-150%);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.2);
+
+            border-bottom: 3px solid #082C6A; /* Touche de rappel de votre couleur */
+        }
+
+        .mobile-popup.active {
+            transform: translateY(0); /* Descend pour devenir visible */
+        }
+
+        .popup-content {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+        }
+
+        /* Style de l'icône WB */
+        .icon-box {
+            width: 35px;
+            height: 35px;
+            background: #082C6A;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            margin-right: 12px;
+        }
+
+        .popup-title {
+            font-weight: 700;
+            font-size: 13px;
+            color: #242424;
+            display: block;
+        }
+
+        .btn-close-popup {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            color: orange;
+            font-size: 12px;
+        }
+    </style>
+
+        <style>
+        :root {
+            --primary-color: #082C6A;
+            --dark-text: #1A1A1A;
+            --light-text: #666666;
+            --bg-footer: #F8F9FB;
+        }
+
+        .footer-premium {
+            background-color: var(--bg-footer);
+            font-family: 'Inter', sans-serif;
+            color: var(--dark-text);
+        }
+
+        /* Titres — typographie Wildberries (Inter) */
+        .footer-headline {
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            font-size: 1.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 25px;
+            color: var(--dark-text);
+        }
+
+        .brand-description {
+            color: var(--light-text);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            max-width: 300px;
+        }
+
+        /* Liens avec effet de survol moderne */
+        .footer-nav {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-nav li {
+            margin-bottom: 12px;
+        }
+
+        .footer-nav a {
+            color: var(--light-text);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.3rem;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .footer-nav a:hover {
+            color: var(--primary-color);
+            transform: translateX(8px);
+        }
+
+        /* Carte de contact style "Glassmorphism" léger */
+        .contact-card-premium {
+            background: #ffffff;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+        }
+
+        .icon-wrap {
+            color: var(--primary-color);
+            font-size: 1.8rem;
+            margin-right: 15px;
+            margin-top: 3px;
+        }
+
+        .contact-card-premium .label {
+            display: block;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #AAA;
+            text-transform: uppercase;
+        }
+
+        .contact-card-premium .value {
+            font-size: 1rem;
+            font-weight: 500;
+            margin: 0;
+        }
+
+        /* Réseaux sociaux */
+        .social-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--dark-text);
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .social-circle:hover {
+            background: var(--primary-color);
+            color: #fff;
+            transform: scale(1.1);
+        }
+
+        /* Copyright & Payment */
+        .footer-separator {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #E0E0E0, transparent);
+        }
+
+        .copyright-text {
+            font-size: 1.2rem;
+            color: var(--light-text);
+        }
+
+        .orange-money-badge {
+            background: #FF6600;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+    </style>
+
+
+        <style>
+        /* Élévation du conteneur du menu */
+        .custom-elevated-menu {
+            position: relative;
+            z-index: 1050; /* Au-dessus du contenu standard */
+            background: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1); /* Ombre douce et profonde */
+            overflow: hidden;
+        }
+
+        /* Centrage parfait du message vide */
+        .empty-menu-placeholder {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 300px; /* Assure un espace vertical pour le centrage */
+            background: #fff;
+        }
+
+        .empty-content .empty-icon i {
+            animation: pulse 2s infinite;
+        }
+
+        /* Animation douce pour l'icône */
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 0.25;
+            }
+            50% {
+                transform: scale(1.1);
+                opacity: 0.5;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 0.25;
+            }
+        }
+    </style>
+
+        <style>
+        .header-contact-premium {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .contact-info-wrapper {
+            display: flex;
+            flex-direction: column;
+            text-align: right;
+        }
+
+        .contact-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #999;
+            font-weight: 600;
+            line-height: 1;
+            margin-bottom: 3px;
+        }
+
+        .contact-link {
+            text-decoration: none;
+            color: #1A1A1A;
+            font-weight: 700;
+            font-size: 15px;
+            transition: color 0.3s ease;
+        }
+
+        .contact-link:hover {
+            color: #082C6A; /* Votre violet */
+        }
+
+        .contact-link i {
+            font-size: 13px;
+            color: #082C6A;
+        }
+
+        /* Badge WhatsApp Style "Live" */
+        .whatsapp-badge {
+            display: flex;
+            align-items: center;
+            background: #f0fff4; /* Vert très pâle */
+            color: #25D366; /* Vert WhatsApp */
+            padding: 6px 12px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(37, 211, 102, 0.2);
+        }
+
+        .whatsapp-badge .badge-text {
+            font-size: 11px;
+            margin-left: 8px;
+            color: #128C7E;
+            text-transform: uppercase;
+        }
+
+        /* Petit point clignotant "En ligne" */
+        .whatsapp-badge::after {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: #25D366;
+            border-radius: 50%;
+            margin-left: 6px;
+            box-shadow: 0 0 0 rgba(37, 211, 102, 0.4);
+            animation: pulse-green 2s infinite;
+        }
+
+        .whatsapp-badge:hover {
+            background: #25D366;
+            color: #fff;
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 5px 15px rgba(37, 211, 102, 0.3);
+        }
+
+        .whatsapp-badge:hover .badge-text {
+            color: #fff;
+        }
+
+        @keyframes pulse-green {
+            0% {
+                box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(37, 211, 102, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+            }
+        }
+    </style>
+
+    <style>
+        /* Bouton flottant uniquement MOBILE */
+        .whatsapp-sticky-btn {
+            position: fixed;
+            bottom: 20px; /* Distance du bas */
+            right: 20px; /* Distance de la droite */
+            z-index: 9999; /* Toujours au-dessus */
+            text-decoration: none;
+        }
+
+        .whatsapp-icon-wrapper {
+            width: 60px;
+            height: 60px;
+            background-color: #25D366;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 30px;
+            box-shadow: 0 10px 20px rgba(37, 211, 102, 0.4);
+            position: relative;
+            /* Animation de pulsation pour attirer l'attention sur mobile */
+            animation: wa-pulse-mobile 2s infinite;
+        }
+
+        /* Point vert "En ligne" */
+        .online-indicator {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            width: 12px;
+            height: 12px;
+            background-color: #00e676;
+            border: 2px solid white;
+            border-radius: 50%;
+        }
+
+        /* Animation de pulsation douce */
+        @keyframes wa-pulse-mobile {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7);
+            }
+            70% {
+                transform: scale(1.05);
+                box-shadow: 0 0 0 15px rgba(37, 211, 102, 0);
+            }
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+            }
+        }
+
+        /* Optionnel : évite que le bouton cache le dernier élément d'une liste.
+           + env(safe-area-inset-bottom) : sur iPhone à barre d'accueil, la
+           zone de~34px en bas n'est pas atteignable — sans cette réserve,
+           une barre d'action fixe (panier, produit, commande) masquerait
+           le bas du footer. */
+        body {
+            padding-bottom: calc(80px + env(safe-area-inset-bottom));
+        }
+
+        @media (min-width: 992px) {
+            body {
+                padding-bottom: 0;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+<div id="mobile-cart-popup" class="mobile-popup d-lg-none">
+    <div class="popup-content">
+        <div class="icon-box">
+            <i class="fas fa-shopping-bag"></i>
+        </div>
+        <div class="text-box">
+            <span class="popup-title">Ajouté au panier !</span>
+            <span class="popup-subtitle">Votre article a été bien ajouté.</span>
+        </div>
+        <button class="btn-close-popup" onclick="this.parentElement.parentElement.classList.remove('active')">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+</div>
+<div class="header-top-section">
+    <div class="container">
+        <div class="header-top">
+            <div class="header-profile">
+                <a href="/account"><span>Mon compte</span></a>
+                <a href="/account/mes-commandes"><span>Commande</span></a>
+                <a href="#"><span>Support</span></a>
+            </div>
+            <div class="header-contact-premium d-none d-lg-flex align-items-center">
+                <div class="contact-info-wrapper me-3">
+                    <span class="contact-label">Besoin d'aide ?</span>
+                    <a href="tel:+22374741745" class="contact-link">
+                        <i class="fas fa-phone-alt me-1"></i>
+                        <span class="contact-number">+223 74 74 17 45</span>
+                    </a>
+                </div>
+
+                <a href="https://wa.me/22374741745?text=Bonjour%20Sanfeni%2C%20j%27aimerais%20avoir%20plus%20d%27informations%20sur%20vos%20produits"
+                   class="whatsapp-badge" title="Discuter sur WhatsApp">
+                    <i class="fab fa-whatsapp"></i>
+                    <span class="badge-text">En ligne</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<header id="header" class="header sticky-top">
+    <div class="header-center-section d-none d-lg-block bg-white">
+        <div class="container">
+            <div class="header-center">
+                <div class="logo">
+                    <a href="/">
+                        <img src="/assets/images/logos/logo_s.svg?2026-10-02.1" width="150px" alt="logo">
+                    </a>
+                </div>
+                <div class="header-cart-items">
+
+                                            <div class="header-user">
+                               <span>
+                        Salut Awa |
+                                </span>
+
+                            <a href="/logout">  <span>
+                                  Se déconnecter
+                                </span></a>
+
+                        </div>
+                    
+                    <div  data-controller="live" data-live-name-value="HeaderCartComponent" data-live-url-value="/_components/HeaderCartComponent" data-live-listeners-value="[{&quot;action&quot;:&quot;onCartUpdate&quot;,&quot;event&quot;:&quot;headerCartUpdated&quot;},{&quot;action&quot;:&quot;onCartUpdateWithoutPop&quot;,&quot;event&quot;:&quot;CartUpdateWithoutPop&quot;}]" id="live-1282486612-0" data-live-props-value="{&quot;currentCart&quot;:0,&quot;@attributes&quot;:{&quot;id&quot;:&quot;live-1282486612-0&quot;},&quot;@checksum&quot;:&quot;\/0tH+5gJ3cuUuTNLPkUndzDbqORrfUb8vfhyKK\/RxlQ=&quot;}" >
+
+        <div class="header-cart d-none d-lg-block" id="header-cart" data-controller="modal" >
+        <a href="/mon-panier" class="cart-item">
+                                <span>
+                                    <svg width="35" height="28" viewBox="0 0 35 28" fill="none"
+                                         xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M16.4444 21.897C14.8444 21.897 13.2441 21.8999 11.6441 21.8963C9.79233 21.892 8.65086 21.0273 8.12595 19.2489C7.04294 15.5794 5.95756 11.9107 4.87166 8.24203C4.6362 7.4468 4.37783 7.25412 3.55241 7.25175C2.7786 7.24964 2.00507 7.25754 1.23127 7.24911C0.512247 7.24148 0.0157813 6.79109 0.000242059 6.15064C-0.0160873 5.48281 0.475637 5.01689 1.23232 5.00873C2.11121 4.99952 2.99089 4.99214 3.86951 5.01268C5.36154 5.04769 6.52014 5.93215 6.96393 7.35415C7.14171 7.92378 7.34055 8.49026 7.46382 9.07201C7.54968 9.47713 7.77881 9.49661 8.10566 9.49582C11.8335 9.48897 15.5611 9.49134 19.2889 9.49134C21.0825 9.49134 22.8761 9.48108 24.6694 9.49503C26.0848 9.50608 27.0907 10.4906 27.0156 11.7778C27.0006 12.0363 26.925 12.2958 26.8473 12.5457C26.1317 14.8411 25.4124 17.1351 24.6879 19.4279C24.1851 21.0186 23.0223 21.8826 21.3504 21.8944C19.7151 21.906 18.0797 21.897 16.4444 21.897Z"
+                                            fill="#6E6D79"/>
+                                        <path
+                                            d="M12.4012 27.5161C11.167 27.5227 10.1488 26.524 10.1345 25.2928C10.1201 24.0419 11.1528 22.9982 12.3967 23.0066C13.6209 23.0151 14.6422 24.0404 14.6436 25.2623C14.6451 26.4855 13.6261 27.5095 12.4012 27.5161Z"
+                                            fill="#6E6D79"/>
+                                        <path
+                                            d="M22.509 25.2393C22.5193 26.4842 21.5393 27.4971 20.3064 27.5155C19.048 27.5342 18.0272 26.525 18.0277 25.2622C18.0279 24.0208 19.0214 23.0161 20.2572 23.0074C21.4877 22.9984 22.4988 24.0006 22.509 25.2393Z"
+                                            fill="#6E6D79"/>
+                                        <span
+                                            class="position-absolute top-0 translate-middle badge rounded-pill bg-danger">0</span>
+                                    </svg>
+
+                                </span>
+            <span class="cart-text">
+                                    Panier
+                                </span>
+        </a>
+        <div class="cart-submenu custom-elevated-cart">
+            <div class="cart-wrapper-item">
+                
+                                                        <div class="empty-cart-container">
+                        <div class="text-center">
+                            <div class="empty-icon-box mb-3">
+                                <i class="fas fa-shopping-basket"></i>
+                            </div>
+                            <h6 class="fw-bold mb-1">Votre panier est vide</h6>
+                            <p class="text-muted small mb-3">Ajoutez des articles pour commencer vos achats.</p>
+                            <a href="/" class="btn btn-sm px-4 rounded-pill text-white"
+                               style="background: #082C6A;">
+                                Découvrir nos produits
+                            </a>
+                        </div>
+                    </div>
+                            </div>
+
+                    </div>
+    </div>
+        <div class="d-block d-lg-none">
+        <a href="/mon-panier" class="header-cart-wb position-relative d-inline-block text-decoration-none">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                    d="M7.5 18C8.32843 18 9 18.6716 9 19.5C9 20.3284 8.32843 21 7.5 21C6.67157 21 6 20.3284 6 19.5C6 18.6716 6.67157 18 7.5 18Z"
+                    stroke="#242424" stroke-width="1.5"/>
+                <path
+                    d="M16.5 18C17.3284 18 18 18.6716 18 19.5C18 20.3284 17.3284 21 16.5 21C15.6716 21 15 20.3284 15 19.5C15 18.6716 15.6716 18 16.5 18Z"
+                    stroke="#242424" stroke-width="1.5"/>
+                <path d="M2 3H4.5L6.5 15H19L21.5 6H7" stroke="#242424" stroke-width="1.5" stroke-linecap="round"
+                      stroke-linejoin="round"/>
+            </svg>
+
+                                </a>
+    </div>
+</div>
+
+                    <div class="header-user">
+                        <a href="#">
+                                <span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"
+                                         class="fill-current">
+                                        <path fill="none" d="M0 0h24v24H0z"></path>
+                                        <path
+                                            d="M20 22H4v-2a5 5 0 0 1 5-5h6a5 5 0 0 1 5 5v2zm-8-9a6 6 0 1 1 0-12 6 6 0 0 1 0 12z">
+                                        </path>
+                                    </svg>
+                                </span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <nav class="mobile-menu d-block d-lg-none">
+        <div class="mobile-menu-header d-flex justify-content-between align-items-center">
+            <button class="btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasWithBothOptions"
+                    aria-controls="offcanvasWithBothOptions">
+                    <span>
+                        <svg width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <rect width="14" height="1" fill="#1D1D1D"/>
+                            <rect y="8" width="14" height="1" fill="#1D1D1D"/>
+                            <rect y="4" width="10" height="1" fill="#1D1D1D"/>
+                        </svg>
+                    </span>
+            </button>
+            <a href="/" class="mobile-header-logo">
+                <img src="/assets/images/logos/logo_s.svg?2026-10-02.1" width="100px" alt="logo">
+            </a>
+            <div  data-controller="live" data-live-name-value="HeaderCartComponent" data-live-url-value="/_components/HeaderCartComponent" data-live-listeners-value="[{&quot;action&quot;:&quot;onCartUpdate&quot;,&quot;event&quot;:&quot;headerCartUpdated&quot;},{&quot;action&quot;:&quot;onCartUpdateWithoutPop&quot;,&quot;event&quot;:&quot;CartUpdateWithoutPop&quot;}]" id="live-377414503-0" data-live-props-value="{&quot;currentCart&quot;:0,&quot;@attributes&quot;:{&quot;id&quot;:&quot;live-377414503-0&quot;},&quot;@checksum&quot;:&quot;NX625DBrv+vyjetAsPF+CV6kWDTvhZxHbYRgd7cRfdg=&quot;}" >
+
+        <div class="header-cart d-none d-lg-block" id="header-cart" data-controller="modal" >
+        <a href="/mon-panier" class="cart-item">
+                                <span>
+                                    <svg width="35" height="28" viewBox="0 0 35 28" fill="none"
+                                         xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M16.4444 21.897C14.8444 21.897 13.2441 21.8999 11.6441 21.8963C9.79233 21.892 8.65086 21.0273 8.12595 19.2489C7.04294 15.5794 5.95756 11.9107 4.87166 8.24203C4.6362 7.4468 4.37783 7.25412 3.55241 7.25175C2.7786 7.24964 2.00507 7.25754 1.23127 7.24911C0.512247 7.24148 0.0157813 6.79109 0.000242059 6.15064C-0.0160873 5.48281 0.475637 5.01689 1.23232 5.00873C2.11121 4.99952 2.99089 4.99214 3.86951 5.01268C5.36154 5.04769 6.52014 5.93215 6.96393 7.35415C7.14171 7.92378 7.34055 8.49026 7.46382 9.07201C7.54968 9.47713 7.77881 9.49661 8.10566 9.49582C11.8335 9.48897 15.5611 9.49134 19.2889 9.49134C21.0825 9.49134 22.8761 9.48108 24.6694 9.49503C26.0848 9.50608 27.0907 10.4906 27.0156 11.7778C27.0006 12.0363 26.925 12.2958 26.8473 12.5457C26.1317 14.8411 25.4124 17.1351 24.6879 19.4279C24.1851 21.0186 23.0223 21.8826 21.3504 21.8944C19.7151 21.906 18.0797 21.897 16.4444 21.897Z"
+                                            fill="#6E6D79"/>
+                                        <path
+                                            d="M12.4012 27.5161C11.167 27.5227 10.1488 26.524 10.1345 25.2928C10.1201 24.0419 11.1528 22.9982 12.3967 23.0066C13.6209 23.0151 14.6422 24.0404 14.6436 25.2623C14.6451 26.4855 13.6261 27.5095 12.4012 27.5161Z"
+                                            fill="#6E6D79"/>
+                                        <path
+                                            d="M22.509 25.2393C22.5193 26.4842 21.5393 27.4971 20.3064 27.5155C19.048 27.5342 18.0272 26.525 18.0277 25.2622C18.0279 24.0208 19.0214 23.0161 20.2572 23.0074C21.4877 22.9984 22.4988 24.0006 22.509 25.2393Z"
+                                            fill="#6E6D79"/>
+                                        <span
+                                            class="position-absolute top-0 translate-middle badge rounded-pill bg-danger">0</span>
+                                    </svg>
+
+                                </span>
+            <span class="cart-text">
+                                    Panier
+                                </span>
+        </a>
+        <div class="cart-submenu custom-elevated-cart">
+            <div class="cart-wrapper-item">
+                
+                                                        <div class="empty-cart-container">
+                        <div class="text-center">
+                            <div class="empty-icon-box mb-3">
+                                <i class="fas fa-shopping-basket"></i>
+                            </div>
+                            <h6 class="fw-bold mb-1">Votre panier est vide</h6>
+                            <p class="text-muted small mb-3">Ajoutez des articles pour commencer vos achats.</p>
+                            <a href="/" class="btn btn-sm px-4 rounded-pill text-white"
+                               style="background: #082C6A;">
+                                Découvrir nos produits
+                            </a>
+                        </div>
+                    </div>
+                            </div>
+
+                    </div>
+    </div>
+        <div class="d-block d-lg-none">
+        <a href="/mon-panier" class="header-cart-wb position-relative d-inline-block text-decoration-none">
+                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                    d="M7.5 18C8.32843 18 9 18.6716 9 19.5C9 20.3284 8.32843 21 7.5 21C6.67157 21 6 20.3284 6 19.5C6 18.6716 6.67157 18 7.5 18Z"
+                    stroke="#242424" stroke-width="1.5"/>
+                <path
+                    d="M16.5 18C17.3284 18 18 18.6716 18 19.5C18 20.3284 17.3284 21 16.5 21C15.6716 21 15 20.3284 15 19.5C15 18.6716 15.6716 18 16.5 18Z"
+                    stroke="#242424" stroke-width="1.5"/>
+                <path d="M2 3H4.5L6.5 15H19L21.5 6H7" stroke="#242424" stroke-width="1.5" stroke-linecap="round"
+                      stroke-linejoin="round"/>
+            </svg>
+
+                                </a>
+    </div>
+</div>
+
+        </div>
+
+        <div class="offcanvas offcanvas-start" data-bs-scroll="true" tabindex="-1" id="offcanvasWithBothOptions">
+
+            <div class="offcanvas-body">
+                <div class="header-top border-bottom p-3 d-flex justify-content-between align-items-center">
+                    <div class="">
+                        <h5 class="mb-0 fw-bold" style="color: #082C6A;">Toutes les catégories</h5>
+                    </div>
+                                        <button type="button"
+                            class="btn-close-custom"
+                            data-bs-dismiss="offcanvas"
+                            aria-label="Close">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+
+                <div class="category-mobile-menu">
+                    <ul class="list-unstyled">
+                        <ul class="list-unstyled custom-elevated-menu">
+                                                                                            <li class="empty-menu-placeholder">
+                                    <div class="empty-content text-center py-5 px-3">
+                                        <div class="empty-icon mb-3">
+                                            <i class="fas fa-th-large text-muted opacity-25"
+                                               style="font-size: 3rem;"></i>
+                                        </div>
+                                        <h6 class="fw-bold text-dark">Aucune catégorie</h6>
+                                        <p class="text-muted small">Les rayons sont en cours de mise à jour.</p>
+                                        <button class="btn btn-sm rounded-pill mt-2 px-4"
+                                                style="background: #082C6A; color: white;"
+                                                onclick="window.location.reload();">
+                                            Actualiser
+                                        </button>
+                                    </div>
+                                </li>
+                                                    </ul>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="header-bottom d-lg-block d-none">
+        <div class="container">
+            <div class="header-nav">
+                <nav class="navbar-expand-md">
+                    <div class="container">
+                        <div class="collapse navbar-collapse order-3" id="navbarCollapse">
+                            <!-- Left navbar links -->
+                            <ul class="navbar-nav">
+                                <li class="nav-item dropdown dropdown-hover">
+                                    <a id="dropdownSubMenu1" href="#" data-bs-toggle="dropdown" aria-haspopup="true"
+                                       aria-expanded="false" class="nav-link dropdown-toggle">
+                                        <span class="dropdown-btn">
+                                            <span class="dropdown-icon">
+                                                <svg width="14" height="9" viewBox="0 0 14 9" fill="none"
+                                                     xmlns="http://www.w3.org/2000/svg">
+                                                    <rect width="14" height="1"/>
+                                                    <rect y="8" width="14" height="1"/>
+                                                    <rect y="4" width="10" height="1"/>
+                                                </svg>
+                                            </span>
+                                            <span class="list-text">Catégories</span>
+                                        </span>
+                                    </a>
+                                    <ul aria-labelledby="dropdownSubMenu1" class="dropdown-menu border-0 shadow">
+                                        <!-- Level two dropdown-->
+                                                                                                                                <li class="empty-menu-placeholder">
+                                                <div class="empty-content text-center py-5 px-3">
+                                                    <div class="empty-icon mb-3">
+                                                        <i class="fas fa-th-large text-muted opacity-25"
+                                                           style="font-size: 3rem;"></i>
+                                                    </div>
+                                                    <h6 class="fw-bold text-dark">Aucune catégorie</h6>
+                                                    <p class="text-muted small">Les rayons sont en cours de mise à
+                                                        jour.</p>
+                                                    <button class="btn btn-sm rounded-pill mt-2 px-4"
+                                                            style="background: #082C6A; color: white;"
+                                                            onclick="window.location.reload();">
+                                                        Actualiser
+                                                    </button>
+                                                </div>
+                                            </li>
+                                                                                <!-- End Level two -->
+                                    </ul>
+                                </li>
+                            </ul>
+
+                        </div>
+                    </div>
+                </nav>
+                <div class="header-nav-menu py-3">
+                    <div class="container">
+                        <div class="search-content">
+                            <form name="search" method="get">
+                            <div class="search-section-wb">
+                                <div class="input-group search-wrapper">
+
+                                    <input type="text"
+                                           name="search[name]"
+                                           id="search_name"
+                                           class="form-control search-input ps-4"
+                                           style="font-size: 1.8em;"
+                                           placeholder="Rechercher un produit ou une marque..."
+                                           aria-label="Search">
+
+                                    <button type="submit" class="btn btn-search-wb" type="button">
+                                        Rechercher
+                                    </button>
+
+                                </div>
+                            </div>
+                            <input type="hidden" id="search__token" name="search[_token]" data-controller="csrf-protection" value="csrf-token" /></form>
+                        </div>
+                    </div>
+                </div>
+                <div class="header-vendor-btn">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+    <section class="user-profile account-page">
+        <div class="container">
+            <div class="account-column">
+
+                <header class="account-head">
+                    <div>
+                        <h1>Ajouter une adresse</h1>
+                        <a href="/account/address" class="account-back">
+                            <i class="fas fa-arrow-left"></i> Retour à mes adresses
+                        </a>
+                    </div>
+                </header>
+
+                <div class="acc-card">
+                    <form name="address" method="post">
+                        <div class="acc-form-grid">
+                            <div><div class="mb-3"><label for="address_firstName" class="form-label required">Prénom</label><input type="text" id="address_firstName" name="address[firstName]" required="required" placeholder="Votre Prénom" class="m-2 form-control" /></div></div>
+                            <div><div class="mb-3"><label for="address_lastName" class="form-label required">Nom</label><input type="text" id="address_lastName" name="address[lastName]" required="required" placeholder="Votre Nom" class="m-2 form-control" /></div></div>
+
+                            <div class="acc-field--full"><div class="mb-3"><label for="address_phone" class="form-label required">Téléphone</label><input type="text" id="address_phone" name="address[phone]" required="required" placeholder="Votre numéro portable" class="m-2 form-control" /></div></div>
+                            <div class="acc-field--full"><div class="mb-3"><label for="address_company" class="form-label">Société (optionnel)</label><input type="text" id="address_company" name="address[company]" placeholder="Votre société" class="m-2 form-control" /></div></div>
+                            <div class="acc-field--full"><div class="mb-3"><label for="address_address" class="form-label required">Adresse</label><input type="text" id="address_address" name="address[address]" required="required" placeholder="Votre adresse" class="m-2 form-control" /></div></div>
+
+                            <div><div class="mb-3"><label for="address_city" class="form-label required">Ville</label><input type="text" id="address_city" name="address[city]" required="required" placeholder="Ville" class="m-2 form-control" /></div></div>
+                            <div><div class="mb-3"><label for="address_country" class="form-label required">Pays</label><input type="text" id="address_country" name="address[country]" required="required" placeholder="Pays" class="m-2 form-control" /></div></div>
+                        </div>
+
+                        <div class="form-actions">
+                            <a href="/account/address" class="acc-btn acc-btn--outline">Annuler</a>
+                            <button type="submit" class="acc-btn acc-btn--primary">Ajouter l'adresse</button>
+                        </div>
+                    <input type="hidden" id="address__token" name="address[_token]" data-controller="csrf-protection" value="csrf-token" /></form>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+<!--------------- footer-section--------------->
+
+    <footer class="footer-premium pt-5 pb-3">
+        <div class="container">
+            <div class="row gy-5">
+                <div class="col-12 col-lg-4 text-center text-lg-start">
+                    <div class="footer-brand-box">
+                        <img src="/assets/images/logos/logo_s.svg?2026-10-02.1" width="180" alt="logo" class="mb-3 brightness-fix">
+                        <p class="brand-description mt-3">
+                            L'excellence du commerce digital au Mali. Qualité, rapidité et confiance à chaque commande.
+                        </p>
+                        <div class="social-group d-flex justify-content-center justify-content-lg-start gap-3">
+                            <a href="#" class="social-circle"><i class="fab fa-facebook-f"></i></a>
+                            <a href="#" class="social-circle"><i class="fab fa-instagram"></i></a>
+                            <a href="#" class="social-circle"><i class="fab fa-whatsapp"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-6 col-lg-2">
+                    <h5 class="footer-headline">Boutique</h5>
+                    <ul class="footer-nav">
+                        <li><a href="#">Nouveautés</a></li>
+                        <li><a href="#">Promotions</a></li>
+                        <li><a href="#">Catégories</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-6 col-lg-2">
+                    <h5 class="footer-headline">Aide</h5>
+                    <ul class="footer-nav">
+                        <li><a href="#">Paiement</a></li>
+                        <li><a href="#">Livraison</a></li>
+                        <li><a href="#">SAV</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-12 col-lg-4">
+                    <div class="contact-card-premium">
+                        <h5 class="footer-headline mb-4">Nous trouver</h5>
+                        <div class="d-flex align-items-start mb-3">
+                            <div class="icon-wrap"><i class="fas fa-map-marker-alt"></i></div>
+                            <div>
+                                <span class="label">Siège Social</span>
+                                <p class="value">Hamdallaye ACI, Immeuble BAMA, Bamako</p>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-start">
+                            <div class="icon-wrap"><i class="fas fa-phone-alt"></i></div>
+                            <div>
+                                <span class="label">Assistance 24/7</span>
+                                <p class="value">+223 74 74 17 45</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-separator my-5"></div>
+
+            <div class="footer-copyright d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
+                <span class="copyright-text">© 2026 <strong>SANFENI est une marque de VFD-AFRIQUE SARL</strong>. Tous droits réservés.</span>
+                <div class="payment-methods">
+                    <i class="fab fa-cc-visa"></i>
+                    <i class="fab fa-cc-mastercard"></i>
+                </div>
+            </div>
+        </div>
+    </footer>
+<!--------------- footer-section-end--------------->
+
+<a href="https://wa.me/22374741745?text=Bonjour%20Sanfeni%2C%20j%27aimerais%20avoir%20plus%20d%27informations%20sur%20vos%20produits"
+   class="whatsapp-sticky-btn d-flex d-lg-none"
+   target="_blank">
+    <div class="whatsapp-icon-wrapper">
+        <i class="fab fa-whatsapp"></i>
+        <span class="online-indicator"></span>
+    </div>
+</a>
+
+<!--------------- jQuery ---------------->
+<script src="/assets/js/jquery_3.7.1.min.js?2026-10-02.1"></script>
+
+<!--------------- bootstrap-js ---------------->
+<script src="/assets/js/bootstrap_5.3.2.bundle.min.js?2026-10-02.1"></script>
+
+<!--------------- Range-Slider-js ---------------->
+<script src="/assets/js/nouislider.min.js?2026-10-02.1"></script>
+
+<!--------------- scroll-Animation-js ---------------->
+<script src="/assets/js/aos-3.0.0.js?2026-10-02.1"></script>
+
+<!--------------- swiper-js ---------------->
+<script src="/assets/js/swiper10-bundle.min.js?2026-10-02.1"></script>
+
+<!--------------- additional-js ---------------->
+<script src="/assets/js/shopus.js?2026-10-02.1"></script>
+
+    
+    
+<!-- Swiper JS -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+
+<!-- Initialize Swiper -->
+<script>
+    // Initialisation du Swiper
+    const swiper = new Swiper('.mySwiper', {
+        // Effet de fondu au lieu du slide (très élégant pour les bannières)
+        effect: 'fade',
+        fadeEffect: {
+            crossFade: true
+        },
+
+        // Lecture automatique
+        autoplay: {
+            delay: 4000, // Change toutes les 4 secondes
+            disableOnInteraction: false, // Continue après un clic
+        },
+
+        // Boucle infinie
+        loop: true,
+
+        // Vitesse de la transition
+        speed: 800,
+
+        // Pagination (les petits points)
+        pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+            dynamicBullets: true, // Les points changent de taille (Style moderne)
+        },
+
+        // Navigation (Flèches - optionnel sur mobile)
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+    });
+    // var swiper = new Swiper(".mySwiper", {
+    //     loop: true,
+    //     spaceBetween: 20, // Espace plus petit sur mobile
+    //
+    //     // Configuration par défaut (Mobile)
+    //     slidesPerView: 1,
+    //
+    //     pagination: {
+    //         el: ".swiper-pagination",
+    //         clickable: true,
+    //     },
+    //     navigation: {
+    //         nextEl: ".swiper-button-next",
+    //         prevEl: ".swiper-button-prev",
+    //     },
+    //
+    //     // Points de rupture
+    //     breakpoints: {
+    //         // Quand l'écran est >= 768px (Tablette/PC)
+    //         768: {
+    //             slidesPerView: 2,
+    //             spaceBetween: 30,
+    //         },
+    //         // Optionnel : Quand l'écran est >= 1200px (Grand écran)
+    //         1200: {
+    //             slidesPerView: 2, // Permet de voir un bout de la slide suivante
+    //             spaceBetween: 40,
+    //         }
+    //     }
+    // });
+</script>
+<script>
+    document
+        .querySelectorAll('.add_item_link')
+        .forEach(btn => {
+            btn.addEventListener("click", addFormToCollection)
+        });
+
+    function addFormToCollection(e) {
+        const collectionHolder = document.querySelector('.' + e.currentTarget.dataset.collectionHolderClass);
+
+        const item = document.createElement('li');
+
+        item.innerHTML = collectionHolder
+            .dataset
+            .prototype
+            .replace(
+                /__name__/g,
+                collectionHolder.dataset.index
+            );
+
+        collectionHolder.appendChild(item);
+
+        collectionHolder.dataset.index++;
+    };
+</script>
+
+</body>
+</html>

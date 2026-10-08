@@ -21,18 +21,15 @@ class RegisterType extends AbstractType
         $builder
             ->add('lastName', TextType::class, [
                 'attr' => [
-                    'class' => 'form-control',
                     'placeholder' => 'Nom'
                 ]
             ])
             ->add('firstName', TextType::class, [
                 'attr' => [
-                    'class' => 'form-control',
                     'placeholder' => 'Prénom'
                 ]])
             ->add('email', EmailType::class, [
                 'attr' => [
-                    'class' => 'form-control',
                     'placeholder' => 'Adresse e-mail'
                 ]])
             ->add('save', SubmitType::class, [
@@ -42,17 +39,17 @@ class RegisterType extends AbstractType
                 'invalid_message' => 'Les mot de passe ne correspondent pas',
                 'required' => true,
                 'first_options' => [
-                    'label'=>false,
+                    'label' => false,
                     'attr' => [
                         'placeholder' => 'Merci de saisir votre mot de passe',
-                        'class' => 'form-control'
-                    ]],
+                    ],
+                ],
                 'second_options' => [
-                    'label'=>false,
+                    'label' => false,
                     'attr' => [
                         'placeholder' => 'Merci de saisir votre mot de passe de confirmation',
-                        'class' => 'form-control'
-                    ]],
+                    ],
+                ],
             ]);
 
     }

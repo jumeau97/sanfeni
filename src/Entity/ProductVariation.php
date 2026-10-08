@@ -27,6 +27,13 @@ class ProductVariation
     #[ORM\Column(nullable: true)]
     private ?float $price = null;
 
+    /**
+     * Stock de cette combinaison d'attributs. 0 = rupture, ce qui permet
+     * au front d'indiquer la taille/couleur indisponible.
+     */
+    #[ORM\Column]
+    private int $stock = 0;
+
     public function __construct()
     {
         $this->attributes = new ArrayCollection();
@@ -81,6 +88,18 @@ class ProductVariation
     public function setPrice(?float $price): static
     {
         $this->price = $price;
+
+        return $this;
+    }
+
+    public function getStock(): int
+    {
+        return $this->stock;
+    }
+
+    public function setStock(int $stock): static
+    {
+        $this->stock = $stock;
 
         return $this;
     }

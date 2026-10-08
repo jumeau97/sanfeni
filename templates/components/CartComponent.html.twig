@@ -1,54 +1,97 @@
-{# Le 'attributes' doit englober toute la zone à rafraîchir (le tableau et les totaux) #}
+{# Racine LiveComponent : 'attributes' doit englober toute la zone
+   rafraîchie (tableau + récapitulatif) pour que le rechargement
+   émettant 'cartUpdated' mette tout à jour d'un coup. #}
 <div {{ attributes }}>
 
-    <div class="cart-section elevated-card">
-        {% if cartItems is not empty %}
-            <table class="w-100">
-                <tbody>
-                <tr class="table-row table-top-row">
-                    {# ... Vos en-têtes ... #}
-                </tr>
+    {% if cartItems is not empty %}
+        <div class="wb-cart-grid">
 
-                {% for cartItem in cartItems %}
-                    {{ component('CartItemRowComponent', {
-                        productId: cartItem.product.id,
-                        quantity: cartItem.quantity,
-                        key: cartItem.product.id,
-                    }) }}
-                {% endfor %}
-                </tbody>
-            </table>
+            <section class="wb-cart-panel">
+                <table class="wb-cart-table">
+                    <thead>
+                    <tr>
+                        <th scope="col">Produit</th>
+                        <th scope="col" class="wb-cart-th--qty">Quantité</th>
+                        <th scope="col" class="wb-cart-th--total">Total</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for cartItem in cartItems %}
+                        {{ component('CartItemRowComponent', {
+                            productId: cartItem.product.id,
+                            quantity: cartItem.quantity,
+                            key: cartItem.product.id,
+                        }) }}
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </section>
 
-            {# Affichage du Total Général (Uniquement si plein) #}
-            <div class="cart-summary-box mt-4">
-                <div class="d-flex justify-content-end align-items-center gap-3">
-                    <h4 class="mb-0 text-muted">Total Général :</h4>
-                    <h2 class="mb-0 fw-bold" id="grand-total-amount" style="color: #082C6A;">
-                        {{ this.grandTotal|format_currency('XOF') }}
-                    </h2>
-                </div>
-                <div class="text-end mt-4">
-                    <a href="{{ path('app_order') }}" class="shop-btn-lg">
-                        Commander <i class="fas fa-arrow-right ms-2"></i>
-                    </a>
-                </div>
-            </div>
+            <aside class="wb-cart-summary">
+                <h2 class="wb-cart-summary-title">Récapitulatif</h2>
 
-        {% else %}
-            {# MESSAGE PANIER VIDE (Centré et Élégant) #}
-            <div class="empty-cart-full-page">
-                <div class="empty-illustration">
-                    <div class="circle-bg">
-                        <i class="fas fa-shopping-cart"></i>
+                <dl class="wb-cart-summary-rows">
+                    <div class="wb-cart-summary-row">
+                        <dt>
+                            Sous-total
+                            ({{ cartItems|length }} article{{ cartItems|length > 1 ? 's' : '' }})
+                        </dt>
+                        <dd>{{ this.grandTotal|format_currency('XOF') }}</dd>
                     </div>
+                    <div class="wb-cart-summary-row wb-cart-summary-row--hint">
+                        <dt>Livraison</dt>
+                        <dd>Calculée à l'étape suivante</dd>
+                    </div>
+                </dl>
+
+                <div class="wb-cart-summary-total">
+                    <span>Total</span>
+                    <strong id="grand-total-amount">{{ this.grandTotal|format_currency('XOF') }}</strong>
                 </div>
-                <h2 class="fw-bold mt-4">Votre panier est vide...</h2>
-                <p class="text-muted mb-4">Découvrez nos nouveautés et trouvez votre coup de cœur !</p>
-                <a href="{{ path('app_home') }}" class="shop-btn-primary px-5 py-3 rounded-pill">
+
+                <a href="{{ path('app_order') }}" class="wb-cart-cta">
+                    Passer la commande <i class="fas fa-arrow-right"></i>
+                </a>
+
+                <a href="{{ path('app_home') }}" class="wb-cart-continue">
                     Continuer mes achats
                 </a>
+            </aside>
+
+        </div>
+
+        {# ----------------------------------------------------------
+           Barre d'action fixe en bas d'écran (mobile uniquement,
+           voir le bloc @media de cart/index.html.twig).
+
+           Elle vit DANS le composant Live : à chaque rafraîchissement
+           du panier, this.grandTotal est re-rendu ici aussi, donc le
+           total affiché en bas ne peut pas se désynchroniser de celui
+           du récapitulatif.
+           ---------------------------------------------------------- #}
+        <div class="wb-actionbar">
+            <span class="wb-actionbar__total">
+                <span class="wb-actionbar__label">Total</span>
+                <strong class="wb-actionbar__value">{{ this.grandTotal|format_currency('XOF') }}</strong>
+            </span>
+
+            <a href="{{ path('app_order') }}" class="wb-actionbar__btn">
+                Passer la commande <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+
+    {% else %}
+        {# Panier vide #}
+        <div class="wb-cart-empty">
+            <div class="wb-cart-empty-icon">
+                <i class="fas fa-shopping-cart"></i>
             </div>
-        {% endif %}
-    </div>
+            <h2>Votre panier est vide</h2>
+            <p>Découvrez nos nouveautés et trouvez votre coup de cœur.</p>
+            <a href="{{ path('app_home') }}" class="wb-cart-cta">
+                Continuer mes achats <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+    {% endif %}
 
 </div>

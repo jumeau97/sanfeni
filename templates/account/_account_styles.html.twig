@@ -1,0 +1,302 @@
+{# ------------------------------------------------------------------
+   Styles partagés des pages /account.
+   Inclus dans {% block stylesheets %} de chaque page du dossier :
+   {% include 'account/_account_styles.html.twig' %}
+
+   Palette et typographie reprises du design system du site
+   (templates/base.html.twig + public/css/style.css) :
+     - primaire  #082C6A
+     - accent    #FFA500
+     - titres    #232532 / #1A1A1A
+     - texte     #797979
+     - fond      #F8F8F8, cartes #FFFFFF
+     - police    Inter
+   Tout est scopé à .account-page pour ne pas polluer les autres pages.
+   ------------------------------------------------------------------ #}
+<style>
+    .account-page {
+        --acc-primary: #082C6A;
+        --acc-accent: #FFA500;
+        --acc-title: #1A1A1A;
+        --acc-text: #797979;
+        --acc-line: #ECECF1;
+        --acc-field: #F6F7FA;
+
+        padding: 3rem 0 6rem;
+        font-family: 'Inter', sans-serif;
+        color: var(--acc-title);
+    }
+
+    /* --- En-tête de page --- */
+    .account-page .account-head {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 1.6rem;
+        margin-bottom: 3rem;
+    }
+
+    .account-page .account-head h1 {
+        font-family: 'Inter', sans-serif;
+        font-size: 3.2rem;
+        font-weight: 700;
+        color: #232532;
+        margin-bottom: 0.6rem;
+    }
+
+    .account-page .account-back {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.7rem;
+        font-size: 1.4rem;
+        font-weight: 500;
+        color: var(--acc-text);
+        transition: color .2s ease;
+    }
+
+    .account-page .account-back:hover {
+        color: var(--acc-primary);
+    }
+
+    .account-page .account-back i {
+        font-size: 1.2rem;
+    }
+
+    /* --- Cartes --- */
+    .account-page .acc-card {
+        background: #fff;
+        border: 1px solid var(--acc-line);
+        border-radius: 1.4rem;
+        padding: 2.4rem;
+    }
+
+    .account-page .acc-card__title {
+        font-family: 'Inter', sans-serif;
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: var(--acc-title);
+        margin: 0 0 2rem;
+    }
+
+    /* --- Petits libellés de colonne --- */
+    .account-page .acc-label {
+        display: block;
+        font-size: 1.2rem;
+        font-weight: 600;
+        letter-spacing: 0.6px;
+        text-transform: uppercase;
+        color: var(--acc-text);
+        margin-bottom: 0.6rem;
+    }
+
+    /* --- Badges --- */
+    .account-page .acc-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.7rem;
+        padding: 0.7rem 1.4rem;
+        border-radius: 99px;
+        font-size: 1.3rem;
+        font-weight: 600;
+        line-height: 1;
+        background: rgba(8, 44, 106, .07);
+        color: var(--acc-primary);
+    }
+
+    .account-page .acc-badge--accent {
+        background: rgba(255, 165, 0, .16);
+        color: #A56600;
+    }
+
+    .account-page .acc-badge--success {
+        background: #E9F7EF;
+        color: #1E8E5A;
+    }
+
+    .account-page .acc-badge--danger {
+        background: #FDEDEC;
+        color: #C0392B;
+    }
+
+    /* --- Boutons --- */
+    .account-page .acc-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.8rem;
+        padding: 1.3rem 2.2rem;
+        border: 1px solid transparent;
+        border-radius: 1rem;
+        font-family: 'Inter', sans-serif;
+        font-size: 1.4rem;
+        font-weight: 600;
+        line-height: 1;
+        text-decoration: none;
+        cursor: pointer;
+        transition: background-color .2s ease, border-color .2s ease, color .2s ease, box-shadow .2s ease;
+    }
+
+    .account-page .acc-btn i {
+        font-size: 1.3rem;
+    }
+
+    .account-page .acc-btn--primary {
+        background: var(--acc-primary);
+        color: #fff;
+    }
+
+    .account-page .acc-btn--primary:hover {
+        background: #041a42;
+        color: #fff;
+    }
+
+    .account-page .acc-btn--outline {
+        background: #fff;
+        color: var(--acc-primary);
+        border-color: rgba(8, 44, 106, .35);
+    }
+
+    .account-page .acc-btn--outline:hover {
+        background: var(--acc-primary);
+        border-color: var(--acc-primary);
+        color: #fff;
+    }
+
+    /* --- Formulaires --- */
+    /* Colonne centrée pour les pages à formulaire unique. */
+    .account-page .account-column {
+        width: 100%;
+        max-width: 64rem;
+        margin-inline: auto;
+    }
+
+    .account-page .form-label {
+        font-size: 1.3rem;
+        font-weight: 500;
+        color: var(--acc-text);
+        margin-bottom: 0.7rem;
+    }
+
+    .account-page .form-control {
+        width: 100%;
+        margin: 0; /* neutralise les utilitaires .m-2 posés sur les champs */
+        background: var(--acc-field);
+        border: 1.5px solid transparent;
+        border-radius: 1rem;
+        padding: 1.4rem 1.6rem;
+        font-size: 1.5rem;
+        color: var(--acc-title);
+        transition: background-color .2s ease, border-color .2s ease, box-shadow .2s ease;
+    }
+
+    .account-page .form-control:focus {
+        background: #fff;
+        border-color: var(--acc-primary);
+        box-shadow: 0 0 0 0.2rem rgba(8, 44, 106, .08);
+        color: var(--acc-title);
+    }
+
+    .account-page .form-control:disabled {
+        background: #F1F2F6;
+        color: #6B6B75;
+        opacity: 1;
+    }
+
+    .account-page .form-control::placeholder {
+        color: #A6A7B2;
+    }
+
+    .account-page .invalid-feedback,
+    .account-page .form-error {
+        font-size: 1.3rem;
+        color: #C0392B;
+    }
+
+    /* Actions de formulaire (bas de carte) */
+    .account-page .form-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 1.2rem;
+        margin-top: 2.4rem;
+        padding-top: 2.4rem;
+        border-top: 1px solid var(--acc-line);
+    }
+
+    /* --- Grille d'éléments (adresses, etc.) --- */
+    .account-page .acc-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
+        gap: 1.6rem;
+    }
+
+    /* --- État vide --- */
+    .account-page .acc-empty {
+        background: #fff;
+        border: 1px dashed var(--acc-line);
+        border-radius: 1.4rem;
+        padding: 5rem 2rem;
+        text-align: center;
+    }
+
+    .account-page .acc-empty i {
+        display: block;
+        font-size: 3.6rem;
+        color: #C9CBD6;
+        margin-bottom: 1.6rem;
+    }
+
+    .account-page .acc-empty p {
+        font-size: 1.5rem;
+        color: var(--acc-text);
+        margin-bottom: 2rem;
+    }
+
+    /* --- Message de notification --- */
+    .account-page .acc-alert {
+        max-width: 64rem;
+        background: rgba(8, 44, 106, .06);
+        border: 1px solid rgba(8, 44, 106, .15);
+        border-radius: 1rem;
+        padding: 1.4rem 1.8rem;
+        font-size: 1.4rem;
+        color: var(--acc-primary);
+        margin-bottom: 2rem;
+    }
+
+    /* --- Responsive --- */
+    @media (max-width: 576px) {
+        .account-page {
+            padding: 2rem 0 4rem;
+        }
+
+        .account-page .account-head {
+            align-items: flex-start;
+            margin-bottom: 2.4rem;
+        }
+
+        .account-page .account-head h1 {
+            font-size: 2.6rem;
+        }
+
+        .account-page .account-head .acc-btn {
+            width: 100%;
+        }
+
+        .account-page .acc-card {
+            padding: 1.8rem;
+        }
+
+        .account-page .acc-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .account-page .form-actions {
+            flex-direction: column-reverse;
+        }
+
+        .account-page .form-actions .acc-btn {
+            width: 100%;
+        }
+    }
+</style>

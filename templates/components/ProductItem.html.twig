@@ -1,67 +1,25 @@
-{#<div {{ attributes }} class="col-xl-2 col-md-4">#}
-
-{#    <a href="{{ path('product-details', {'slug' : product.slug} ) }}" data-turbo="false">#}
-
-{#        <div class="product-wrapper">#}
-{#            <div class="product-img">#}
-{#                <img src="{{ asset('images/products/')~ product.illustration }}"#}
-{#                     alt="product-img">#}
-{#            </div>#}
-{#            <div class="product-info">#}
-{#                <div class="product-description align-content-center">#}
-{#                    <a href="product-info.html" class="product-details" data-turbo="false">{{ product.name }}#}
-{#                    </a>#}
-{#                    <div class="price">#}
-{#                        {% if product.isPromotion %}#}
-{#                            <span class="price-cut" style="font-size: 10px">#}
-{#            {{ (product.price/100)|format_currency('XOF') }}#}
-{#        </span>#}
-{#                            <span class="new-price">#}
-{#            {{ ((product.price/100) * (1 - (product.offPercent / 100))) | format_currency('XOF') }}#}
-{#        </span>#}
-{#                        {% else %}#}
-{#                            <span class="new-price">#}
-{#            {{ (product.price/100)|format_currency('XOF') }}#}
-{#        </span>#}
-{#                        {% endif %}#}
-{#                    </div>#}
-{#                    <div class="d-grid gap-2 position-absolute bottom-0 end-0">#}
-{#                        <button#}
-{#                            #}{#                            href="{{ path('add_to_cart', {'id' : product.id}) }}" #}
-{#                            data-action="live#action"#}
-{#                            data-live-action-param="addToCart"#}
-{#                            class="btn btn-primary">Ajouter#}
-{#                            au panier#}
-{#                        </button>#}
-
-{#                    </div>#}
-
-{#                </div>#}
-{#            </div>#}
-
-{#        </div>#}
-{#    </a>#}
-
-{#</div>#}
-
-<div {{ attributes }} class="col-6 col-md-4 col-lg-2 mb-4">
+{# Carte produit — la grille est portée par la ligne du template appelant
+   (col-6 col-md-4 col-lg-2). Les classes stylées par le scope
+   .wb-products de home/index.html.twig : grid clair, badge promo en haut
+   à gauche, prix percutant, survol élévation. #}
+<div {{ attributes }} class="col-6 col-md-4 col-lg-2">
     <div class="product-card h-100 position-relative">
         <a href="{{ path('product-details', {'slug' : product.slug} ) }}" data-turbo="false" class="text-decoration-none">
-            <div class="img-container shadow-sm">
-                <img src="{{ asset('images/products/') ~ product.illustration }}"
+            <div class="img-container">
+                <img src="{{ asset('images/products/' ~ product.illustration) }}"
                      class="product-img"
+                     decoding="async"
                      alt="{{ product.name }}">
 
-                {# Affichage du badge promo si applicable #}
+                {# Badge de réduction — visible en haut à gauche du visuel #}
                 {% if product.isPromotion %}
                     <span class="discount-badge">-{{ product.offPercent }}%</span>
                 {% endif %}
 
-{#                <button class="wishlist-btn"><i class="bi bi-heart"></i></button>#}
             </div>
         </a>
 
-        <div class="card-body px-1 py-2">
+        <div class="card-body px-1 pt-2 pb-1">
             <div class="d-flex align-items-baseline flex-wrap">
                 {% if product.isPromotion %}
                     <span class="price-current">
@@ -71,19 +29,24 @@
                         {{ (product.price)|format_currency('XOF') }}
                     </span>
                 {% else %}
-                    <span class="price-current text-dark">
+                    <span class="price-current price-current--plain">
                         {{ (product.price)|format_currency('XOF') }}
                     </span>
                 {% endif %}
             </div>
 
-            <a href="{{ path('product-details', {'slug' : product.slug} ) }}" class="product-title text-dark text-decoration-none">
+            {# Économie réalisée : repère visuel fort, façon marketplace.
+               (le prix est en unités CFA brutes, sans division par 100) #}
+            {% if product.isPromotion %}
+                <div class="wb-save">
+                    Économisez {{ (product.price * product.offPercent / 100)|round|format_currency('XOF') }}
+                </div>
+            {% endif %}
+
+            <a href="{{ path('product-details', {'slug' : product.slug} ) }}" class="product-title text-decoration-none">
                 {{ product.name }}
             </a>
 
-{#            <div class="rating">#}
-{#                <span class="text-warning">★</span> 4.8 <span class="text-muted small">· 152</span>#}
-{#            </div>#}
         </div>
 
         <div class="mt-auto pt-3">
@@ -93,8 +56,8 @@
                 data-live-action-param="addToCart"
                 class="btn btn-wb w-100 d-flex align-items-center justify-content-center">
 
-                <i class="bi bi-cart3 fs-5 me-2"></i>
-                <span class="fw-bold">Ajouter au panier</span>
+                <i class="bi bi-cart3 me-2"></i>
+                <span>Ajouter au panier</span>
 
                 {# Optionnel : Un petit spinner qui apparaît pendant l'action Live #}
                 <div class="spinner-border spinner-border-sm ms-2 d-none" data-live-active-class="d-inline-block" role="status"></div>

@@ -1,6 +1,10 @@
 twig:
     file_name_pattern: '*.twig'
     form_themes: ['bootstrap_5_layout.html.twig']
+    globals:
+        # Portée de l'utilisateur dans le back-office (AdminScope) :
+        # admin_scope.isSuperAdmin / isVendor / shop
+        admin_scope: '@App\Service\Admin\AdminScope'
 
 when@test:
     twig:

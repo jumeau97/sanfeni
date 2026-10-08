@@ -1,0 +1,24 @@
+{% extends 'base_admin.html.twig' %}
+
+{% block title %}Nouveau produit{% endblock %}
+{% block page_title %}Nouveau produit{% endblock %}
+
+{% import 'admin/_macros.html.twig' as ui %}
+
+{% block body %}
+    <div class="admin-card" style="max-width: 980px;">
+        <div class="admin-card-header">
+            <div>
+                <h2 class="admin-card-title">Créer un produit</h2>
+                <p class="admin-card-sub mb-0">Renseignez les informations de la fiche produit.</p>
+            </div>
+            {{ ui.back(path('admin_product_index')) }}
+        </div>
+
+        {% include 'admin/product/_form.html.twig' with {
+            'form': form,
+            'submit_label': 'Créer le produit',
+            'back_url': path('admin_product_index')
+        } %}
+    </div>
+{% endblock %}

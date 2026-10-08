@@ -1,0 +1,162 @@
+{% extends 'base_admin.html.twig' %}
+
+{% block title %}Tableau de bord{% endblock %}
+{% block page_title %}Tableau de bord{% endblock %}
+
+{% import 'admin/_macros.html.twig' as ui %}
+
+{% block body %}
+
+    <div class="admin-card-header">
+        <div>
+            <h2 class="admin-card-title mb-1" style="font-size:1.1rem;">
+                Bonjour {{ app.user.firstname|default(app.user.email) }} 👋
+            </h2>
+            <p class="admin-card-sub mb-0">
+                {% if admin_scope.isVendor and admin_scope.shop %}
+                    Vous consultez les données de la boutique <strong>{{ admin_scope.shop.name }}</strong>.
+                {% else %}
+                    Vue d'ensemble de la marketplace.
+                {% endif %}
+            </p>
+        </div>
+        <div class="d-flex gap-2 flex-wrap">
+            <a href="{{ path('admin_product_new') }}" class="btn btn-admin btn-admin-accent">
+                <i class="fas fa-plus"></i> Nouveau produit
+            </a>
+            <a href="{{ path('admin_order_index') }}" class="btn btn-admin">
+                <i class="fas fa-receipt"></i> Commandes
+            </a>
+        </div>
+    </div>
+
+    {# ---------------- KPI principaux ---------------- #}
+    <div class="row g-3 mb-4">
+        <div class="col-6 col-xl-3">
+            <div class="admin-kpi">
+                <i class="fas fa-box-open admin-kpi-icon"></i>
+                <span class="admin-kpi-label">Produits</span>
+                <span class="admin-kpi-value">{{ stats.products }}</span>
+                <span class="admin-kpi-hint">dans votre périmètre</span>
+            </div>
+        </div>
+        <div class="col-6 col-xl-3">
+            <div class="admin-kpi">
+                <i class="fas fa-receipt admin-kpi-icon"></i>
+                <span class="admin-kpi-label">Commandes</span>
+                <span class="admin-kpi-value">{{ stats.orders }}</span>
+                <span class="admin-kpi-hint">commandes concernées</span>
+            </div>
+        </div>
+        <div class="col-6 col-xl-3">
+            <div class="admin-kpi">
+                <i class="fas fa-hourglass-half admin-kpi-icon"></i>
+                <span class="admin-kpi-label">En attente</span>
+                <span class="admin-kpi-value">{{ stats.pendingOrders }}</span>
+                <span class="admin-kpi-hint">à traiter</span>
+            </div>
+        </div>
+        <div class="col-6 col-xl-3">
+            <div class="admin-kpi">
+                <i class="fas fa-coins admin-kpi-icon"></i>
+                <span class="admin-kpi-label">Chiffre d'affaires</span>
+                <span class="admin-kpi-value" style="font-size:1.25rem;">{{ stats.revenue|fcfa }}</span>
+                <span class="admin-kpi-hint">articles du périmètre</span>
+            </div>
+        </div>
+    </div>
+
+    {# ---------------- Dernières commandes ---------------- #}
+    <div class="admin-card">
+        <div class="admin-card-header">
+            <div>
+                <h3 class="admin-card-title">Dernières commandes</h3>
+                <p class="admin-card-sub mb-0">
+                    {% if admin_scope.isVendor %}Uniquement les commandes contenant vos articles.{% endif %}
+                </p>
+            </div>
+            <a href="{{ path('admin_order_index') }}" class="btn btn-admin btn-admin-light btn-admin-sm">
+                Tout voir <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+
+        <div class="admin-table-wrap">
+            <table class="admin-table">
+                <thead>
+                <tr>
+                    <th>Référence</th>
+                    <th>Client</th>
+                    <th>Passée le</th>
+                    <th>Total</th>
+                    <th>Statut</th>
+                    <th class="text-end">Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for order in recentOrders %}
+                    <tr>
+                        <td>
+                            <a class="admin-cell-main" href="{{ path('admin_order_show', {id: order.id}) }}">
+                                #{{ order.reference }}
+                            </a>
+                        </td>
+                        <td>
+                            {{ order.user.fullName }}
+                            <span class="admin-cell-sub">{{ order.user.email }}</span>
+                        </td>
+                        <td>{{ order.createdAt|date('d/m/Y H:i') }}</td>
+                        <td>{{ ui.amount(order.total) }}</td>
+                        <td>{{ ui.tag(order.state) }}</td>
+                        <td class="text-end">
+                            {{ ui.action(path('admin_order_show', {id: order.id}), 'fa-eye', 'Voir') }}
+                        </td>
+                    </tr>
+                {% else %}
+                    {{ ui.empty(6, 'Aucune commande pour le moment', 'Les commandes apparaîtront ici dès le premier achat.') }}
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    {# ---------------- Volumétrie (admin) ---------------- #}
+    {% if admin_scope.isSuperAdmin %}
+        <div class="admin-section-title">Volumétrie de la plateforme</div>
+        <div class="row g-3">
+            <div class="col-6 col-md-3">
+                <div class="admin-kpi">
+                    <span class="admin-kpi-label">Boutiques</span>
+                    <span class="admin-kpi-value">{{ stats.boutiques }}</span>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="admin-kpi">
+                    <span class="admin-kpi-label">Utilisateurs</span>
+                    <span class="admin-kpi-value">{{ stats.users }}</span>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="admin-kpi">
+                    <span class="admin-kpi-label">Catégories</span>
+                    <span class="admin-kpi-value">{{ stats.categories }}</span>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="admin-kpi">
+                    <span class="admin-kpi-label">Raccourcis</span>
+                    <span class="admin-kpi-value" style="font-size:1rem;">
+                        <a href="{{ path('admin_boutique_new') }}" class="admin-cell-main">
+                            <i class="fas fa-store me-1"></i> Boutique
+                        </a>
+                    </span>
+                    <span class="admin-kpi-hint">
+                        <a href="{{ path('admin_user_new') }}" class="admin-cell-main">+ Utilisateur</a>
+                        ·
+                        <a href="{{ path('admin_category_new') }}" class="admin-cell-main">+ Catégorie</a>
+                    </span>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+{% endblock %}

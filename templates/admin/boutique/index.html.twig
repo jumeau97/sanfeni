@@ -1,0 +1,92 @@
+{% extends 'base_admin.html.twig' %}
+
+{% block title %}Boutiques{% endblock %}
+{% block page_title %}Boutiques{% endblock %}
+
+{% import 'admin/_macros.html.twig' as ui %}
+
+{% block body %}
+
+    <form method="get" action="{{ path('admin_boutique_index') }}" class="admin-filters">
+        <div class="admin-filter-field" style="flex: 2 1 260px;">
+            <label for="f-q">Recherche</label>
+            <input class="form-control" type="search" id="f-q" name="q"
+                   value="{{ filters.q }}" placeholder="Nom ou e-mail de la boutique…">
+        </div>
+        <div class="admin-filters-actions">
+            <button type="submit" class="btn btn-admin"><i class="fas fa-filter"></i> Filtrer</button>
+            <a href="{{ path('admin_boutique_index') }}" class="btn btn-admin btn-admin-light" title="Réinitialiser">
+                <i class="fas fa-undo"></i>
+            </a>
+        </div>
+    </form>
+
+    <div class="admin-card">
+        <div class="admin-card-header">
+            <div>
+                <h2 class="admin-card-title">Marketplace</h2>
+                <p class="admin-card-sub mb-0">
+                    {{ pagination.totalItemCount }} boutique{{ pagination.totalItemCount > 1 ? 's' : '' }}
+                    {% if admin_scope.isVendor %} · votre boutique uniquement{% endif %}
+                </p>
+            </div>
+            {% if admin_scope.isSuperAdmin %}
+                <a href="{{ path('admin_boutique_new') }}" class="btn btn-admin btn-admin-accent">
+                    <i class="fas fa-plus"></i> Nouvelle boutique
+                </a>
+            {% endif %}
+        </div>
+
+        <div class="admin-table-wrap">
+            <table class="admin-table">
+                <thead>
+                <tr>
+                    <th>Boutique</th>
+                    <th>Propriétaire</th>
+                    <th>Contact</th>
+                    <th>Statut</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for boutique in pagination %}
+                    <tr>
+                        <td>
+                            <a class="admin-cell-main" href="{{ path('admin_boutique_show', {id: boutique.id}) }}">
+                                {{ boutique.name }}
+                            </a>
+                            <span class="admin-cell-sub">{{ boutique.propPhoneNumber }}</span>
+                        </td>
+                        <td>{{ boutique.proprietaire ?: '—' }}</td>
+                        <td>
+                            {{ boutique.email }}
+                            {% if boutique.phoneNumber %}
+                                <span class="admin-cell-sub">{{ boutique.phoneNumber }}</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ ui.tag(boutique.state) }}</td>
+                        <td>
+                            <div class="admin-row-actions">
+                                {{ ui.action(path('admin_boutique_show', {id: boutique.id}), 'fa-eye', 'Voir') }}
+                                {{ ui.action(path('admin_boutique_edit', {id: boutique.id}), 'fa-pen', 'Modifier') }}
+                                {% if admin_scope.isSuperAdmin %}
+                                    {{ ui.delete_button(
+                                        path('admin_boutique_delete', {id: boutique.id}),
+                                        'Supprimer',
+                                        'Supprimer la boutique « ' ~ boutique.name ~ ' » ?'
+                                    ) }}
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                {% else %}
+                    {{ ui.empty(5, 'Aucune boutique', 'Créez la première boutique de la marketplace.') }}
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        {% include 'admin/_pagination.html.twig' %}
+    </div>
+
+{% endblock %}

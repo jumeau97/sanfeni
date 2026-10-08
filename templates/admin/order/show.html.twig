@@ -1,0 +1,188 @@
+{% extends 'base_admin.html.twig' %}
+
+{% block title %}Commande {{ order.reference }}{% endblock %}
+{% block page_title %}Commande #{{ order.reference }}{% endblock %}
+
+{% import 'admin/_macros.html.twig' as ui %}
+
+{% block body %}
+
+    <div class="admin-card-header">
+        <div>
+            <h2 class="admin-card-title mb-1" style="font-size:1.1rem;">
+                Commande {{ order.reference }}
+            </h2>
+            <p class="admin-card-sub mb-0">
+                {{ ui.tag(order.state) }}
+                {% if order.isPaid %}
+                    <span class="admin-tag admin-tag-ok">Payée</span>
+                {% endif %}
+                <span class="ms-1">· passée le {{ order.createdAt|date('d/m/Y H:i') }}</span>
+            </p>
+        </div>
+        <div class="d-flex gap-2 flex-wrap">
+            {{ ui.back(path('admin_order_index'), 'Retour aux commandes') }}
+        </div>
+    </div>
+
+    {% if admin_scope.isVendor %}
+        <div class="admin-note">
+            <i class="fas fa-store"></i>
+            Espace <strong>vendeur</strong> : vous ne voyez et ne traitez que les articles de votre boutique
+            <strong>{{ admin_scope.shop ? admin_scope.shop.name : '' }}</strong>.
+            {% if hiddenCount > 0 %}
+                <strong>{{ hiddenCount }}</strong> article{{ hiddenCount > 1 ? 's' : '' }}
+                d'autres boutique{{ hiddenCount > 1 ? 's' : '' }} dans cette commande
+                {{ hiddenCount > 1 ? 'ont' : 'a' }} été masqué{{ hiddenCount > 1 ? 's' : '' }}.
+            {% endif %}
+        </div>
+    {% endif %}
+
+    <div class="row g-3">
+        {# ================= Informations commande ================= #}
+        <div class="col-lg-4">
+            <div class="admin-card">
+                <h3 class="admin-card-title">Client &amp; livraison</h3>
+
+                <dl class="admin-meta" style="grid-template-columns: 1fr;">
+                    <div>
+                        <dt>Client</dt>
+                        <dd>
+                            {{ order.user.fullName }}
+                            <span class="admin-cell-sub">{{ order.user.email }}</span>
+                        </dd>
+                    </div>
+                    <div>
+                        <dt>Transporteur</dt>
+                        <dd>
+                            {{ order.carrierName }}
+                            <span class="admin-cell-sub">Coût : {{ order.carrierPrice|fcfa }}</span>
+                        </dd>
+                    </div>
+                    <div>
+                        <dt>Adresse de livraison</dt>
+                        <dd>{{ order.delivery|replace({'<br>': '\n'})|e|nl2br }}</dd>
+                    </div>
+                    <div>
+                        <dt>Total (visible)</dt>
+                        <dd>{{ ui.amount(visibleTotal) }}</dd>
+                    </div>
+                </dl>
+
+                {# --- Statut global : administrateur uniquement --- #}
+                {% if admin_scope.isSuperAdmin %}
+                    <div class="admin-section-title">Statut de la commande</div>
+                    <form method="post" action="{{ path('admin_order_status', {id: order.id}) }}"
+                          class="d-flex gap-2 flex-wrap">
+                        <input type="hidden" name="_token" value="{{ csrf_token('submit') }}">
+                        <select name="state" class="form-select" style="max-width: 230px;">
+                            {% for state in admin_order_states() %}
+                                <option value="{{ state.value }}" {{ order.state == state.value ? 'selected' }}>
+                                    {{ state.value }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                        <button type="submit" class="btn btn-admin">
+                            <i class="fas fa-redo"></i> Appliquer
+                        </button>
+                    </form>
+                    <p class="form-text">
+                        En général, préférez agir sur les lignes ci-contre : l'état de la commande
+                        se recalcule automatiquement.
+                    </p>
+                {% endif %}
+            </div>
+        </div>
+
+        {# ================= Articles commandés ================= #}
+        <div class="col-lg-8">
+            <div class="admin-card">
+                <div class="admin-card-header">
+                    <div>
+                        <h3 class="admin-card-title">Articles commandés</h3>
+                        <p class="admin-card-sub mb-0">
+                            Validez ou refusez chaque article : la commande suit automatiquement.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="admin-table-wrap">
+                    <table class="admin-table">
+                        <thead>
+                        <tr>
+                            <th>Article</th>
+                            <th>Boutique</th>
+                            <th>Qté</th>
+                            <th>P.U.</th>
+                            <th>Total</th>
+                            <th>Statut</th>
+                            <th class="text-end">Décision</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for line in lines %}
+                            <tr>
+                                <td>
+                                    <span class="admin-cell-main">{{ line.product }}</span>
+                                    {% if line.produit %}
+                                        <span class="admin-cell-sub">
+                                            produit n°{{ line.produit.id }}
+                                        </span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ line.produit and line.produit.shop ? line.produit.shop.name : '—' }}</td>
+                                <td>{{ line.quantity }}</td>
+                                <td>{{ line.price|fcfa }}</td>
+                                <td>{{ ui.amount(line.price * line.quantity) }}</td>
+                                <td>{{ ui.tag(line.state) }}</td>
+                                <td>
+                                    <form method="post"
+                                          action="{{ path('admin_order_line_status', {id: order.id, lineId: line.id}) }}"
+                                          class="admin-line-form">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('submit') }}">
+
+                                        <select name="state" class="form-select" aria-label="Statut de l'article">
+                                            {% for state in admin_line_states() %}
+                                                <option value="{{ state.value }}" {{ line.state == state.value ? 'selected' }}>
+                                                    {{ state.value }}
+                                                </option>
+                                            {% endfor %}
+                                        </select>
+                                        <button type="submit" name="submit_state" value="1"
+                                                class="btn btn-admin btn-admin-light btn-admin-sm"
+                                                title="Appliquer le statut choisi">
+                                            <i class="fas fa-redo"></i>
+                                        </button>
+
+                                        <button type="submit" name="quick_state" value="Validée"
+                                                class="btn btn-admin btn-admin-sm"
+                                                title="Valider cet article">
+                                            <i class="fas fa-check"></i> Valider
+                                        </button>
+                                        <button type="submit" name="quick_state" value="Refusée"
+                                                class="btn btn-admin btn-admin-danger btn-admin-sm"
+                                                title="Refuser cet article">
+                                            <i class="fas fa-times"></i> Refuser
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% else %}
+                            {{ ui.empty(7, 'Aucun article pour vous dans cette commande', 'Tous les articles appartiennent à d’autres boutiques.') }}
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                {% if lines %}
+                    <div class="d-flex justify-content-end mt-3">
+                        <span class="admin-amount" style="font-size:1rem;">
+                            Sous-total (vos articles) : {{ visibleTotal|fcfa }}
+                        </span>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,217 +1,165 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello AccountController!{% endblock %}
+{% block title %}Mes commandes{% endblock %}
 
 {% block stylesheets %}
+    {% include 'account/_account_styles.html.twig' %}
     <style>
-        /* Style des cartes de commandes */
-        .order-card {
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-            border: 1px solid transparent;
+        /* Page /account/mes-commandes — liste de commandes. */
+
+        .account-page .acc-orders {
+            display: flex;
+            flex-direction: column;
+            gap: 1.6rem;
         }
 
-        .order-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.08) !important;
-            border-color: rgba(138, 63, 252, 0.2);
+        .account-page .acc-order {
+            display: grid;
+            grid-template-columns: 1.4fr 0.9fr 1.3fr 1.2fr auto;
+            align-items: center;
+            gap: 1.6rem;
+            padding: 2rem 2.4rem;
+            transition: border-color .2s ease, box-shadow .2s ease;
         }
 
-        /* Typographie augmentée */
-        .small-caps {
-            font-size: 1.2rem;
-            letter-spacing: 0.8px;
-            text-transform: uppercase;
+        .account-page .acc-order:hover {
+            border-color: rgba(8, 44, 106, .35);
+            box-shadow: 0 8px 20px rgba(8, 44, 106, .06);
+        }
+
+        .account-page .acc-order__cell + .acc-order__cell {
+            border-left: 1px solid var(--acc-line);
+            padding-left: 1.6rem;
+        }
+
+        .account-page .acc-order__value {
+            display: block;
+            font-size: 1.8rem;
             font-weight: 700;
+            color: var(--acc-title);
+            line-height: 1.3;
         }
 
-        .fs-5 { font-size: 1.3rem !important; }
-        .fs-4 { font-size: 1.4rem !important; }
-
-        /* Badges de statut doux */
-        .bg-soft-success {
-            background-color: #e8f5e9;
-            color: #2e7d32;
+        .account-page .acc-order__value small {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--acc-text);
         }
 
-        /* Bordures verticales sur desktop */
-        @media (min-width: 768px) {
-            .border-start-md {
-                border-left: 1px solid #eee !important;
+        .account-page .acc-order__ref {
+            display: block;
+            margin-top: 0.4rem;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--acc-primary);
+        }
+
+        .account-page .acc-order__action {
+            justify-self: end;
+        }
+
+        /* Tablette : deux colonnes, séparations verticales retirées,
+           bouton pleine largeur. */
+        @media (max-width: 992px) {
+            .account-page .acc-order {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                row-gap: 2rem;
             }
-        }
 
-        /* Bouton personnalisé */
-        .btn-outline-primary {
-            border-color: var(--wb-purple);
-            color: var(--wb-purple);
-        }
-
-        .btn-outline-primary:hover {
-            background-color: var(--wb-purple);
-            border-color: var(--wb-purple);
-            color: white;
-        }
-
-        /* Ajustement Mobile */
-        @media (max-width: 576px) {
-            .order-card {
-                padding: 20px !important;
+            .account-page .acc-order__cell + .acc-order__cell {
+                border-left: none;
+                padding-left: 0;
             }
-            .order-card .btn {
+
+            .account-page .acc-order__action {
+                grid-column: 1 / -1;
+                justify-self: stretch;
+            }
+
+            .account-page .acc-order__action .acc-btn {
                 width: 100%;
-                margin-top: 10px;
+            }
+        }
+
+        /* Mobile : une seule colonne. */
+        @media (max-width: 576px) {
+            .account-page .acc-order {
+                grid-template-columns: 1fr;
+                padding: 1.8rem;
+                row-gap: 1.6rem;
             }
         }
     </style>
 {% endblock %}
 
 {% block body %}
-
-    <!---------------user-profile-section---------------->
-    {#    <section class="user-profile footer-padding"> #}
-    {#        <div class="container"> #}
-    {#            <h2>Mes commandes</h2> #}
-    {#            <a href="{{ path('app_account') }}" class="view">Retourner à mon compte</a> #}
-    {#            <div class="user-profile-section"> #}
-    {#                {% if orders|length==0 %} #}
-    {#                    <p>Vous n'avez pas encore passé de commande.</p> #}
-    {#                {% else %} #}
-
-    {#                    <div class="cart-section"> #}
-    {#                        <table> #}
-    {#                            <tbody> #}
-    {#                            <tr class="table-row table-top-row"> #}
-    {#                                <td class="table-wrapper wrapper-product"> #}
-    {#                                    <h5 class="table-heading">Passé le</h5> #}
-    {#                                </td> #}
-    {#                                <td class="table-wrapper"> #}
-    {#                                    <div class="table-wrapper-center"> #}
-    {#                                        <h5 class="table-heading">Référence</h5> #}
-    {#                                    </div> #}
-    {#                                </td> #}
-    {#                                <td class="table-wrapper"> #}
-    {#                                    <div class="table-wrapper-center"> #}
-    {#                                        <h5 class="table-heading">Produit</h5> #}
-    {#                                    </div> #}
-    {#                                </td> #}
-    {#                                <td class="table-wrapper wrapper-total"> #}
-    {#                                    <div class="table-wrapper-center"> #}
-    {#                                        <h5 class="table-heading">TOTAL</h5> #}
-    {#                                    </div> #}
-    {#                                </td> #}
-    {#                                <td class="table-wrapper"> #}
-    {#                                    <div class="table-wrapper-center"> #}
-    {#                                        <h5 class="table-heading">ACTION</h5> #}
-    {#                                    </div> #}
-    {#                                </td> #}
-    {#                            </tr> #}
-    {#                            {% for order in orders %} #}
-    {#                                <tr class="table-row ticket-row"> #}
-    {#                                    <td class="table-wrapper wrapper-product"> #}
-    {#                                        <div class="wrapper"> #}
-    {#                                            <div class="wrapper-content"> #}
-    {#                                                <h5 class="heading">{{ order.createdAt|date('d/m/Y') }}</h5> #}
-    {#                                            </div> #}
-    {#                                        </div> #}
-    {#                                    </td> #}
-    {#                                    <td class="table-wrapper"> #}
-    {#                                        <div class="wrapper-content"> #}
-    {#                                            <h5 class="heading">{{ order.reference }}</h5> #}
-    {#                                        </div> #}
-
-    {#                                    </td> #}
-
-    {#                                    <td class="table-wrapper wrapper-total"> #}
-    {#                                        <div class="table-wrapper-center"> #}
-    {#                                            <h5 class="heading">{{ order.orderDetails|length }}</h5> #}
-    {#                                        </div> #}
-    {#                                    </td> #}
-    {#                                    <td class="table-wrapper wrapper-total"> #}
-    {#                                        <div class="table-wrapper-center"> #}
-    {#                                            <h5 class="heading">{{ ((order.carrierPrice+order.getTotal)/100)|number_format(0,',','.') }} F cfa</h5> #}
-    {#                                        </div> #}
-    {#                                    </td> #}
-    {#                                    <td class="table-wrapper wrapper-total"> #}
-    {#                                        <div class="table-wrapper-center"> #}
-    {#                                            <h5 class="heading"><a href="{{ path('account_order_show',{'reference':order.reference}) }}">Voir ma commande</a> </h5> #}
-    {#                                        </div> #}
-    {#                                    </td> #}
-
-    {#                                </tr> #}
-
-    {#                            {% endfor %} #}
-    {#                            </tbody> #}
-    {#                        </table> #}
-    {#                    </div> #}
-
-    {#                {% endif %} #}
-    {#            </div> #}
-    {#        </div> #}
-    {#    </section> #}
-
-
-    <section class="user-profile py-5 bg-light">
+    <section class="user-profile account-page">
         <div class="container">
-            <div class="d-flex justify-content-between align-items-center mb-4">
+
+            <header class="account-head">
                 <div>
-                    <h2 class="fw-bold mb-1">Mes commandes</h2>
-                    <a href="{{ path('app_account') }}" class="text-muted text-decoration-none">
-                        <i class="bi bi-arrow-left me-1"></i> Retourner à mon compte
+                    <h1>Mes commandes</h1>
+                    <a href="{{ path('app_account') }}" class="account-back">
+                        <i class="fas fa-arrow-left"></i> Retourner à mon compte
                     </a>
                 </div>
-            </div>
+            </header>
 
-            <div class="user-profile-section">
-                {% if orders|length == 0 %}
-                    <div class="text-center py-5 bg-white rounded-4 shadow-sm">
-                        <i class="bi bi-bag-x display-1 text-muted"></i>
-                        <p class="fs-4 mt-3 text-muted">Vous n'avez pas encore passé de commande.</p>
-                        <a href="{{ path('app_home') }}" class="btn btn-outline-secondary rounded-4 rounded px-4 py-2 mt-2">Commencer mes achats</a>
-                    </div>
-                {% else %}
-                    <div class="order-list">
-                        {% for order in orders %}
-                            <div class="order-card bg-white shadow-sm rounded-4 p-4 mb-3 border-0">
-                                <div class="row align-items-center gy-3">
-                                    <div class="col-md-3">
-                                        <span class="text-muted small-caps d-block mb-1">Commande du</span>
-                                        <h5 class="fw-bold mb-0 fs-5">{{ order.createdAt|date('d/m/Y') }}</h5>
-                                        <span
-                                            class="text-primary small fw-bold mt-1 d-block">Réf: {{ order.reference }}</span>
-                                    </div>
-
-                                    <div class="col-6 col-md-2 text-md-center border-start-md">
-                                        <span class="text-muted small-caps d-block mb-1">Articles</span>
-                                        <h5 class="fw-bold mb-0 fs-5">{{ order.orderDetails|length }}</h5>
-                                    </div>
-
-                                    <div class="col-6 col-md-3 text-md-center border-start-md">
-                                        <span class="text-muted small-caps d-block mb-1">Montant Total</span>
-                                        <h5 class="fw-bold mb-0 fs-4 text-dark">
-                                            {{ ((order.carrierPrice + order.getTotal) )|number_format(0,',','.') }}
-                                            <small>F CFA</small>
-                                        </h5>
-                                    </div>
-
-                                    <div class="col-6 col-md-2 text-md-center">
-                                    <span class="badge bg-soft-success text-success px-3 py-2 rounded-pill fw-bold">
-                                       {{ order.state }}
-                                    </span>
-                                    </div>
-
-                                    <div class="col-6 col-md-2 text-end">
-                                        <a href="{{ path('account_order_show',{'reference':order.reference}) }}"
-                                           class="btn btn-outline-primary rounded-pill fw-bold px-4">
-                                            Détails
-                                        </a>
-                                    </div>
-                                </div>
+            {% if orders|length == 0 %}
+                <div class="acc-empty">
+                    <i class="fas fa-shopping-bag"></i>
+                    <p>Vous n'avez pas encore passé de commande.</p>
+                    <a href="{{ path('app_home') }}" class="acc-btn acc-btn--primary">
+                        Commencer mes achats
+                    </a>
+                </div>
+            {% else %}
+                <div class="acc-orders">
+                    {% for order in orders %}
+                        {% set badge = 'acc-badge' %}
+                        {% if order.state in ['Livrée', 'Validée'] %}
+                            {% set badge = badge ~ ' acc-badge--success' %}
+                        {% elseif order.state in ['Refusée', 'Partiellement refusée'] %}
+                            {% set badge = badge ~ ' acc-badge--danger' %}
+                        {% elseif order.state == 'En attente' %}
+                            {% set badge = badge ~ ' acc-badge--accent' %}
+                        {% endif %}
+                        <article class="acc-card acc-order">
+                            <div class="acc-order__cell">
+                                <span class="acc-label">Commande du</span>
+                                <span class="acc-order__value">{{ order.createdAt|date('d/m/Y') }}</span>
+                                <span class="acc-order__ref">Réf : {{ order.reference }}</span>
                             </div>
-                        {% endfor %}
-                    </div>
-                {% endif %}
-            </div>
+
+                            <div class="acc-order__cell">
+                                <span class="acc-label">Articles</span>
+                                <span class="acc-order__value">{{ order.orderDetails|length }}</span>
+                            </div>
+
+                            <div class="acc-order__cell">
+                                <span class="acc-label">Montant total</span>
+                                <span class="acc-order__value">
+                                    {{ (order.carrierPrice + order.getTotal)|number_format(0,',','.') }}
+                                    <small>F CFA</small>
+                                </span>
+                            </div>
+
+                            <div class="acc-order__cell">
+                                <span class="acc-label">Statut</span>
+                                <span class="{{ badge }}">{{ order.state }}</span>
+                            </div>
+
+                            <div class="acc-order__cell acc-order__action">
+                                <a href="{{ path('account_order_show', {'reference': order.reference}) }}"
+                                   class="acc-btn acc-btn--outline">
+                                    Détails <i class="fas fa-chevron-right"></i>
+                                </a>
+                            </div>
+                        </article>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
         </div>
     </section>
-    <!--------------- user-profile-section-end --------------->
 {% endblock %}

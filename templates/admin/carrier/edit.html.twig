@@ -1,0 +1,25 @@
+{% extends 'base_admin.html.twig' %}
+
+{% block title %}Modifier {{ carrier.name }}{% endblock %}
+{% block page_title %}Modifier le transporteur{% endblock %}
+
+{% import 'admin/_macros.html.twig' as ui %}
+
+{% block body %}
+    <div class="admin-card" style="max-width: 760px;">
+        <div class="admin-card-header">
+            <div>
+                <h2 class="admin-card-title">{{ carrier.name }}</h2>
+                <p class="admin-card-sub mb-0">Modification de l'option de livraison.</p>
+            </div>
+            {{ ui.back(path('admin_carrier_show', {id: carrier.id}), 'Retour au transporteur') }}
+        </div>
+
+        {% include 'admin/carrier/_form.html.twig' with {
+            'form': form,
+            'carrier': carrier,
+            'submit_label': 'Enregistrer les modifications',
+            'back_url': path('admin_carrier_show', {id: carrier.id})
+        } %}
+    </div>
+{% endblock %}

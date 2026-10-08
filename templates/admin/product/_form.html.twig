@@ -1,0 +1,351 @@
+{# ============================================================================
+   Formulaire Produit (partagé par les pages « nouvelle » et « modification »)
+   ============================================================================ #}
+{% import 'admin/_macros.html.twig' as ui %}
+
+{{ form_start(form, {'attr': {'class': 'admin-form', 'novalidate': 'novalidate'}}) }}
+
+{# Erreurs globales du formulaire #}
+{% if not form.vars.valid %}
+    <div class="admin-flash admin-flash-error">
+        <i class="fas fa-times-circle mt-1"></i>
+        <div>
+            <strong>Le formulaire contient des erreurs.</strong>
+            {{ form_errors(form) }}
+        </div>
+    </div>
+{% endif %}
+
+{% if not admin_scope.isSuperAdmin and admin_scope.shop %}
+    <div class="admin-note">
+        <i class="fas fa-store"></i>
+        Ce produit sera rattaché à votre boutique <strong>{{ admin_scope.shop.name }}</strong>.
+    </div>
+{% endif %}
+
+{# ---------------- Identité ---------------- #}
+<fieldset class="admin-form-fieldset">
+    <legend>Informations</legend>
+
+    <div class="row g-3">
+        <div class="col-md-8">
+            {{ form_row(form.name) }}
+        </div>
+        <div class="col-md-4">
+            {{ form_row(form.slug) }}
+        </div>
+        <div class="col-12">
+            {{ form_row(form.description) }}
+        </div>
+    </div>
+</fieldset>
+
+{# ---------------- Prix & promotion ---------------- #}
+<fieldset class="admin-form-fieldset">
+    <legend>Prix &amp; stock</legend>
+
+    <div class="row g-3">
+        <div class="col-md-4">
+            {{ form_row(form.price) }}
+        </div>
+        <div class="col-md-4" data-admin-simple-stock>
+            {{ form_row(form.stock) }}
+        </div>
+        <div class="col-md-4">
+            {{ form_row(form.type) }}
+        </div>
+
+        <div class="col-md-4">
+            <div class="form-check form-switch mb-2">
+                {{ form_widget(form.isPromotion, {'attr': {'class': 'form-check-input', 'data-admin-promo-toggle': '1'}}) }}
+                {{ form_label(form.isPromotion) }}
+            </div>
+        </div>
+        <div class="col-md-4" data-admin-promo-field>
+            {{ form_row(form.offPercent) }}
+        </div>
+    </div>
+</fieldset>
+
+{# ---------------- Déclinaisons (produit variable) ---------------- #}
+<fieldset class="admin-form-fieldset" data-admin-variations-field>
+    <legend>Déclinaisons</legend>
+
+    <div class="admin-note">
+        <i class="fas fa-info-circle"></i>
+        Chaque ligne correspond à <strong>une combinaison</strong> : sélectionnez des valeurs existantes
+        (Maintenez <kbd>Cmd/Ctrl</kbd> pour en choisir plusieurs) <strong>ou</strong> créez-en une nouvelle
+        avec « Attribut + Valeur » (ex. <em>Taille</em> + <em>2XL</em>).
+        Prix vide = prix du produit, stock <strong>0</strong> = rupture.
+    </div>
+
+    {{ form_errors(form.productVariations) }}
+
+    {% set variation_prototype %}
+        {% include 'admin/product/_variation_row.html.twig' with {'variationForm': form.productVariations.vars.prototype} %}
+    {% endset %}
+
+    <div id="admin-variations" data-prototype="{{ variation_prototype|e('html_attr') }}">
+        {% for variationForm in form.productVariations %}
+            {% include 'admin/product/_variation_row.html.twig' with {'variationForm': variationForm} %}
+        {% endfor %}
+    </div>
+
+    <button type="button" class="btn btn-admin btn-admin-light btn-admin-sm" data-admin-add-variation>
+        <i class="fas fa-plus"></i> Ajouter une déclinaison
+    </button>
+</fieldset>
+
+{# ---------------- Appartenance / visibilité ---------------- #}
+<fieldset class="admin-form-fieldset">
+    <legend>Organisation</legend>
+
+    <div class="row g-3">
+        <div class="col-md-6">
+            {{ form_row(form.categories) }}
+        </div>
+        <div class="col-md-6">
+            {{ form_row(form.state) }}
+            {% if form.shop is defined %}
+                {{ form_row(form.shop) }}
+            {% endif %}
+        </div>
+    </div>
+</fieldset>
+
+{# ---------------- Médias ---------------- #}
+<fieldset class="admin-form-fieldset">
+    <legend>Images</legend>
+
+    <div class="row g-3">
+        <div class="col-md-5">
+            <div data-admin-preview-root>
+                <div class="admin-preview-box{% if not (product is defined and product.illustration) %} is-empty{% endif %}"
+                     data-admin-preview-slot>
+                    {% if product is defined and product.illustration %}
+                        <img src="{{ asset('images/products/' ~ product.illustration) }}" alt="{{ product.name }}">
+                    {% else %}
+                        <span><i class="fas fa-image"></i> Aperçu</span>
+                    {% endif %}
+                </div>
+                {{ form_row(form.imageFile) }}
+            </div>
+        </div>
+
+        <div class="col-md-7">
+            <label class="form-label">Galerie photos</label>
+
+            {% set album_prototype %}
+                {% include 'admin/product/_album_row.html.twig' with {'albumForm': form.albums.vars.prototype} %}
+            {% endset %}
+
+            <div id="admin-albums" data-prototype="{{ album_prototype|e('html_attr') }}">
+                {% for albumForm in form.albums %}
+                    {% include 'admin/product/_album_row.html.twig' with {'albumForm': albumForm} %}
+                {% endfor %}
+            </div>
+
+            <button type="button" class="btn btn-admin btn-admin-light btn-admin-sm" data-admin-add-album>
+                <i class="fas fa-plus"></i> Ajouter une image
+            </button>
+            {{ form_errors(form.albums) }}
+        </div>
+    </div>
+</fieldset>
+
+{# ---------------- Actions ---------------- #}
+<div class="form-text text-danger mb-3">
+    {{ form_errors(form.offPercent) }}
+</div>
+
+<div class="admin-form-actions">
+    <button type="submit" class="btn btn-admin btn-admin-accent">
+        <i class="fas fa-check"></i>
+        {{ submit_label|default('Enregistrer') }}
+    </button>
+    {{ ui.back(back_url|default(path('admin_product_index')), 'Annuler') }}
+</div>
+
+{{ form_widget(form._token) }}
+{{ form_end(form, {'render_rest': false}) }}
+
+{# JS exécuté sur la page (formulaire) #}
+<script>
+    (function () {
+        /* ==========================================================
+           Aperçus : image principale + images de la galerie
+           Affichés AVANT l'envoi (FileReader) et pour les images
+           déjà enregistrées.
+           ========================================================== */
+        const renderEmptySlot = function (slot, text) {
+            const span = document.createElement('span');
+            const icon = document.createElement('i');
+            icon.className = 'fas fa-image';
+            span.appendChild(icon);
+            span.appendChild(document.createTextNode(' ' + text));
+            slot.replaceChildren(span);
+            slot.classList.add('is-empty');
+        };
+
+        const bindPreview = function (root) {
+            const slot = root.querySelector('[data-admin-preview-slot]');
+            if (!slot || slot.dataset.adminBound === '1') {
+                return;
+            }
+            slot.dataset.adminBound = '1';
+            slot.dataset.adminOriginal = slot.innerHTML;
+
+            const input = root.querySelector('input[type="file"]');
+            if (input) {
+                input.addEventListener('change', function () {
+                    const file = this.files && this.files[0];
+
+                    if (!file) {
+                        slot.innerHTML = slot.dataset.adminOriginal;
+                        slot.classList.toggle('is-empty', slot.querySelector('img') === null);
+                        return;
+                    }
+
+                    if (file.type && file.type.indexOf('image/') !== 0) {
+                        return;
+                    }
+
+                    const reader = new FileReader();
+                    reader.onload = function (event) {
+                        const img = document.createElement('img');
+                        img.src = event.target.result;
+                        img.alt = 'Aperçu';
+                        slot.replaceChildren(img);
+                        slot.classList.remove('is-empty');
+                    };
+                    reader.readAsDataURL(file);
+                });
+            }
+
+            /* Case « Supprimer l'image » : l'aperçu s'efface. */
+            root.querySelectorAll('input[type="checkbox"]').forEach(function (checkbox) {
+                checkbox.addEventListener('change', function () {
+                    if (this.checked) {
+                        renderEmptySlot(slot, 'Image à supprimer');
+                    } else {
+                        slot.innerHTML = slot.dataset.adminOriginal;
+                        slot.classList.toggle('is-empty', slot.querySelector('img') === null);
+                    }
+                });
+            });
+        };
+
+        const bindPreviews = function (scope) {
+            (scope || document).querySelectorAll('[data-admin-preview-root]').forEach(bindPreview);
+            if (scope && scope.matches && scope.matches('[data-admin-preview-root]')) {
+                bindPreview(scope);
+            }
+        };
+        bindPreviews(document);
+
+        /* ==========================================================
+           Bascule du champ « remise » selon la case promotion
+           ========================================================== */
+        const promoToggle = document.querySelector('[data-admin-promo-toggle]');
+        const promoField = document.querySelector('[data-admin-promo-field]');
+
+        if (promoToggle && promoField) {
+            const syncPromo = function () {
+                promoField.style.display = promoToggle.checked ? '' : 'none';
+            };
+            promoToggle.addEventListener('change', syncPromo);
+            syncPromo();
+        }
+
+        /* ==========================================================
+           Type de produit : les déclinaisons ne s'appliquent qu'au
+           produit VARIABLE (le stock global, lui, s'applique au simple).
+           ========================================================== */
+        const typeSelect = document.getElementById('{{ form.type.vars.id }}');
+        const variationsField = document.querySelector('[data-admin-variations-field]');
+        const simpleStockField = document.querySelector('[data-admin-simple-stock]');
+
+        const syncType = function () {
+            const isVariable = !!typeSelect && typeSelect.value === 'variable'; {# App\Entity\Product::TYPE_VARIABLE #}
+
+            if (variationsField) {
+                variationsField.style.display = isVariable ? '' : 'none';
+            }
+            if (simpleStockField) {
+                simpleStockField.style.display = isVariable ? 'none' : '';
+            }
+        };
+
+        if (typeSelect) {
+            typeSelect.addEventListener('change', syncType);
+        }
+        syncType();
+
+        /* ==========================================================
+           Galerie : ajout / retrait d'une image
+           ========================================================== */
+        const albumContainer = document.getElementById('admin-albums');
+        if (albumContainer) {
+            const albumPrototype = albumContainer.getAttribute('data-prototype') || '';
+            let albumIndex = {{ form.albums|length }};
+
+            const bindAlbumRemove = function (node) {
+                const btn = node.querySelector('[data-admin-remove-album]');
+                if (btn) {
+                    btn.addEventListener('click', function () {
+                        node.remove();
+                    });
+                }
+            };
+
+            albumContainer.querySelectorAll('.admin-album-item').forEach(bindAlbumRemove);
+
+            const addAlbumBtn = document.querySelector('[data-admin-add-album]');
+            if (addAlbumBtn) {
+                addAlbumBtn.addEventListener('click', function () {
+                    const html = albumPrototype.replace(/__name__/g, albumIndex++);
+                    const wrapper = document.createElement('div');
+                    wrapper.innerHTML = html.trim();
+                    const node = wrapper.firstElementChild;
+
+                    albumContainer.appendChild(node);
+                    bindAlbumRemove(node);
+                    bindPreviews(node);
+                });
+            }
+        }
+
+        /* ==========================================================
+           Déclinaisons : ajout / retrait d'une ligne
+           ========================================================== */
+        const variationContainer = document.getElementById('admin-variations');
+        if (variationContainer) {
+            const variationPrototype = variationContainer.getAttribute('data-prototype') || '';
+            let variationIndex = {{ form.productVariations|length }};
+
+            const bindVariationRemove = function (node) {
+                const btn = node.querySelector('[data-admin-remove-variation]');
+                if (btn) {
+                    btn.addEventListener('click', function () {
+                        node.remove();
+                    });
+                }
+            };
+
+            variationContainer.querySelectorAll('[data-admin-variation-item]').forEach(bindVariationRemove);
+
+            const addVariationBtn = document.querySelector('[data-admin-add-variation]');
+            if (addVariationBtn) {
+                addVariationBtn.addEventListener('click', function () {
+                    const html = variationPrototype.replace(/__name__/g, variationIndex++);
+                    const wrapper = document.createElement('div');
+                    wrapper.innerHTML = html.trim();
+                    const node = wrapper.firstElementChild;
+
+                    variationContainer.appendChild(node);
+                    bindVariationRemove(node);
+                });
+            }
+        }
+    })();
+</script>

@@ -1,191 +1,73 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello AccountController!{% endblock %}
+{% block title %}Ajouter une adresse{% endblock %}
 
 {% block stylesheets %}
+    {% include 'account/_account_styles.html.twig' %}
     <style>
+        /* Page /account/add-address — formulaire unique centré.
+           La largeur, le centrage et le style des champs viennent de
+           account/_account_styles.html.twig (.account-column, .form-control).
+           Le correctif responsive n'est plus nécessaire : la grille est
+           fluide et .account-column n'a plus de largeur fixe. */
 
-        /* --- Conteneur du Formulaire --- */
-        .account-section.modal-main {
-            background: #ffffff;
-            padding: 30px;
-            border-radius: 20px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        .account-page .acc-form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1.6rem 2rem;
         }
 
-        /* --- Structure des lignes (Inputs côte à côte) --- */
-        .account-inner-form {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 20px;
+        .account-page .acc-form-grid .mb-3 {
+            margin-bottom: 0;
         }
 
-        .review-form-name {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
+        .account-page .acc-field--full {
+            grid-column: 1 / -1;
         }
 
-        /* --- Style des Inputs (Style Wildberries) --- */
-        .custom-input,
-        .account-inner-form input {
-            width: 100%;
-            background-color: #f6f6f9; /* Gris très clair au repos */
-            border: 1.5px solid transparent;
-            border-radius: 12px;
-            padding: 14px 18px;
-            font-size: 15px;
-            color: #1a1a1a;
-            transition: all 0.3s ease;
-            outline: none;
-        }
-
-        /* --- Effet au clic (Focus) --- */
-        .custom-input:focus,
-        .account-inner-form input:focus {
-            background-color: #ffffff;
-            border-color: #082C6A; /* Bleu Sanfeni */
-            box-shadow: 0 4px 12px rgba(8, 44, 106, 0.08);
-        }
-
-        /* --- Gestion des erreurs Symfony --- */
-        .review-form-name ul {
-            list-style: none;
-            padding: 0;
-            margin: 5px 0 0 0;
-        }
-
-        .review-form-name li {
-            color: #d9534f;
-            font-size: 12px;
-            font-weight: 500;
-        }
-
-        /* --- Bouton d'action --- */
-        .shop-btn {
-            background-color: #082C6A;
-            color: #ffffff;
-            border: none;
-            border-radius: 12px;
-            padding: 16px 30px;
-            font-size: 16px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: transform 0.2s ease, background-color 0.2s ease;
-        }
-
-        .shop-btn:hover {
-            background-color: #061e4a;
-            transform: translateY(-1px);
-        }
-
-        .shop-btn:active {
-            transform: translateY(1px);
-        }
-
-        /* --- Adaptabilité Mobile --- */
-        @media (max-width: 768px) {
-            .account-inner-form {
-                flex-direction: column; /* On empile les champs sur mobile */
-                gap: 15px;
-            }
-
-            .account-section.modal-main {
-                padding: 20px;
+        @media (max-width: 576px) {
+            .account-page .acc-form-grid {
+                grid-template-columns: 1fr;
             }
         }
-
     </style>
 {% endblock %}
 
 {% block body %}
-
-    <section class="user-profile footer-padding">
+    <section class="user-profile account-page">
         <div class="container">
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <h2 class="font-bold text-2xl">Mes adresses</h2>
-                <a href="{{ path('app_account') }}" class="view text-sm" style="color: #082C6A;">
-                    <i class="fas fa-chevron-left"></i> Retour au compte
-                </a>
-            </div>
+            <div class="account-column">
 
-            <div class="user-profile-section">
-                <div class="user-dashboard">
-                    <div class="tab-content nav-content" id="v-pills-tabContent" style="flex: 1 0%;">
-                        <div class="tab-pane fade show active" id="v-pills-address" role="tabpanel">
-
-                            <div class="login-section account-section modal-main border-0 shadow-sm" style="border-radius: 20px;">
-                                <div class="review-form">
-                                    <div class="review-content">
-                                        <h5 class="comment-title">Ajouter une adresse</h5>
-{#                                        <div class="close-btn">#}
-{#                                            <img src="{{ asset('assets/images/homepage-one/close-btn.png') }}"#}
-{#                                                 onclick="modalAction('.submit')" alt="close-btn" class="cursor-pointer">#}
-{#                                        </div>#}
-                                    </div>
-
-                                    {{ form_start(form) }}
-                                    {# Prénom et Nom côte à côte #}
-                                    <div class="account-inner-form">
-                                        <div class="review-form-name">
-                                            {{ form_widget(form.firstName, {'attr': {'class': 'custom-input', 'placeholder': 'Prénom'}}) }}
-                                            {{ form_errors(form.firstName) }}
-                                        </div>
-                                        <div class="review-form-name">
-                                            {{ form_widget(form.lastName, {'attr': {'class': 'custom-input', 'placeholder': 'Nom'}}) }}
-                                            {{ form_errors(form.lastName) }}
-                                        </div>
-                                    </div>
-
-                                    {# Téléphone #}
-                                    <div class="account-inner-form">
-                                        <div class="review-form-name w-full">
-                                            {{ form_widget(form.phone, {'attr': {'class': 'custom-input', 'placeholder': 'Téléphone (+223...)'}}) }}
-                                            {{ form_errors(form.phone) }}
-                                        </div>
-                                    </div>
-
-                                    {# Entreprise #}
-                                    <div class="account-inner-form">
-                                        <div class="review-form-name w-full">
-                                            {{ form_widget(form.company, {'attr': {'class': 'custom-input', 'placeholder': 'Entreprise (Optionnel)'}}) }}
-                                        </div>
-                                    </div>
-
-                                    {# Adresse #}
-                                    <div class="account-inner-form">
-                                        <div class="review-form-name w-full">
-                                            {{ form_widget(form.address, {'attr': {'class': 'custom-input', 'placeholder': 'Adresse complète (Rue, Porte, Quartier...)'}}) }}
-                                            {{ form_errors(form.address) }}
-                                        </div>
-                                    </div>
-
-                                    {# Ville et Pays #}
-                                    <div class="account-inner-form">
-                                        <div class="review-form-name">
-                                            {{ form_widget(form.city, {'attr': {'class': 'custom-input', 'placeholder': 'Ville'}}) }}
-                                            {{ form_errors(form.city) }}
-                                        </div>
-                                        <div class="review-form-name">
-                                            {{ form_widget(form.country, {'attr': {'class': 'custom-input', 'placeholder': 'Pays'}}) }}
-                                            {{ form_errors(form.country) }}
-                                        </div>
-                                    </div>
-
-                                    <div class="login-btn text-center mt-6">
-                                        <button type="submit" class="btn shop-btn w-full py-4 rounded-xl font-bold transition-all hover:opacity-90"
-                                                style="background-color: #082C6A; color: white;">
-                                            Ajouter l'adresse
-                                        </button>
-                                    </div>
-                                    {{ form_end(form) }}
-
-                                </div>
-                            </div>
-
-                        </div>
+                <header class="account-head">
+                    <div>
+                        <h1>Ajouter une adresse</h1>
+                        <a href="{{ path('app_account_address') }}" class="account-back">
+                            <i class="fas fa-arrow-left"></i> Retour à mes adresses
+                        </a>
                     </div>
+                </header>
+
+                <div class="acc-card">
+                    {{ form_start(form) }}
+                        <div class="acc-form-grid">
+                            <div>{{ form_row(form.firstName, {'label': 'Prénom'}) }}</div>
+                            <div>{{ form_row(form.lastName, {'label': 'Nom'}) }}</div>
+
+                            <div class="acc-field--full">{{ form_row(form.phone, {'label': 'Téléphone'}) }}</div>
+                            <div class="acc-field--full">{{ form_row(form.company, {'label': 'Société (optionnel)'}) }}</div>
+                            <div class="acc-field--full">{{ form_row(form.address, {'label': 'Adresse'}) }}</div>
+
+                            <div>{{ form_row(form.city, {'label': 'Ville'}) }}</div>
+                            <div>{{ form_row(form.country, {'label': 'Pays'}) }}</div>
+                        </div>
+
+                        <div class="form-actions">
+                            <a href="{{ path('app_account_address') }}" class="acc-btn acc-btn--outline">Annuler</a>
+                            <button type="submit" class="acc-btn acc-btn--primary">Ajouter l'adresse</button>
+                        </div>
+                    {{ form_end(form) }}
                 </div>
+
             </div>
         </div>
     </section>

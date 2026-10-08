@@ -1,0 +1,74 @@
+{% extends 'base_admin.html.twig' %}
+
+{% block title %}{{ category.name }}{% endblock %}
+{% block page_title %}Catégorie{% endblock %}
+
+{% import 'admin/_macros.html.twig' as ui %}
+
+{% block body %}
+
+    <div class="admin-card-header">
+        <div>
+            <h2 class="admin-card-title mb-1" style="font-size:1.1rem;">{{ category.name }}</h2>
+            <p class="admin-card-sub mb-0">
+                {{ category.parentCateg ? 'Sous-catégorie de « ' ~ category.parentCateg.name ~ ' »' : 'Catégorie racine' }}
+                · {{ pagination.totalItemCount }} produit{{ pagination.totalItemCount > 1 ? 's' : '' }}
+            </p>
+        </div>
+        <div class="d-flex gap-2 flex-wrap">
+            {{ ui.back(path('admin_category_index'), 'Retour à la liste') }}
+            {% if admin_scope.isSuperAdmin %}
+                <a href="{{ path('admin_category_edit', {id: category.id}) }}" class="btn btn-admin">
+                    <i class="fas fa-pen"></i> Modifier
+                </a>
+                {{ ui.delete_button(
+                    path('admin_category_delete', {id: category.id}),
+                    'Supprimer',
+                    'Supprimer définitivement la catégorie « ' ~ category.name ~ ' » ?'
+                ) }}
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="admin-card">
+        {% if category.description %}
+            <p style="white-space: pre-line; font-size:.87rem; color: var(--adm-muted);">
+                {{ category.description }}
+            </p>
+        {% endif %}
+
+        <div class="admin-section-title">Produits rattachés</div>
+
+        <div class="admin-table-wrap">
+            <table class="admin-table">
+                <thead>
+                <tr>
+                    <th>Produit</th>
+                    <th>Boutique</th>
+                    <th>Prix</th>
+                    <th>Statut</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for product in pagination %}
+                    <tr>
+                        <td>
+                            <a class="admin-cell-main" href="{{ path('admin_product_show', {id: product.id}) }}">
+                                {{ product.name }}
+                            </a>
+                        </td>
+                        <td>{{ product.shop ? product.shop.name : '—' }}</td>
+                        <td>{{ product.price|fcfa }}</td>
+                        <td>{{ ui.tag(product.state) }}</td>
+                    </tr>
+                {% else %}
+                    {{ ui.empty(4, 'Aucun produit dans cette catégorie', 'Rattachez des produits depuis leur fiche.') }}
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        {% include 'admin/_pagination.html.twig' %}
+    </div>
+
+{% endblock %}

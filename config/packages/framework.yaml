@@ -9,6 +9,15 @@ framework:
     #fragments: true
 #    fragments: { path: /_fragment }
 
+    assets:
+        # Cache-busting. symfony serve ne renvoie ni Cache-Control ni ETag
+        # sur les fichiers statiques, seulement un Last-Modified : le
+        # navigateur peut donc conserver un style.css périmé sans jamais le
+        # revalider. Avec une version, toute ressource appelée via asset()
+        # devient /css/style.css?v=… et change d'URL dès qu'on l'incrémente.
+        # ⚠ À BUMPER à chaque modification sous public/css ou public/js.
+        version: '2026-10-02.1'
+
 when@test:
     framework:
         test: true

@@ -1,0 +1,111 @@
+{% extends 'base_admin.html.twig' %}
+
+{% block title %}Commandes{% endblock %}
+{% block page_title %}Commandes{% endblock %}
+
+{% import 'admin/_macros.html.twig' as ui %}
+
+{% block body %}
+
+    {% if admin_scope.isVendor %}
+        <div class="admin-note">
+            <i class="fas fa-store"></i>
+            Vue <strong>vendeur</strong> : seules les commandes contenant des articles de votre boutique
+            <strong>{{ admin_scope.shop ? admin_scope.shop.name : '' }}</strong> sont affichées,
+            et seul <em>vos articles</em> y sont traitables.
+        </div>
+    {% endif %}
+
+    {# ---------------- Filtres ---------------- #}
+    <form method="get" action="{{ path('admin_order_index') }}" class="admin-filters">
+        <div class="admin-filter-field" style="flex: 2 1 260px;">
+            <label for="f-q">Recherche</label>
+            <input class="form-control" type="search" id="f-q" name="q"
+                   value="{{ filters.q }}" placeholder="Référence ou client…">
+        </div>
+
+        <div class="admin-filter-field">
+            <label for="f-state">Statut</label>
+            <select class="form-select" id="f-state" name="state">
+                <option value="">— Tous —</option>
+                {% for state in admin_order_states() %}
+                    <option value="{{ state.value }}" {{ filters.state == state.value ? 'selected' }}>
+                        {{ state.value }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="admin-filters-actions">
+            <button type="submit" class="btn btn-admin"><i class="fas fa-filter"></i> Filtrer</button>
+            <a href="{{ path('admin_order_index') }}" class="btn btn-admin btn-admin-light" title="Réinitialiser">
+                <i class="fas fa-undo"></i>
+            </a>
+        </div>
+    </form>
+
+    <div class="admin-card">
+        <div class="admin-card-header">
+            <div>
+                <h2 class="admin-card-title">Suivi des commandes</h2>
+                <p class="admin-card-sub mb-0">
+                    {{ pagination.totalItemCount }} commande{{ pagination.totalItemCount > 1 ? 's' : '' }}
+                </p>
+            </div>
+        </div>
+
+        <div class="admin-table-wrap">
+            <table class="admin-table">
+                <thead>
+                <tr>
+                    <th>Référence</th>
+                    <th>Client</th>
+                    <th>Passée le</th>
+                    <th>Articles</th>
+                    <th>Total</th>
+                    <th>Transporteur</th>
+                    <th>Statut</th>
+                    <th class="text-end">Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for order in pagination %}
+                    {% set lines = admin_scope.visibleLines(order) %}
+                    <tr>
+                        <td>
+                            <a class="admin-cell-main" href="{{ path('admin_order_show', {id: order.id}) }}">
+                                #{{ order.reference }}
+                            </a>
+                            <span class="admin-cell-sub">N°{{ order.id }}</span>
+                        </td>
+                        <td>
+                            {{ order.user.fullName }}
+                            <span class="admin-cell-sub">{{ order.user.email }}</span>
+                        </td>
+                        <td>{{ order.createdAt|date('d/m/Y H:i') }}</td>
+                        <td>
+                            <span class="admin-badge-soft">{{ lines|length }}</span>
+                            {% if admin_scope.isVendor and order.orderDetails|length > lines|length %}
+                                <span class="admin-cell-sub">
+                                    / {{ order.orderDetails|length }} au total
+                                </span>
+                            {% endif %}
+                        </td>
+                        <td>{{ ui.amount(admin_scope.scopedTotal(order)) }}</td>
+                        <td>{{ order.carrierName }}</td>
+                        <td>{{ ui.tag(order.state) }}</td>
+                        <td class="text-end">
+                            {{ ui.action(path('admin_order_show', {id: order.id}), 'fa-eye', 'Traiter') }}
+                        </td>
+                    </tr>
+                {% else %}
+                    {{ ui.empty(8, 'Aucune commande', 'Les commandes concernant votre boutique apparaîtront ici en temps réel.') }}
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        {% include 'admin/_pagination.html.twig' %}
+    </div>
+
+{% endblock %}

@@ -27,21 +27,74 @@
 
     <!--------------- additional-css ---------------->
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-    <link rel="stylesheet" href="{{ asset('dist/css/adminlte.min.css') }}">
+    {# ------------------------------------------------------------------
+       AdminLTE retiré de la vitrine.
+
+       dist/css/adminlte.min.css (1,36 Mo) embarquait Bootstrap 4 et était
+       chargé APRÈS bootstrap-5.3.2.min.css : le BS4 écrasait donc .row,
+       .container, .col-*, .card, .btn et les utilitaires du BS5 sur les
+       20 pages qui étendent ce template. Le back-office sur mesure
+       (base_admin.html.twig + public/css/admin.css) est totalement
+       indépendant et n'a jamais passé par ici.
+
+       Ci-dessous, les 5 règles AdminLTE réellement utilisées par les
+       templates vitrine, conservées à l'identique.
+       ------------------------------------------------------------------ #}
+    <style>
+        /* Menus "Catégories" (menus/header.html.twig) */
+        .dropdown-submenu {
+            position: relative;
+        }
+
+        .dropdown-submenu > a::after {
+            border-top: .3em solid transparent;
+            border-right: 0;
+            border-bottom: .3em solid transparent;
+            border-left: .3em solid;
+            float: right;
+            margin-left: .5rem;
+            margin-top: .5rem;
+        }
+
+        .dropdown-submenu > .dropdown-menu {
+            left: 100%;
+            margin-left: 0;
+            margin-top: 0;
+            top: 0;
+        }
+
+        .dropdown-hover .dropdown-submenu:hover > .dropdown-menu,
+        .dropdown-hover.dropdown-submenu:hover > .dropdown-menu,
+        .dropdown-hover.nav-item.dropdown:hover > .dropdown-menu,
+        .dropdown-hover:hover > .dropdown-menu {
+            display: block;
+        }
+
+        /* Utilitaires AdminLTE employés ailleurs dans la vitrine */
+        .description { color: #6c757d; font-size: 13px; margin-top: -3px; }
+        .rounded-lg { border-radius: .3rem !important; }
+        .text-purple { color: #6f42c1 !important; }
+        .text-sm { font-size: .875rem !important; }
+    </style>
+
     <link rel="stylesheet" href="{{ asset('plugins/fontawesome-free/css/all.min.css') }}">
 
     {#    Police motserrat et inter #}
 
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Montserrat:wght@600;700;800&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap"
         rel="stylesheet">
-    {% block stylesheets %}
-        {{ encore_entry_link_tags('app') }}
-    {% endblock %}
+    {# ENC-2026-10 : les tags Encore sont rendus HORS des blocs, à la racine.
+       Ils étaient autrefois dedans ; 17 templates vitrine redéfinissaient
+       {% block stylesheets %} sans {{ parent() }} (et order/add.html.twig
+       {% block javascripts %}), ce qui supprimait silencieusement app.css
+       et app.js de toutes ces pages. Les blocs restent de simples points
+       d'extension pour les styles/ scripts propres à une page. #}
+    {{ encore_entry_link_tags('app') }}
+    {% block stylesheets %}{% endblock %}
 
-    {% block javascripts %}
-        {{ encore_entry_script_tags('app') }}
-    {% endblock %}
+    {{ encore_entry_script_tags('app') }}
+    {% block javascripts %}{% endblock %}
 
     <style>
         .search-section .shop-btn {
@@ -766,9 +819,9 @@
             color: var(--dark-text);
         }
 
-        /* Titres en Montserrat */
+        /* Titres — typographie Wildberries (Inter) */
         .footer-headline {
-            font-family: 'Montserrat', sans-serif;
+            font-family: 'Inter', sans-serif;
             font-weight: 700;
             font-size: 1.8rem;
             text-transform: uppercase;
@@ -1074,9 +1127,13 @@
             }
         }
 
-        /* Optionnel : évite que le bouton cache le dernier élément d'une liste */
+        /* Optionnel : évite que le bouton cache le dernier élément d'une liste.
+           + env(safe-area-inset-bottom) : sur iPhone à barre d'accueil, la
+           zone de~34px en bas n'est pas atteignable — sans cette réserve,
+           une barre d'action fixe (panier, produit, commande) masquerait
+           le bas du footer. */
         body {
-            padding-bottom: 80px;
+            padding-bottom: calc(80px + env(safe-area-inset-bottom));
         }
 
         @media (min-width: 992px) {
@@ -1126,9 +1183,13 @@
 <!--------------- additional-js ---------------->
 <script src="{{ asset('assets/js/shopus.js') }}"></script>
 
-<script src="{{ 'dist/js/adminlte.min.js' }}"></script>
+    {# AdminLTE retiré de la vitrine (aucun usage : sidebar-toggle, treeview,
+       card-widget, push-menu → 0 occurrence dans les templates vitrine). #}
 
-<script src="{{ 'plugins/bootstrap/js/bootstrap.bundle.min.js' }}"></script>
+    {# Bootstrap 4.6.1 retiré : redondant avec bootstrap_5.3.2.bundle.min.js
+       (ligne 1115) chargé juste avant, il l'écrasait (window.bootstrap +
+       $.fn.dropdown/collapse/modal) sans pouvoir réagir aux data-bs-*
+       utilisés partout dans le markup. #}
 
 <!-- Swiper JS -->
 <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>

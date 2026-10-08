@@ -19,8 +19,9 @@ final class BackOfficeAccessControlTest extends WebTestCase
     public static function protectedPaths(): iterable
     {
         yield 'dashboard commandes' => ['/dashboard/commande'];
-        yield 'easyadmin' => ['/admin'];
-        yield 'easyadmin users' => ['/admin/user'];
+        yield 'back-office' => ['/admin'];
+        yield 'back-office utilisateurs' => ['/admin/utilisateurs'];
+        yield 'back-office commandes' => ['/admin/commandes'];
         yield 'compte client' => ['/account'];
     }
 

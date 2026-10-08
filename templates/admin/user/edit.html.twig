@@ -1,0 +1,27 @@
+{% extends 'base_admin.html.twig' %}
+
+{% block title %}Modifier un compte{% endblock %}
+{% block page_title %}Modifier le compte{% endblock %}
+
+{% import 'admin/_macros.html.twig' as ui %}
+
+{% block body %}
+    <div class="admin-card" style="max-width: 860px;">
+        <div class="admin-card-header">
+            <div>
+                <h2 class="admin-card-title">{{ account.email }}</h2>
+                <p class="admin-card-sub mb-0">
+                    {{ account.shop ? 'Boutique : ' ~ account.shop.name : 'Aucune boutique rattachée' }}
+                </p>
+            </div>
+            {{ ui.back(path('admin_user_show', {id: account.id}), 'Retour au compte') }}
+        </div>
+
+        {% include 'admin/user/_form.html.twig' with {
+            'form': form,
+            'account': account,
+            'submit_label': 'Enregistrer les modifications',
+            'back_url': path('admin_user_show', {id: account.id})
+        } %}
+    </div>
+{% endblock %}

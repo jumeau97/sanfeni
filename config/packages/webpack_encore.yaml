@@ -30,9 +30,18 @@ webpack_encore:
         # pass the build name as the 3rd argument to the Twig functions
         # {{ encore_entry_script_tags('entry1', null, 'frontend') }}
 
-framework:
-    assets:
-        json_manifest_path: '%kernel.project_dir%/public/build/manifest.json'
+# NB : framework.assets.json_manifest_path a été retiré (désormais géré par
+# framework.assets.version dans framework.yaml).
+#
+# Inutile ici : public/build/manifest.json est une correspondance IDENTITÉ
+# ("build/app.css" -> "/build/app.css", aucun hachage de contenu) et
+# entrypoints.json fournit déjà les chemins absolus. Il fallait choisir entre
+# "version" et "json_manifest_path" ; seul "version" apporte un cache-busting
+# réel, que l'on n'avait pas du tout sur /css/style.css.
+#
+# framework:
+#     assets:
+#         json_manifest_path: '%kernel.project_dir%/public/build/manifest.json'
 
 #when@prod:
 #    webpack_encore:

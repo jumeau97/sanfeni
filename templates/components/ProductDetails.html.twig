@@ -1,238 +1,284 @@
-{#<div class="product-info-section" {{ attributes }} >#}
-{#    <div class="row ">#}
-{#        <div class="col-md-6">#}
-{#            <div class="product-info-img" data-aos="fade-right">#}
-{#                <div class="swiper product-top">#}
-{#                    <div class="swiper-wrapper">#}
-{#                        <div class="swiper-slide slider-top-img">#}
-{#                            <img src="{{ asset('images/products/' ~ product.illustration) }}"#}
-{#                                 alt="img">#}
-{#                        </div>#}
-{#                        {% for item in product.albums %}#}
-{#                            <div class="swiper-slide slider-top-img">#}
-{#                                <img src="{{ asset('images/products/' ~ item.illustration) }}"#}
-{#                                     alt="img">#}
-{#                            </div>#}
-{#                        {% endfor %}#}
-{#                    </div>#}
-{#                </div>#}
-{#                <div class="swiper product-bottom">#}
-{#                    <div class="swiper-wrapper">#}
-{#                        <div class="swiper-slide slider-bottom-img">#}
-{#                            <img src="{{ asset('images/products/' ~ product.illustration) }}"#}
-{#                                 alt="img">#}
-{#                        </div>#}
-{#                        {% for photo in product.albums %}#}
-{#                            <div class="swiper-slide slider-bottom-img">#}
-{#                                <img src="{{ asset('images/products/' ~ photo.illustration) }}"#}
-{#                                     alt="img">#}
-{#                            </div>#}
-{#                        {% endfor %}#}
+{# ==================================================================
+   FICHE PRODUIT — composant LiveComponent.
 
+   Structure :
+     · galerie Swiper (image principale + miniatures cliquables)
+     · panneau d'achat : boutique, titre, prix, stock, description
+     · sélecteurs d'options (couleur / taille / autre) pilotés par
+       Stimulus `product-options`
+     · récapitulatif de sélection, quantité, CTA
 
-{#                    </div>#}
-{#                </div>#}
-{#            </div>#}
-{#        </div>#}
-{#        <div class="col-md-6">#}
-{#            <div class="product-info-content" data-aos="fade-left">#}
-{#                <span class="wrapper-subtitle">{{ product.shop.name }}</span>#}
+   Le payload JSON embarqué contient la matrice complète des variations :
+   c'est lui qui permet à Stimulus de désactiver instantanément une
+   combinaison introuvable. Le serveur revalide tout à l'ajout
+   (@see ProductDetails::addToCart).
 
-{#                <h5>{{ product.getName() }}#}
-{#                </h5>#}
+   ⚠ Convention de taille du projet : public/css/style.css déclare
+     `html { font-size: 10px }` → 1rem = 10px (et non 16px).
+     Les styles sont scopés sous .wb-details (détails.html.twig).
+   ================================================================== #}
 
-{#                <div class="price">#}
-{#                    {% if product.isPromotion %}#}
-{#                        <span class="price-cut">#}
-{#            {{ (product.price/100)|format_currency('XOF') }}#}
-{#        </span>#}
-{#                        <span class="new-price">#}
-{#            {{ ((product.price/100) * (1 - (product.offPercent / 100))) | format_currency('XOF') }}#}
-{#        </span>#}
-{#                    {% else %}#}
-{#                        <span class="new-price">#}
-{#            {{ (product.price/100)|format_currency('XOF') }}#}
-{#        </span>#}
-{#                    {% endif %}#}
-{#                </div>#}
+{% set payload        = this.getOptionsPayload() %}
+{% set optionGroups   = this.getOptionGroups() %}
+{% set effectivePrice = this.effectivePrice() %}
+{% set hasPromo       = product.isPromotion and product.offPercent %}
+{% set needsSelection = optionGroups|length > 0 %}
+{% set totalStock     = this.getTotalStock() %}
+{% set outOfStock     = totalStock is not null and totalStock <= 0 %}
 
-{#                <p class="content-paragraph">{{ product.description|raw }}</p>#}
-{#                <hr>#}
+{# État de disponibilité — identique côté serveur et côté Stimulus. #}
+{% if outOfStock %}
+    {% set stockClass = 'is-out' %}
+    {% set stockLabel = 'Rupture de stock' %}
+{% elseif totalStock is not null %}
+    {% set stockClass = totalStock <= 5 ? 'is-low' : 'is-ok' %}
+    {% set stockLabel = totalStock <= 5
+        ? 'Plus que ' ~ totalStock ~ ' en stock'
+        : 'En stock' %}
+{% else %}
+    {% set stockClass = '' %}
+    {% set stockLabel = '' %}
+{% endif %}
 
-{#                <div class="product-size">#}
-{#                    <P class="size-title">Size</P>#}
-{#                    <div class="size-section">#}
-{#                        <span class="size-text">Select your size</span>#}
-{#                        <div class="toggle-btn">#}
-{#                            <span class="toggle-btn2"></span>#}
-{#                            <span class="chevron">#}
-{#                                            <svg width="11" height="7" viewBox="0 0 11 7" fill="none"#}
-{#                                                 xmlns="http://www.w3.org/2000/svg">#}
-{#                                                <path d="M5.4 6.8L0 1.4L1.4 0L5.4 4L9.4 0L10.8 1.4L5.4 6.8Z"#}
-{#                                                      fill="#222222"/>#}
-{#                                            </svg>#}
-{#                                        </span>#}
-{#                        </div>#}
-{#                    </div>#}
-{#                    <ul class="size-option">#}
-{#                        <li class="option">#}
-{#                            <span class="option-text">Small</span>#}
-{#                            <span class="option-measure">3”W x 3”D x 5”H</span>#}
-{#                        </li>#}
-{#                        <li class="option">#}
-{#                            <span class="option-text">Medium</span>#}
-{#                            <span class="option-measure">3”W x 3”D x 6”H</span>#}
-{#                        </li>#}
-{#                        <li class="option">#}
-{#                            <span class="option-text">Large</span>#}
-{#                            <span class="option-measure">6”W x 3”D x 7”H</span>#}
-{#                        </li>#}
-{#                        <li class="option">#}
-{#                            <span class="option-text">Extra Large</span>#}
-{#                            <span class="option-measure">8”W x 4”D x 8”H</span>#}
-{#                        </li>#}
-{#                        <li class="option">#}
-{#                            <span class="option-text">2XL</span>#}
-{#                            <span class="option-measure">10”W x 5”D x 9”H</span>#}
-{#                        </li>#}
-{#                    </ul>#}
-{#                </div>#}
+{# NB : « data-controller » doit être fusionné en UNE seule balise.
+   HTML supprime les attributs en double : écrire {{ attributes }} puis
+   data-controller="product-options" faisait perdre « product-options »
+   (le 1er, « live », gagnait) → le contrôleur ne s'exécutait jamais.
+   defaults() préfixe nos valeurs à celles du composant (API UX). #}
+<div class="product-info-section"
+     {{ attributes.defaults(stimulus_controller('product-options', {
+         payload: payload,
+         productId: product.id
+     })) }}>
 
-{#                <button#}
-
-{#                    data-action="live#action"#}
-{#                    data-live-action-param="addToCart"#}
-
-{#                    class="shop-btn"#}
-{#                >#}
-{#                                    <span>#}
-{#                                        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"#}
-{#                                             xmlns="http://www.w3.org/2000/svg">#}
-{#                                            <path#}
-{#                                                d="M8.25357 3.32575C8.25357 4.00929 8.25193 4.69283 8.25467 5.37583C8.25576 5.68424 8.31536 5.74439 8.62431 5.74439C9.964 5.74603 11.3031 5.74275 12.6428 5.74603C13.2728 5.74767 13.7397 6.05663 13.9246 6.58104C14.2209 7.42098 13.614 8.24232 12.6762 8.25052C11.5919 8.25982 10.5075 8.25271 9.4232 8.25271C9.17714 8.25271 8.93107 8.25216 8.68501 8.25271C8.2913 8.2538 8.25412 8.29154 8.25412 8.69838C8.25357 10.0195 8.25686 11.3412 8.25248 12.6624C8.25029 13.2836 7.92603 13.7544 7.39891 13.9305C6.56448 14.2088 5.75848 13.6062 5.74863 12.6821C5.73824 11.7251 5.74645 10.7687 5.7459 9.81173C5.7459 9.41965 5.74754 9.02812 5.74535 8.63604C5.74371 8.30849 5.69012 8.2538 5.36204 8.25326C4.02235 8.25162 2.68321 8.25545 1.34352 8.25107C0.719613 8.24943 0.249902 7.93008 0.0710952 7.40348C-0.212153 6.57065 0.388245 5.75916 1.31017 5.74658C2.14843 5.73564 2.98669 5.74384 3.82495 5.74384C4.30779 5.74384 4.79062 5.74384 5.274 5.74384C5.72184 5.7433 5.7459 5.71869 5.7459 5.25716C5.7459 3.95406 5.74317 2.65096 5.74699 1.34786C5.74863 0.720643 6.0625 0.253102 6.58799 0.0704598C7.40875 -0.213893 8.21803 0.370671 8.25248 1.27349C8.25303 1.29154 8.25303 1.31013 8.25303 1.32817C8.25357 1.99531 8.25357 2.66026 8.25357 3.32575Z"#}
-{#                                                fill="white"/>#}
-{#                                        </svg>#}
-{#                                    </span>#}
-{#                    <span>Ajouter au panier</span>#}
-{#                </button>#}
-{#                <hr>#}
-{#                <div class="product-details">#}
-{#                    <p class="category">Category : {% for categ in product.categories %} <span#}
-{#                            class="inner-text mx-1">{{ categ.name }}</span> {% endfor %}#}
-{#                    </p>#}
-
-{#                </div>#}
-
-{#            </div>#}
-{#        </div>#}
-{#    </div>#}
-{#</div>#}
-
-
-<div class="product-info-section" {{ attributes }}>
     <div class="row g-4">
-        {# --- Galerie Photos --- #}
+
+        {# ============================================================
+           1. GALERIE
+           ============================================================ #}
         <div class="col-md-6">
-            <div class="product-gallery" style="top: 20px;">
-                <div class="swiper product-top mb-3">
+            <div class="wb-gallery">
+                <div class="swiper product-top">
                     <div class="swiper-wrapper">
-                        <div class="swiper-slide rounded-xl overflow-hidden shadow-sm">
-                            <img src="{{ asset('images/products/' ~ product.illustration) }}" class="img-fluid w-100 object-fit-cover" style="aspect-ratio: 4/5;" alt="{{ product.name }}">
+                        <div class="swiper-slide">
+                            <img src="{{ asset('images/products/' ~ product.illustration) }}"
+                                 alt="{{ product.name }}"
+                                 decoding="async">
                         </div>
                         {% for item in product.albums %}
-                            <div class="swiper-slide rounded-xl overflow-hidden shadow-sm">
-                                <img src="{{ asset('images/products/' ~ item.illustration) }}" class="img-fluid w-100 object-fit-cover" style="aspect-ratio: 4/5;" alt="album">
+                            <div class="swiper-slide">
+                                <img src="{{ asset('images/products/' ~ item.illustration) }}"
+                                     alt="{{ product.name }} — vue {{ loop.index }}"
+                                     decoding="async">
                             </div>
                         {% endfor %}
                     </div>
                 </div>
-                {# Miniatures #}
-                <div class="swiper product-bottom">
-                    <div class="swiper-wrapper">
-                        <div class="swiper-slide cursor-pointer opacity-50 transition-all hover:opacity-100">
-                            <img src="{{ asset('images/products/' ~ product.illustration) }}" class="rounded-lg w-full" alt="thumb">
+
+                {# Miniatures : masquées quand il n'y a qu'une seule photo,
+                   sinon on afficherait un carrousel d'une case. #}
+                {% if this.hasGallery() %}
+                    <div class="swiper product-bottom">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide">
+                                <img src="{{ asset('images/products/' ~ product.illustration) }}"
+                                     alt="Miniature principale" decoding="async">
+                            </div>
+                            {% for photo in product.albums %}
+                                <div class="swiper-slide">
+                                    <img src="{{ asset('images/products/' ~ photo.illustration) }}"
+                                         alt="Miniature {{ loop.index }}" decoding="async">
+                                </div>
+                            {% endfor %}
                         </div>
-                        {% for photo in product.albums %}
-                            <div class="swiper-slide cursor-pointer opacity-50 transition-all hover:opacity-100">
-                                <img src="{{ asset('images/products/' ~ photo.illustration) }}" class="rounded-lg w-full" alt="thumb">
-                            </div>
-                        {% endfor %}
                     </div>
-                </div>
+                {% endif %}
+
+                {% if hasPromo %}
+                    <span class="wb-flag">-{{ product.offPercent }}%</span>
+                {% endif %}
             </div>
         </div>
 
-        {# --- Détails Produit --- #}
+        {# ============================================================
+           2. PANNEAU D'ACHAT
+           ============================================================ #}
         <div class="col-md-6">
-            <div class="product-content px-md-4">
-                <div class="shop-badge mb-2">
-                    <span class="badge" style="background: rgba(8, 44, 106, 0.05); color: #082C6A; font-weight: 600; padding: 6px 12px; border-radius: 8px;">
-                        <i class="fas fa-store me-1"></i> {{ product.shop.name }}
+            <div class="wb-buy">
+
+                <span class="wb-shop-badge">
+                    <i class="fas fa-store" aria-hidden="true"></i>
+                    {{ product.shop ? product.shop.name : 'Sanfeni' }}
+                </span>
+
+                <h1 class="wb-title">{{ product.name }}</h1>
+
+                {# ---------- Prix ---------- #}
+                <div class="price-section">
+                    <span class="wb-price {{ hasPromo ? '' : 'wb-price--plain' }}"
+                          data-product-options-target="price">
+                        {{ effectivePrice is not null ? effectivePrice|number_format(0, ',', ' ') : '—' }} FCFA
                     </span>
-                </div>
 
-                <h1 class="h3 fw-bold mb-2 text-dark">{{ product.getName() }}</h1>
-
-                {# Section Prix #}
-                <div class="price-section d-flex align-items-center gap-3 mb-4">
-                    {% if product.isPromotion %}
-                        <span class="fs-2 fw-bolder" style="color: #FF3E3E;">
-                            {{ ((product.price) * (1 - (product.offPercent / 100))) | number_format(0, ',', ' ') }} FCFA
-                        </span>
-                        <span class="text-decoration-line-through text-muted fs-5">
-                            {{ (product.price) | number_format(0, ',', ' ') }} FCFA
-                        </span>
-                        <span class="badge bg-danger rounded-pill">-{{ product.offPercent }}%</span>
-                    {% else %}
-                        <span class="fs-2 fw-bolder text-dark">
-                            {{ (product.price) | number_format(0, ',', ' ') }} FCFA
+                    {% if hasPromo %}
+                        <span class="wb-price-old">{{ product.price|number_format(0, ',', ' ') }} FCFA</span>
+                        <span class="wb-price-badge">-{{ product.offPercent }}%</span>
+                        <span class="wb-save">
+                            Économie
+                            {{ (product.price - effectivePrice)|number_format(0, ',', ' ') }} FCFA
                         </span>
                     {% endif %}
                 </div>
 
-                <div class="description mb-4">
-                    <p class="text-muted small lh-lg">{{ product.description|raw }}</p>
-                </div>
+                {# ---------- Disponibilité ----------
+                   Rendue aussi côté serveur : la mention reste correcte sans
+                   JS. Stimulus la recalcule ensuite à chaque sélection. #}
+                <span class="wb-stock {{ stockClass }}"
+                      data-product-options-target="stock">{{ stockLabel }}</span>
 
-                <hr class="my-4 opacity-10">
+                {# ---------- Dernier refus serveur (variante en rupture…) ---------- #}
+                <div class="wb-option-error{% if not error %} is-hidden{% endif %}"
+                     role="alert"
+                     data-product-options-target="error">{{ error }}</div>
 
-                {# Tailles - Style "Puces" (Wildberries Style) #}
-{#                <div class="size-selector mb-4">#}
-{#                    <p class="fw-bold text-dark mb-3">Taille : <span class="text-muted fw-normal small">Sélectionnez une option</span></p>#}
-{#                    <div class="d-flex flex-wrap gap-2">#}
-{#                        {% for size in ['S', 'M', 'L', 'XL', '2XL'] %}#}
-{#                            <label class="size-chip">#}
-{#                                <input type="radio" name="size" value="{{ size }}" class="d-none">#}
-{#                                <span class="chip-label">{{ size }}</span>#}
-{#                            </label>#}
-{#                        {% endfor %}#}
-{#                    </div>#}
-{#                </div>#}
+                {# ---------- Description ---------- #}
+                {% if product.description %}
+                    <div class="wb-desc-wrap">
+                        <p class="wb-desc">{{ product.description|raw }}</p>
+                    </div>
+                {% endif %}
 
-                {# Bouton Ajouter au Panier #}
-                <div class="cart-action mt-5">
-                    <button
-                        data-action="live#action"
-                        data-live-action-param="addToCart"
-                        class="btn btn-sanfeni-cart w-100 py-3 shadow-sm d-flex align-items-center justify-content-center gap-2"
-                    >
-                        <svg width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                {# ============================================================
+                   3. SÉLECTION DES OPTIONS (couleurs, tailles, …)
+                   ============================================================ #}
+                {% if optionGroups %}
+                    <hr class="wb-rule">
+
+                    <div class="wb-options">
+                        {% for group in optionGroups %}
+                            <fieldset class="wb-option-group">
+                                <legend class="wb-option-legend">
+                                    <span class="wb-option-name">{{ group.name }}</span>
+                                    <span class="wb-option-required">
+                                        {{ group.type == 'color' ? 'Choisissez une couleur' : 'Choisissez une taille' }}
+                                    </span>
+                                </legend>
+
+                                {% if group.type == 'color' %}
+                                    {# Pastille colorée + libellé : lisible et accessible,
+                                       même quand le code couleur est absent. #}
+                                    <div class="wb-swatches">
+                                        {% for option in group.options %}
+                                            <button type="button"
+                                                    class="wb-swatch"
+                                                    data-product-options-target="option"
+                                                    data-attribute-id="{{ option.attributeId }}"
+                                                    data-value-id="{{ option.id }}"
+                                                    data-action="product-options#select"
+                                                    aria-pressed="false"
+                                                    {% if not option.available %}disabled{% endif %}>
+                                                <span class="wb-swatch__dot"
+                                                      style="background: {{ option.color ?: '#ffffff' }}"></span>
+                                                <span class="wb-swatch__label">{{ option.label }}</span>
+                                                {% if not option.available %}
+                                                    <span class="wb-out-badge">épuisé</span>
+                                                {% endif %}
+                                            </button>
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    {# Grille de puces (tailles, références…) #}
+                                    <div class="wb-chips">
+                                        {% for option in group.options %}
+                                            <button type="button"
+                                                    class="wb-chip"
+                                                    data-product-options-target="option"
+                                                    data-attribute-id="{{ option.attributeId }}"
+                                                    data-value-id="{{ option.id }}"
+                                                    data-action="product-options#select"
+                                                    aria-pressed="false"
+                                                    {% if not option.available %}disabled{% endif %}>
+                                                <span class="wb-chip__label">{{ option.label }}</span>
+                                                {% if not option.available %}
+                                                    <span class="wb-out-badge">épuisé</span>
+                                                {% endif %}
+                                            </button>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </fieldset>
+                        {% endfor %}
+                    </div>
+
+                    {# Récapitulatif — mis à jour en direct par Stimulus #}
+                    <div class="wb-selection">
+                        <span class="wb-selection__label">Votre sélection</span>
+                        <span class="wb-selection__value is-empty"
+                              data-product-options-target="summary">Sélectionnez une option</span>
+                    </div>
+                {% endif %}
+
+                {# ============================================================
+                   4. QUANTITÉ + APPEL À L'ACTION
+                   ============================================================ #}
+                <div class="wb-cta-row">
+
+                    <div class="wb-qty">
+                        <span class="wb-qty__label">Quantité</span>
+                        <div class="wb-stepper" role="group" aria-label="Quantité">
+                            <button type="button"
+                                    class="wb-stepper__btn"
+                                    data-role="qty-decrease"
+                                    data-action="product-options#decrease"
+                                    aria-label="Diminuer la quantité">&minus;</button>
+
+                            <span class="wb-stepper__value"
+                                  data-product-options-target="qty"
+                                  aria-live="polite">1</span>
+
+                            <button type="button"
+                                    class="wb-stepper__btn"
+                                    data-role="qty-increase"
+                                    data-action="product-options#increase"
+                                    aria-label="Augmenter la quantité">+</button>
+                        </div>
+                    </div>
+
+                    <button type="button"
+                            class="wb-cta"
+                            data-product-options-target="cta"
+                            {# État sûr par défaut : tant que Stimulus n'a pas
+                               validé la sélection (ou sans JS), le bouton ne
+                               doit pas laisser croire qu'on peut commander. #}
+                            {% if needsSelection or outOfStock %}disabled{% endif %}
+                            {# prepareAdd copie quantité/variante dans les params
+                               LiveComponent AVANT live#action (ordre du data-action). #}
+                            data-action="product-options#prepareAdd live#action"
+                            data-live-action-param="addToCart"
+                            data-live-quantity-param="1">
+
+                        <svg class="wb-cta__icon" width="18" height="18" viewBox="0 0 16 16"
+                             fill="currentColor" aria-hidden="true">
                             <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5z"/>
                         </svg>
-                        <span class="fw-bold">Ajouter au panier</span>
+                        <span data-role="cta-label">{% if outOfStock %}Rupture de stock{% elseif needsSelection %}Choisissez vos options{% else %}Ajouter au panier{% endif %}</span>
                     </button>
                 </div>
 
-                {# Catégories & SEO #}
-                <div class="mt-4 pt-3 border-top">
-                    <p class="text-muted small">Catégories :
-                        {% for categ in product.categories %}
-                            <a href="#" class="text-decoration-none text-dark fw-medium ms-1">{{ categ.name }}</a>{{ not loop.last ? ',' }}
-                        {% endfor %}
-                    </p>
-                </div>
+                <p class="wb-pay"><i class="fas fa-lock" aria-hidden="true"></i> Paiement sécurisé</p>
+
+                {# ---------- Catégories ---------- #}
+                {% if product.categories|length %}
+                    <div class="wb-cats">
+                        <p class="wb-cats-label">
+                            Catégories :
+                            {% for categ in product.categories %}
+                                <a href="{{ path('app_home', {'slug': categ.name}) }}">{{ categ.name }}</a>{{ not loop.last ? ',' }}
+                            {% endfor %}
+                        </p>
+                    </div>
+                {% endif %}
             </div>
         </div>
     </div>
 </div>
-

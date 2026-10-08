@@ -1,4 +1,7 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Jost:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=League+Spartan:wght@100;200;300;400;500;600;700;800;900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+/* Police unique du site — typographie Wildberries (Inter).
+   Remplace Poppins / Jost / League Spartan : une seule famille, police variable
+   (1 requête, 7 @font-face au lieu de 63). */
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
 
 @keyframes btnAnimation {
     0% {
@@ -30,7 +33,7 @@ body {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: "Poppins", sans-serif;
+    font-family: "Inter", sans-serif;
     background: #F8F8F8;
     overflow-x: visible;
 }
@@ -41,7 +44,7 @@ h3,
 h4,
 h5 {
     color: #232532;
-    font-family: "Jost", sans-serif;
+    font-family: "Inter", sans-serif;
     font-weight: 700;
 }
 
@@ -218,7 +221,7 @@ button {
     padding: 0 0 2rem 0;
     border-radius: 1.2rem;
     background-color: #FFFFFF;
-    font-family: "Jost", sans-serif;
+    font-family: "Inter", sans-serif;
     cursor: pointer;
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
     position: relative;
@@ -283,7 +286,7 @@ button {
 }
 
 .product-wrapper .product-details {
-    font-family: "Jost", sans-serif;
+    font-family: "Inter", sans-serif;
 }
 
 @media (max-width: 767px) {
@@ -388,7 +391,7 @@ button {
 }
 
 .section-title .view {
-    font-family: "Jost", sans-serif;
+    font-family: "Inter", sans-serif;
     position: relative;
 }
 
@@ -1387,7 +1390,7 @@ button {
     padding: 3.2rem;
     border-radius: 1.2rem;
     background-color: #FFFFFF;
-    font-family: "Jost", sans-serif;
+    font-family: "Inter", sans-serif;
     cursor: pointer;
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
     background-color: transparent;
@@ -1628,7 +1631,7 @@ button {
     padding: 0;
     border-radius: 0;
     background-color: #FFFFFF;
-    font-family: "Jost", sans-serif;
+    font-family: "Inter", sans-serif;
     cursor: pointer;
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
     background: #FFFFFF;
@@ -1772,7 +1775,7 @@ button {
     padding: 2rem;
     border-radius: 1.2rem;
     background-color: #FFFFFF;
-    font-family: "Jost", sans-serif;
+    font-family: "Inter", sans-serif;
     cursor: pointer;
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
     display: flex;
@@ -1850,7 +1853,7 @@ button {
     padding: 0 0 2rem 0;
     border-radius: 1.2rem;
     background-color: #FFFFFF;
-    font-family: "Jost", sans-serif;
+    font-family: "Inter", sans-serif;
     cursor: pointer;
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
     background: transparent;
@@ -1956,7 +1959,7 @@ button {
 
 .footer {
     background: url("../assets/images/homepage-one/footer-bg.webp");
-    font-family: "League Spartan", sans-serif;
+    font-family: "Inter", sans-serif;
 }
 
 .footer-padding {
@@ -2935,7 +2938,7 @@ hr {
 }
 
 .review-form label {
-    font-family: "Jost", sans-serif;
+    font-family: "Inter", sans-serif;
     font-size: 1.5rem;
     color: #797979;
     margin-bottom: 0.5rem;
@@ -2969,7 +2972,7 @@ hr {
 .review-form textarea::placeholder,
 .review-form select::placeholder {
     color: #797979;
-    font-family: "Jost", sans-serif;
+    font-family: "Inter", sans-serif;
     font-size: 1.4rem;
 }
 
@@ -4355,7 +4358,7 @@ table .ticket-row:hover {
 }
 
 .about-details {
-    font-family: "League Spartan", sans-serif;
+    font-family: "Inter", sans-serif;
     font-size: 2.6rem;
     line-height: 3rem;
     margin-bottom: 1rem;
@@ -4472,7 +4475,7 @@ table .ticket-row:hover {
     }
 
     .about-feedback .swiper-slide .testimonial-info .testimonial-name {
-        font-family: "League Spartan", sans-serif;
+        font-family: "Inter", sans-serif;
         font-size: 1.8rem;
     }
 }
@@ -4483,7 +4486,7 @@ table .ticket-row:hover {
     padding: 0 0 2rem 0;
     border-radius: 1.2rem;
     background-color: #FFFFFF;
-    font-family: "Jost", sans-serif;
+    font-family: "Inter", sans-serif;
     cursor: pointer;
     box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
     display: flex;
@@ -4529,7 +4532,7 @@ table .ticket-row:hover {
 }
 
 .testimonial-wrapper .testimonial-info .testimonial-name {
-    font-family: "League Spartan", sans-serif;
+    font-family: "Inter", sans-serif;
     font-size: 2.2rem;
 }
 

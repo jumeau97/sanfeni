@@ -13,38 +13,18 @@ import './bootstrap.js';
 // });
 
 
+// Panier du header : fermeture au clic ailleurs.
+// Garde null : ce composant n'est pas rendu sur toutes les pages.
 const headerCart = document.getElementById('header-cart');
-// When the user clicks anywhere outside of the modal, close it
 window.onclick = function (event) {
-    console.log("loren header", event.target);
-    // if (event.target === headerCart) {
+    if (headerCart) {
         headerCart.classList.remove('isVisible');
-    // }
-}
-
-document.addEventListener('DOMContentLoaded', function () {
-    const promoCheckbox = document.getElementById('Product_isPromotion');
-    const promoPriceField = document.getElementById('Product_offPercent');
-
-
-    // Cible le parent du champ pour cacher tout le bloc du formulaire
-    const promoPriceFieldContainer = promoPriceField.closest('.promotion');
-
-    // Fonction de bascule
-    function togglePromoField() {
-        if (promoCheckbox.checked) {
-            promoPriceFieldContainer.style.display = 'block';
-        } else {
-            promoPriceFieldContainer.style.display = 'none';
-        }
     }
+};
 
-    // Appel initial au chargement de la page
-    togglePromoField();
-
-    // Écouteur d'événement sur le changement de la checkbox
-    promoCheckbox.addEventListener('change', togglePromoField);
-});
+// Note : la bascule « promotion » du formulaire produit vit désormais dans
+// le back-office sur mesure (templates/admin/product/_form.html.twig) —
+// EasyAdmin (et ses IDs #Product_isPromotion / #Product_offPercent) a été retiré.
 
 // import '/assets/js/shopus.js';
 /*

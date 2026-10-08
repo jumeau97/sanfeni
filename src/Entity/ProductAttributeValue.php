@@ -22,6 +22,14 @@ class ProductAttributeValue
     private ?string $value = null;
 
     /**
+     * Code couleur (#RRGGBB) pour rendre une pastille visuelle.
+     * Renseigné seulement pour les attributs de type couleur ; pour les
+     * tailles on affiche le texte brut.
+     */
+    #[ORM\Column(length: 20, nullable: true)]
+    private ?string $color = null;
+
+    /**
      * @var Collection<int, ProductVariation>
      */
     #[ORM\ManyToMany(targetEntity: ProductVariation::class, mappedBy: 'attributes')]
@@ -57,6 +65,18 @@ class ProductAttributeValue
     public function setValue(?string $value): static
     {
         $this->value = $value;
+
+        return $this;
+    }
+
+    public function getColor(): ?string
+    {
+        return $this->color;
+    }
+
+    public function setColor(?string $color): static
+    {
+        $this->color = $color;
 
         return $this;
     }

@@ -1,0 +1,25 @@
+{% extends 'base_admin.html.twig' %}
+
+{% block title %}Modifier {{ boutique.name }}{% endblock %}
+{% block page_title %}Modifier la boutique{% endblock %}
+
+{% import 'admin/_macros.html.twig' as ui %}
+
+{% block body %}
+    <div class="admin-card" style="max-width: 860px;">
+        <div class="admin-card-header">
+            <div>
+                <h2 class="admin-card-title">{{ boutique.name }}</h2>
+                <p class="admin-card-sub mb-0">Coordonnées et statut de la boutique.</p>
+            </div>
+            {{ ui.back(path('admin_boutique_show', {id: boutique.id}), 'Retour à la boutique') }}
+        </div>
+
+        {% include 'admin/boutique/_form.html.twig' with {
+            'form': form,
+            'boutique': boutique,
+            'submit_label': 'Enregistrer les modifications',
+            'back_url': path('admin_boutique_show', {id: boutique.id})
+        } %}
+    </div>
+{% endblock %}

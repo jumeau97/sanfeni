@@ -1,0 +1,27 @@
+{% extends 'base_admin.html.twig' %}
+
+{% block title %}Modifier {{ product.name }}{% endblock %}
+{% block page_title %}Modifier le produit{% endblock %}
+
+{% import 'admin/_macros.html.twig' as ui %}
+
+{% block body %}
+    <div class="admin-card" style="max-width: 980px;">
+        <div class="admin-card-header">
+            <div>
+                <h2 class="admin-card-title">{{ product.name }}</h2>
+                <p class="admin-card-sub mb-0">
+                    Dernière visibilité : {{ ui.tag(product.state) }}
+                </p>
+            </div>
+            {{ ui.back(path('admin_product_show', {id: product.id}), 'Retour au produit') }}
+        </div>
+
+        {% include 'admin/product/_form.html.twig' with {
+            'form': form,
+            'product': product,
+            'submit_label': 'Enregistrer les modifications',
+            'back_url': path('admin_product_show', {id: product.id})
+        } %}
+    </div>
+{% endblock %}

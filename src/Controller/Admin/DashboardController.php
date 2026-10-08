@@ -2,70 +2,39 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Boutique;
-use App\Entity\Carrier;
-use App\Entity\Category;
-use App\Entity\Order;
-use App\Entity\Product;
-use App\Entity\ProductAttribute;
-use App\Entity\ProductAttributeValue;
-use App\Entity\User;
-use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminDashboard;
-use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
-use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
-use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
-use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
+use App\Service\Admin\AdminScope;
+use App\Service\Admin\AdminStats;
+use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
+use Symfony\Component\Routing\Attribute\Route;
 
-#[AdminDashboard(routePath: '/admin', routeName: 'admin')]
-class DashboardController extends AbstractDashboardController
+/**
+ * Tableau de bord du back-office sur mesure.
+ *
+ * Les indicateurs sont calculés dans le périmètre de l'utilisateur :
+ * toute la marketplace pour l'admin, sa seule boutique pour le vendeur.
+ */
+#[Route('/admin', name: 'admin_')]
+final class DashboardController extends AbstractAdminController
 {
-
     public function __construct(
-        private ChartBuilderInterface $chartBuilder,
+        AdminScope $scope,
+        EntityManagerInterface $entityManager,
+        PaginatorInterface $paginator,
+        private readonly AdminStats $stats,
     ) {
+        parent::__construct($scope, $entityManager, $paginator);
     }
+
+    #[Route('', name: 'dashboard', methods: ['GET'])]
     public function index(): Response
     {
-//        return parent::index();
+        $this->guard();
 
-        // Option 1. You can make your dashboard redirect to some common page of your backend
-        //
-        // 1.1) If you have enabled the "pretty URLs" feature:
-        // return $this->redirectToRoute('admin_user_index');
-        //
-        // 1.2) Same example but using the "ugly URLs" that were used in previous EasyAdmin versions:
-         $adminUrlGenerator = $this->container->get(AdminUrlGenerator::class);
-         return $this->redirect($adminUrlGenerator->setController(CategoryCrudController::class)->generateUrl());
-
-        // Option 2. You can make your dashboard redirect to different pages depending on the user
-        //
-        // if ('jane' === $this->getUser()->getUsername()) {
-        //     return $this->redirectToRoute('...');
-        // }
-
-        // Option 3. You can render some custom template to display a proper dashboard with widgets, etc.
-        // (tip: it's easier if your template extends from @EasyAdmin/page/content.html.twig)
-        //
-        // return $this->render('some/path/my-dashboard.html.twig');
-    }
-
-    public function configureDashboard(): Dashboard
-    {
-        return Dashboard::new()
-            ->setTitle('Vente En Ligne')->
-            setLocales(['fr']);
-    }
-
-    public function configureMenuItems(): iterable
-    {
-        yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
-        yield MenuItem::linkToCrud('Utilisateur', 'fas fa-list', User::class);
-        yield MenuItem::linkToCrud('Commande', 'fas fa-shopping-cart', Order::class);
-        yield MenuItem::linkToCrud('Categorie', 'fas fa-list', Category::class);
-        yield MenuItem::linkToCrud('Produit', 'fas fa-product-hunt', Product::class);
-        yield MenuItem::linkToCrud('Shop', 'fas fa-shop', Boutique::class);
-        yield MenuItem::linkToCrud('Transporteur', 'fas fa-truck', Carrier::class);
+        return $this->renderAdmin('admin/dashboard/index.html.twig', [
+            'stats' => $this->stats->for($this->scope),
+            'recentOrders' => $this->stats->recentOrders($this->scope),
+        ]);
     }
 }

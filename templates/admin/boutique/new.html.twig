@@ -1,0 +1,27 @@
+{% extends 'base_admin.html.twig' %}
+
+{% block title %}Nouvelle boutique{% endblock %}
+{% block page_title %}Nouvelle boutique{% endblock %}
+
+{% import 'admin/_macros.html.twig' as ui %}
+
+{% block body %}
+    <div class="admin-card" style="max-width: 860px;">
+        <div class="admin-card-header">
+            <div>
+                <h2 class="admin-card-title">Créer une boutique</h2>
+                <p class="admin-card-sub mb-0">
+                    Un compte de gestionnaire sera créé automatiquement avec l'e-mail saisi,
+                    et un mot de passe provisoire lui sera envoyé.
+                </p>
+            </div>
+            {{ ui.back(path('admin_boutique_index')) }}
+        </div>
+
+        {% include 'admin/boutique/_form.html.twig' with {
+            'form': form,
+            'submit_label': 'Créer la boutique',
+            'back_url': path('admin_boutique_index')
+        } %}
+    </div>
+{% endblock %}

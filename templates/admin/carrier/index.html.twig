@@ -1,0 +1,70 @@
+{% extends 'base_admin.html.twig' %}
+
+{% block title %}Transporteurs{% endblock %}
+{% block page_title %}Transporteurs{% endblock %}
+
+{% import 'admin/_macros.html.twig' as ui %}
+
+{% block body %}
+
+    <div class="admin-card">
+        <div class="admin-card-header">
+            <div>
+                <h2 class="admin-card-title">Options de livraison</h2>
+                <p class="admin-card-sub mb-0">
+                    Configuration globale de la marketplace
+                    {% if not admin_scope.isSuperAdmin %} · consultation seule{% endif %}
+                </p>
+            </div>
+            {% if admin_scope.isSuperAdmin %}
+                <a href="{{ path('admin_carrier_new') }}" class="btn btn-admin btn-admin-accent">
+                    <i class="fas fa-plus"></i> Nouveau transporteur
+                </a>
+            {% endif %}
+        </div>
+
+        <div class="admin-table-wrap">
+            <table class="admin-table">
+                <thead>
+                <tr>
+                    <th>Transporteur</th>
+                    <th>Description</th>
+                    <th>Tarif</th>
+                    {% if admin_scope.isSuperAdmin %}<th class="text-end">Actions</th>{% endif %}
+                </tr>
+                </thead>
+                <tbody>
+                {% for carrier in carriers %}
+                    <tr>
+                        <td>
+                            <a class="admin-cell-main" href="{{ path('admin_carrier_show', {id: carrier.id}) }}">
+                                {{ carrier.name }}
+                            </a>
+                        </td>
+                        <td style="max-width: 340px;">
+                            <span class="admin-cell-sub">{{ carrier.description }}</span>
+                        </td>
+                        <td>{{ carrier.price|fcfa }}</td>
+                        {% if admin_scope.isSuperAdmin %}
+                            <td>
+                                <div class="admin-row-actions">
+                                    {{ ui.action(path('admin_carrier_show', {id: carrier.id}), 'fa-eye', 'Voir') }}
+                                    {{ ui.action(path('admin_carrier_edit', {id: carrier.id}), 'fa-pen', 'Modifier') }}
+                                    {{ ui.delete_button(
+                                        path('admin_carrier_delete', {id: carrier.id}),
+                                        'Supprimer',
+                                        'Supprimer le transporteur « ' ~ carrier.name ~ ' » ?'
+                                    ) }}
+                                </div>
+                            </td>
+                        {% endif %}
+                    </tr>
+                {% else %}
+                    {{ ui.empty(admin_scope.isSuperAdmin ? 4 : 3, 'Aucun transporteur', 'Ajoutez une première option de livraison.') }}
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+{% endblock %}

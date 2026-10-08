@@ -1,0 +1,26 @@
+{# ============================================================================
+   Une image de la galerie : aperçu (enregistrée ou fraîchement choisie) +
+   champ de fichier + bouton de retrait.
+   Partagé par la boucle existante ET le prototype (ajout dynamique).
+   ============================================================================ #}
+{% set album = albumForm.vars.data %}
+
+<div class="admin-album-item" data-admin-preview-root>
+    <div class="admin-album-thumb{% if not (album and album.illustration) %} is-empty{% endif %}"
+         data-admin-preview-slot>
+        {% if album and album.illustration %}
+            <img src="{{ asset('images/products/' ~ album.illustration) }}" alt="Image enregistrée">
+        {% else %}
+            <span><i class="fas fa-image"></i></span>
+        {% endif %}
+    </div>
+
+    <div class="admin-album-body">
+        {{ form_row(albumForm) }}
+    </div>
+
+    <button type="button" class="btn btn-admin btn-admin-danger btn-admin-sm"
+            data-admin-remove-album title="Retirer cette image">
+        <i class="fas fa-times"></i>
+    </button>
+</div>

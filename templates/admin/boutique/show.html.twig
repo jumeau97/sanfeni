@@ -1,0 +1,108 @@
+{% extends 'base_admin.html.twig' %}
+
+{% block title %}{{ boutique.name }}{% endblock %}
+{% block page_title %}Fiche boutique{% endblock %}
+
+{% import 'admin/_macros.html.twig' as ui %}
+
+{% block body %}
+
+    <div class="admin-card-header">
+        <div>
+            <h2 class="admin-card-title mb-1" style="font-size:1.1rem;">{{ boutique.name }}</h2>
+            <p class="admin-card-sub mb-0">{{ ui.tag(boutique.state) }}</p>
+        </div>
+        <div class="d-flex gap-2 flex-wrap">
+            {{ ui.back(path('admin_boutique_index'), 'Retour à la liste') }}
+            <a href="{{ path('admin_boutique_edit', {id: boutique.id}) }}" class="btn btn-admin">
+                <i class="fas fa-pen"></i> Modifier
+            </a>
+            {% if admin_scope.isSuperAdmin %}
+                {{ ui.delete_button(
+                    path('admin_boutique_delete', {id: boutique.id}),
+                    'Supprimer',
+                    'Supprimer définitivement la boutique « ' ~ boutique.name ~ ' » ?'
+                ) }}
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="row g-3">
+        <div class="col-lg-6">
+            <div class="admin-card">
+                <h3 class="admin-card-title">Coordonnées</h3>
+                <dl class="admin-meta">
+                    <div>
+                        <dt>Propriétaire</dt>
+                        <dd>{{ boutique.proprietaire ?: '—' }}</dd>
+                    </div>
+                    <div>
+                        <dt>E-mail</dt>
+                        <dd>{{ boutique.email }}</dd>
+                    </div>
+                    <div>
+                        <dt>Téléphone boutique</dt>
+                        <dd>{{ boutique.phoneNumber ?: '—' }}</dd>
+                    </div>
+                    <div>
+                        <dt>Téléphone propriétaire</dt>
+                        <dd>{{ boutique.propPhoneNumber }}</dd>
+                    </div>
+                </dl>
+
+                {% if boutique.description %}
+                    <div class="admin-section-title">Description</div>
+                    <p style="white-space: pre-line; font-size:.87rem; color: var(--adm-muted);">
+                        {{ boutique.description }}
+                    </p>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="admin-card">
+                <h3 class="admin-card-title">Activité</h3>
+                <div class="row g-3">
+                    <div class="col-6">
+                        <div class="admin-kpi">
+                            <span class="admin-kpi-label">Produits</span>
+                            <span class="admin-kpi-value">{{ productCount }}</span>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="admin-kpi">
+                            <span class="admin-kpi-label">Comptes liés</span>
+                            <span class="admin-kpi-value">{{ boutique.users|length }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="admin-section-title">Équipe</div>
+                <div class="d-flex flex-wrap gap-2">
+                    {% for user in boutique.users %}
+                        <a href="{{ path('admin_user_show', {id: user.id}) }}" class="admin-badge-soft"
+                           style="text-decoration:none;">
+                            <i class="fas fa-user me-1"></i>{{ user.email }}
+                        </a>
+                    {% else %}
+                        <span class="admin-cell-sub">Aucun compte rattaché.</span>
+                    {% endfor %}
+                </div>
+
+                <div class="admin-section-title">Raccourcis</div>
+                <div class="d-flex flex-wrap gap-2">
+                    <a class="btn btn-admin btn-admin-light btn-admin-sm"
+                       href="{{ path('admin_product_index', {boutique: boutique.id}) }}">
+                        <i class="fas fa-box-open"></i> Ses produits
+                    </a>
+                    {% if admin_scope.isSuperAdmin %}
+                        <a class="btn btn-admin btn-admin-light btn-admin-sm" href="{{ path('admin_user_new') }}">
+                            <i class="fas fa-user-plus"></i> Ajouter un compte
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

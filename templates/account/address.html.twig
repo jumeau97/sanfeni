@@ -1,130 +1,181 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello AccountController!{% endblock %}
+{% block title %}Mes adresses{% endblock %}
 
 {% block stylesheets %}
+    {% include 'account/_account_styles.html.twig' %}
     <style>
-        :root {
-            --wb-bg-light: #f0e7ff;
+        /* Page /account/address — cartes d'adresses. */
+
+        .account-page .acc-address__top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1.2rem;
+            margin-bottom: 1.8rem;
         }
 
-        /* Cartes d'adresse */
-        .address-card {
-            border-radius: 20px;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        .account-page .acc-address__name {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--acc-title);
+            margin: 0 0 1.6rem;
         }
 
-        .address-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.08) !important;
+        /* Menu « ... » */
+        .account-page .acc-dots {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 3.4rem;
+            height: 3.4rem;
+            border-radius: 50%;
+            background: transparent;
+            color: var(--acc-text);
+            font-size: 1.6rem;
+            transition: background-color .2s ease, color .2s ease;
         }
 
-        /* Badges personnalisés */
-        .bg-purple-light {
-            background-color: var(--wb-bg-light);
+        .account-page .acc-dots:hover,
+        .account-page .acc-dots[aria-expanded="true"] {
+            background: var(--acc-field);
+            color: var(--acc-primary);
         }
 
-        .text-purple {
-            color: var(--wb-purple);
-            font-weight: 600;
+        .account-page .dropdown-menu {
+            border: 1px solid var(--acc-line);
+            border-radius: 1rem;
+            padding: 0.6rem;
+            box-shadow: 0 10px 24px rgba(8, 44, 106, 0.08);
         }
 
-        /* Bouton Ajouter personnalisé */
-        .btn-wb-outline {
-            border: 2px solid var(--wb-purple);
-            color: var(--wb-purple);
-            border-radius: 12px;
-            padding: 10px 20px;
-            font-weight: 600;
-            transition: all 0.3s ease;
+        .account-page .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 1.4rem;
+            font-weight: 500;
+            color: var(--acc-title);
+            padding: 1rem 1.2rem;
+            border-radius: 0.6rem;
         }
 
-        .btn-wb-outline:hover {
-            background-color: var(--wb-purple);
-            color: white;
+        .account-page .dropdown-item:hover {
+            background: var(--acc-field);
+            color: var(--acc-primary);
         }
 
-        /* Détails d'adresse */
-        .address-details span {
-            font-size: 1.2rem;
+        .account-page .dropdown-item i {
+            width: 1.6rem;
+            font-size: 1.3rem;
+            text-align: center;
         }
 
-        /* Suppression des points de liste dropdown */
-        .dropdown-item {
-            font-size: 1.2rem;
-            padding: 8px 16px;
+        .account-page .dropdown-item--danger,
+        .account-page .dropdown-item--danger:hover {
+            color: #C0392B;
         }
 
-        .dropdown-item i {
-            font-size: 1rem;
+        .account-page .dropdown-item--danger:hover {
+            background: #FDEDEC;
+        }
+
+        /* Clé / valeur */
+        .account-page .acc-kv {
+            display: flex;
+            gap: 1.2rem;
+            font-size: 1.4rem;
+            line-height: 1.5;
+            padding: 0.7rem 0;
+        }
+
+        .account-page .acc-kv + .acc-kv {
+            border-top: 1px solid var(--acc-line);
+            padding-top: 1.4rem;
+        }
+
+        .account-page .acc-kv__k {
+            flex: 0 0 7rem;
+            color: var(--acc-text);
+        }
+
+        .account-page .acc-kv__v {
+            color: var(--acc-title);
+            font-weight: 500;
+            word-break: break-word;
         }
     </style>
 {% endblock %}
 
 {% block body %}
-
-    <!---------------user-profile-section---------------->
-    <section class="user-profile py-5">
+    <section class="user-profile account-page">
         <div class="container">
-            <div class="d-flex justify-content-between align-items-center mb-4">
+
+            <header class="account-head">
                 <div>
-                    <h2 class="fw-bold mb-1">Mes adresses</h2>
-                    <a href="{{ path('app_account') }}" class="text-muted text-decoration-none">
-                        <i class="bi bi-arrow-left me-1"></i> Retourner à mon compte
+                    <h1>Mes adresses</h1>
+                    <a href="{{ path('app_account') }}" class="account-back">
+                        <i class="fas fa-arrow-left"></i> Retourner à mon compte
                     </a>
                 </div>
-                <a href="{{ path('account_add_address') }}" class="btn btn-wb-outline">
-                    <i class="bi bi-plus-lg me-1"></i> Ajouter une adresse
+                <a href="{{ path('account_add_address') }}" class="acc-btn acc-btn--outline">
+                    <i class="fas fa-plus"></i> Ajouter une adresse
                 </a>
-            </div>
+            </header>
 
-            <div class="row g-4">
+            <div class="acc-grid">
                 {% for address in addresses %}
-                    <div class="col-md-6 col-lg-4">
-                        <div class="card address-card h-100 border-0 shadow-sm">
-                            <div class="card-body p-4">
-                                <div class="d-flex justify-content-between align-items-start mb-3">
-                                <span class="badge bg-purple-light text-purple px-3 py-2">
-                                    <i class="bi bi-geo-alt-fill me-1"></i> Adresse {{ loop.index }}
-                                </span>
-                                    <div class="dropdown">
-                                        <button class="btn btn-link text-muted p-0" data-bs-toggle="dropdown">
-                                            <i class="bi bi-three-dots-vertical fs-5"></i>
-                                        </button>
-                                        <ul class="dropdown-menu dropdown-menu-end border-0 shadow-sm">
-                                            <li><a class="dropdown-item" href="#"><i class="bi bi-pencil me-2"></i>Modifier</a></li>
-                                            <li><a class="dropdown-item text-danger" href="#"><i class="bi bi-trash me-2"></i>Supprimer</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-
-                                <h5 class="fw-bold mb-3">{{ address.name|default('Maison') }}</h5>
-
-                                <div class="address-details">
-                                    <div class="d-flex mb-2">
-                                        <span class="text-muted small w-25">Rue :</span>
-                                        <span class="small fw-medium w-75">{{ address.address }}</span>
-                                    </div>
-                                    <div class="d-flex mb-2">
-                                        <span class="text-muted small w-25">Ville :</span>
-                                        <span class="small fw-medium w-75">{{ address.city }} ({{ address.country }})</span>
-                                    </div>
-                                    <div class="d-flex mb-0">
-                                        <span class="text-muted small w-25">Tel :</span>
-                                        <span class="small fw-medium w-75">{{ address.phone }}</span>
-                                    </div>
-                                </div>
+                    <article class="acc-card acc-address">
+                        <div class="acc-address__top">
+                            <span class="acc-badge">
+                                <i class="fas fa-map-marker-alt"></i> Adresse {{ loop.index }}
+                            </span>
+                            <div class="dropdown">
+                                <button class="acc-dots" type="button" data-bs-toggle="dropdown" aria-label="Options de l'adresse">
+                                    <i class="fas fa-ellipsis-v"></i>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li>
+                                        <a class="dropdown-item" href="{{ path('account_edit_address', {'id': address.id}) }}">
+                                            <i class="fas fa-pencil-alt"></i> Modifier
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item dropdown-item--danger" href="#">
+                                            <i class="fas fa-trash-alt"></i> Supprimer
+                                        </a>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
-                    </div>
+
+                        <h2 class="acc-address__name">{{ address.name|default('Maison') }}</h2>
+
+                        <div class="acc-kv">
+                            <span class="acc-kv__k">Rue</span>
+                            <span class="acc-kv__v">{{ address.address }}</span>
+                        </div>
+                        <div class="acc-kv">
+                            <span class="acc-kv__k">Ville</span>
+                            <span class="acc-kv__v">{{ address.city }} ({{ address.country }})</span>
+                        </div>
+                        <div class="acc-kv">
+                            <span class="acc-kv__k">Tel</span>
+                            <span class="acc-kv__v">{{ address.phone }}</span>
+                        </div>
+                    </article>
                 {% else %}
-                    <div class="col-12 text-center py-5">
-                        <i class="bi bi-map text-muted display-1"></i>
-                        <p class="mt-3 text-muted">Vous n'avez pas encore enregistré d'adresse.</p>
+                    <div class="acc-empty">
+                        <i class="fas fa-map"></i>
+                        <p>Vous n'avez pas encore enregistré d'adresse.</p>
+                        <a href="{{ path('account_add_address') }}" class="acc-btn acc-btn--primary">
+                            <i class="fas fa-plus"></i> Ajouter une adresse
+                        </a>
                     </div>
                 {% endfor %}
             </div>
+
         </div>
     </section>
-    <!--------------- user-profile-section-end --------------->
 {% endblock %}

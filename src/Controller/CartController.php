@@ -24,86 +24,49 @@ final class CartController extends AbstractController
     public function add(Cart $cart, $id, Request $request): Response
     {
         $cart->add($id);
-        $cartConplete = [];
-        if ($cart->get()) {
-            foreach ($cart->get() as $id => $quantity) {
-                $cartConplete[] = [
-                    'product' => $this -> entityManager->getrepository(Product::class)->findOneById($id),
-                    'quantity' => $quantity,
-                ];
-            }
-        }
-        return $this->render('cart/index.html.twig', [
-            'cart' =>$cartConplete
-        ]);
+
+        return $this->renderCart($cart);
     }
 
     #[Route('panier/remove', name: 'remove_my_cart')]
     public function remove(Cart $cart): Response
     {
         $cart->remove();
-        return $this->redirectToRoute('products');
 
+        return $this->redirectToRoute('cart');
     }
 
     #[Route('/panier/delete/{id}', name: 'delete_to_cart')]
     public function delete(Cart $cart, $id): Response
     {
-        $cart ->delete($id);
-        $cartConplete = [];
-        if ($cart->get()) {
-            foreach ($cart->get() as $id => $quantity) {
-                $cartConplete[] = [
-                    'product' => $this -> entityManager->getrepository(Product::class)->findOneById($id),
-                    'quantity' => $quantity,
-                ];
-            }
-        }
-//        return $this->redirectToRoute('cart');
-        return $this->render('cart/index.html.twig', [
-            'cart' =>$cartConplete
-        ]);
+        $cart->delete($id);
+
+        return $this->renderCart($cart);
     }
 
     #[Route('/panier/decrease/{id}', name: 'decrease_to_cart')]
     public function decrease(Cart $cart, $id): Response
     {
-        $cart ->decrease($id);
-        $cartConplete = [];
-        if ($cart->get()) {
-            foreach ($cart->get() as $id => $quantity) {
-                $cartConplete[] = [
-                    'product' => $this -> entityManager->getrepository(Product::class)->findOneById($id),
-                    'quantity' => $quantity,
-                ];
-            }
-        }
-//        return $this->redirectToRoute('cart');
-        return $this->render('cart/index.html.twig', [
-            'cart' =>$cartConplete
-        ]);
+        $cart->decrease($id);
+
+        return $this->renderCart($cart);
     }
 
     #[Route('/mon-panier', name: 'cart')]
     public function index(Cart $cart): Response
     {
-//        $cartConplete = [];
-//        if ($cart->get()) {
-//            foreach ($cart->get() as $id => $quantity) {
-//                $cartConplete[] = [
-//                    'product' => $this -> entityManager->getrepository(Product::class)->findOneById($id),
-//                    'quantity' => $quantity,
-//                ];
-//            }
-//        }
+        return $this->renderCart($cart);
+    }
 
-
-
-        $cartConplete = $cart->getFull();
-//        dd($cartConplete);
-
+    /**
+     * Les quatre routes ci-dessus rendent toutes la même page : on centralise
+     * la reconstruction du panier complet (le service purge lui-même les
+     * produits disparus, ce que ne faisait pas la boucle dupliquée).
+     */
+    private function renderCart(Cart $cart): Response
+    {
         return $this->render('cart/index.html.twig', [
-            'cart' =>$cartConplete
+            'cart' => $cart->getFull(),
         ]);
     }
 }

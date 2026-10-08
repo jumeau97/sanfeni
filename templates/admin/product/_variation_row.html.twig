@@ -1,0 +1,40 @@
+{# ============================================================================
+   Une ligne de déclinaison (produit variable) :
+   combinaison d'attributs + création rapide d'une valeur + prix + stock.
+   Partagé par la boucle existante ET le prototype (ajout dynamique).
+   ============================================================================ #}
+<div class="admin-variation-item" data-admin-variation-item>
+    <div class="admin-variation-head">
+        <span class="admin-variation-label">
+            <i class="fas fa-layer-group"></i> Déclinaison
+        </span>
+        <button type="button" class="btn btn-admin btn-admin-danger btn-admin-sm"
+                data-admin-remove-variation title="Retirer cette déclinaison">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+
+    <div class="admin-variation-grid">
+        <div>
+            {{ form_row(variationForm.attributes) }}
+        </div>
+        <div>
+            {{ form_row(variationForm.price) }}
+        </div>
+        <div>
+            {{ form_row(variationForm.stock) }}
+        </div>
+    </div>
+
+    <div class="admin-variation-new">
+        <div>
+            {{ form_row(variationForm.newAttribute) }}
+        </div>
+        <div>
+            {{ form_row(variationForm.newValue) }}
+        </div>
+        <div>
+            {{ form_row(variationForm.newColor) }}
+        </div>
+    </div>
+</div>

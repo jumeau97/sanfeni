@@ -1,290 +1,598 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello CartController!{% endblock %}
+{% block title %}Mon panier{% endblock %}
 
 {% block stylesheets %}
     <style>
-        /*!* Élévation du conteneur principal *!*/
-        /*.elevated-card {*/
-        /*    background: #fff;*/
-        /*    border-radius: 20px;*/
-        /*    padding: 30px;*/
-        /*    box-shadow: 0 10px 40px rgba(0,0,0,0.06);*/
-        /*    position: relative;*/
-        /*    z-index: 10;*/
-        /*}*/
+        /* ============================================================
+           PAGE PANIER — langage visuel identique à l'accueil
+           (.wb-home / .wb-details) : bleu nuit, cartes blanches,
+           séparation par l'espace plutôt que par des bordures épaisses.
 
-        /* Style du message vide */
-        .empty-cart-full-page {
+           ⚠️ CONVENTION DE TAILLE : public/css/style.css déclare
+           `html { font-size: 10px; }` → 1rem = 10px (et non 16px).
+           ============================================================ */
+        .wb-cart {
+            --wb-navy: #082C6A;
+            --wb-navy-soft: #0a3c8a;
+            --wb-orange: #FFA500;
+            --wb-red: #ff3b30;
+            --wb-ink: #1b1d21;
+            --wb-muted: #767b83;
+            --wb-line: #e8eaee;
+            --wb-surface: #ffffff;
+            --wb-soft: #f6f7f9;
+            --wb-radius: 14px;
+
+            font-size: 1.5rem;
+            color: var(--wb-ink);
+
+            max-width: 1440px;
+            margin-inline: auto;
+            padding-inline: clamp(14px, 3vw, 40px);
+            padding-block: 26px clamp(40px, 6vw, 72px);
+        }
+
+        /* ------------------------------------------------------
+           En-tête de page — filet de marque comme sur l'accueil
+           ------------------------------------------------------ */
+        .wb-cart-head {
             display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            /*padding: 60px 20px;*/
+            align-items: baseline;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px 20px;
+            margin-bottom: 22px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid var(--wb-line);
+        }
+
+        .wb-cart-head h1 {
+            position: relative;
+            margin: 0;
+            padding-top: 13px;
+            font-size: clamp(2rem, 2.5vw, 2.3rem);
+            font-weight: 800;
+            letter-spacing: -.02em;
+            line-height: 1.25;
+            color: var(--wb-ink);
+        }
+
+        .wb-cart-head h1::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 38px;
+            height: 4px;
+            border-radius: 3px;
+            background: var(--wb-navy);
+        }
+
+        /* ------------------------------------------------------
+           Disposition : liste à gauche, récapitulatif à droite
+           (une seule colonne sous 992px)
+           ------------------------------------------------------ */
+        .wb-cart-grid {
+            display: grid;
+            gap: 24px;
+            align-items: start;
+        }
+
+        @media (min-width: 992px) {
+            .wb-cart-grid {
+                grid-template-columns: minmax(0, 1fr) 34rem;
+            }
+        }
+
+        .wb-cart-panel {
+            background: var(--wb-surface);
+            border: 1px solid var(--wb-line);
+            border-radius: var(--wb-radius);
+            overflow: hidden;
+        }
+
+        /* ------------------------------------------------------
+           Tableau des articles
+           ------------------------------------------------------ */
+        .wb-cart-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .wb-cart-table thead th {
+            padding: 13px 18px;
+            background: var(--wb-soft);
+            border-bottom: 1px solid var(--wb-line);
+            font-size: 1.2rem;
+            font-weight: 700;
+            letter-spacing: .07em;
+            text-transform: uppercase;
+            color: var(--wb-muted);
+            text-align: left;
+        }
+
+        .wb-cart-table tbody tr:not(:first-child) {
+            border-top: 1px solid var(--wb-line);
+        }
+
+        /* Ciblage plus spécifique que `.wb-cart-table thead th`
+           (0,1,2) sinon l'alignement hérité de la règle générale gagne. */
+        .wb-cart-table thead .wb-cart-th--qty {
             text-align: center;
         }
 
-        .circle-bg {
-            width: 90px;
-            height: 90px;
-            background: #082C6A;
+        .wb-cart-table thead .wb-cart-th--total {
+            text-align: right;
+        }
+
+        .wb-cart-cell {
+            padding: 16px 18px;
+            vertical-align: middle;
+        }
+
+        .wb-cart-cell--qty {
+            text-align: center;
+        }
+
+        .wb-cart-cell--total {
+            text-align: right;
+        }
+
+        /* ---------- Article ---------- */
+        .wb-cart-product {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            min-width: 0;
+        }
+
+        .wb-cart-img {
+            flex: 0 0 auto;
+            width: 74px;
+            height: 74px;
+            border-radius: 10px;
+            border: 1px solid var(--wb-line);
+            background: var(--wb-soft);
+            object-fit: cover;
+        }
+
+        /* Repli quand le produit n'a pas d'illustration */
+        .wb-cart-img--empty {
+            display: grid;
+            place-items: center;
+            color: #c3c8d0;
+            font-size: 2rem;
+        }
+
+        .wb-cart-product-info {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 4px;
+            min-width: 0;
+        }
+
+        .wb-cart-name {
+            font-size: 1.5rem;
+            font-weight: 650;
+            line-height: 1.35;
+            color: var(--wb-ink);
+            text-decoration: none;
+            overflow-wrap: anywhere;
+            transition: color .16s ease;
+        }
+
+        .wb-cart-name:hover {
+            color: var(--wb-navy);
+        }
+
+        .wb-cart-unit {
+            font-size: 1.35rem;
+            color: var(--wb-muted);
+        }
+
+        .wb-cart-unit-old {
+            margin-inline-end: 6px;
+            color: #a8adb5;
+            text-decoration: line-through;
+        }
+
+        .wb-cart-remove {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 0;
+            border: 0;
+            background: none;
+            font-size: 1.3rem;
+            font-weight: 650;
+            color: var(--wb-muted);
+            cursor: pointer;
+            transition: color .16s ease;
+        }
+
+        .wb-cart-remove:hover {
+            color: var(--wb-red);
+        }
+
+        /* ---------- Sélecteur de quantité ---------- */
+        .wb-cart-qty {
+            display: inline-flex;
+            align-items: center;
+            border: 1px solid var(--wb-line);
+            border-radius: 999px;
+            background: var(--wb-surface);
+        }
+
+        .wb-cart-qty-btn {
+            width: 36px;
+            height: 36px;
+            border: 0;
             border-radius: 50%;
+            background: none;
+            font-size: 1.7rem;
+            line-height: 1;
+            color: var(--wb-ink);
+            cursor: pointer;
+            transition: background-color .16s ease, color .16s ease;
+        }
+
+        .wb-cart-qty-btn:hover:not(:disabled) {
+            background: var(--wb-navy);
+            color: #fff;
+        }
+
+        .wb-cart-qty-btn:disabled {
+            opacity: .28;
+            cursor: not-allowed;
+        }
+
+        .wb-cart-qty-value {
+            min-width: 34px;
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 750;
+        }
+
+        .wb-cart-line-total {
+            font-size: 1.8rem;
+            font-weight: 800;
+            letter-spacing: -.01em;
+            color: var(--wb-ink);
+            white-space: nowrap;
+        }
+
+        /* ------------------------------------------------------
+           Récapitulatif
+           ------------------------------------------------------ */
+        .wb-cart-summary {
+            padding: 20px;
+            background: var(--wb-surface);
+            border: 1px solid var(--wb-line);
+            border-radius: var(--wb-radius);
+        }
+
+        @media (min-width: 992px) {
+            .wb-cart-summary {
+                position: sticky;
+                top: 20px;
+            }
+        }
+
+        .wb-cart-summary-title {
+            margin: 0 0 14px;
+            font-size: 1.6rem;
+            font-weight: 800;
+            letter-spacing: -.01em;
+            color: var(--wb-ink);
+        }
+
+        .wb-cart-summary-rows {
+            margin: 0 0 14px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid var(--wb-line);
+        }
+
+        .wb-cart-summary-row {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 5px 0;
+            font-size: 1.45rem;
+        }
+
+        .wb-cart-summary-row dt {
+            margin: 0;
+            color: var(--wb-muted);
+        }
+
+        .wb-cart-summary-row dd {
+            margin: 0;
+            font-weight: 700;
+            text-align: right;
+            color: var(--wb-ink);
+        }
+
+        .wb-cart-summary-row--hint dd {
+            font-size: 1.3rem;
+            font-weight: 500;
+            color: var(--wb-muted);
+        }
+
+        .wb-cart-summary-total {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .wb-cart-summary-total span {
+            font-size: 1.6rem;
+            font-weight: 750;
+            color: var(--wb-ink);
+        }
+
+        .wb-cart-summary-total strong {
+            font-size: 2.2rem;
+            font-weight: 800;
+            letter-spacing: -.02em;
+            color: var(--wb-navy);
+        }
+
+        .wb-cart-cta {
             display: flex;
             align-items: center;
             justify-content: center;
+            gap: 10px;
+            padding: 14px 18px;
+            border-radius: 12px;
+            background: var(--wb-navy);
+            color: #fff;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: background-color .16s ease, transform .16s ease,
+                        box-shadow .16s ease;
+        }
+
+        .wb-cart-cta:hover {
+            background: var(--wb-navy-soft);
+            color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 22px rgba(8, 44, 106, .18);
+        }
+
+        .wb-cart-continue {
+            display: block;
+            margin-top: 12px;
+            font-size: 1.45rem;
+            font-weight: 650;
+            color: var(--wb-navy);
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .wb-cart-continue:hover {
+            text-decoration: underline;
+            text-underline-offset: 3px;
+        }
+
+        /* ------------------------------------------------------
+           État vide
+           ------------------------------------------------------ */
+        .wb-cart-empty {
+            padding: 56px 20px;
+            background: var(--wb-surface);
+            border: 1px dashed var(--wb-line);
+            border-radius: var(--wb-radius);
+            text-align: center;
+        }
+
+        .wb-cart-empty-icon {
+            display: grid;
+            place-items: center;
+            width: 84px;
+            height: 84px;
+            margin: 0 auto 18px;
+            border-radius: 50%;
+            background: var(--wb-navy);
             color: #fff;
             font-size: 3rem;
-            margin-bottom: 20px;
         }
 
-        /* Style du bouton Commander (Large et Impactant) */
-        .shop-btn-lg {
-            background: #082C6A;
-            color: white;
-            padding: 15px 40px;
-            border-radius: 12px;
-            text-decoration: none;
-            font-weight: 700;
-            display: inline-block;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(47, 69, 138, 0.3);
+        .wb-cart-empty h2 {
+            margin: 0 0 8px;
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--wb-ink);
         }
 
-        .shop-btn-lg:hover {
-            background: #082C6A;
-            transform: translateY(-2px);
-            color: white;
+        .wb-cart-empty p {
+            margin: 0 0 22px;
+            font-size: 1.5rem;
+            color: var(--wb-muted);
         }
 
-        .shop-btn-primary {
-            background: #242424;
-            color: white;
-            text-decoration: none;
-            font-weight: 600;
-            transition: 0.3s;
+        .wb-cart-empty .wb-cart-cta {
+            display: inline-flex;
         }
 
-        .shop-btn-primary:hover {
-            background: #082C6A;
-            color: white;
+        /* ------------------------------------------------------
+           Barre d'action fixe en bas de l'écran
+           ------------------------------------------------------
+           Rendue par CartComponent.html.twig. Elle n'existe que pour
+           le mobile : sur desktop, le récapitulatif (sticky) porte
+           déjà le total + le CTA, donc la barre est masquée.
+           Sélecteur .wb-cart-scopé pour bien signifier qu'il s'agit
+           ici d'un élément DÉDIÉ, contrairement aux autres pages
+           vitrine où .wb-actionbar désigne le CTA existant.
+           ------------------------------------------------------ */
+        .wb-cart .wb-actionbar {
+            display: none;
+        }
+
+        @media (max-width: 991px) {
+            .wb-cart .wb-actionbar {
+                position: fixed;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                z-index: 1000;
+                display: flex;
+                align-items: center;
+                gap: 14px;
+                padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
+                background: var(--wb-surface);
+                border-top: 1px solid var(--wb-line);
+                box-shadow: 0 -8px 24px rgba(8, 44, 106, .12);
+            }
+
+            .wb-cart .wb-actionbar__total {
+                display: flex;
+                flex-direction: column;
+                flex: 0 1 auto;
+                min-width: 0;
+                line-height: 1.15;
+            }
+
+            .wb-cart .wb-actionbar__label {
+                font-size: 1.15rem;
+                font-weight: 600;
+                color: var(--wb-muted);
+            }
+
+            .wb-cart .wb-actionbar__value {
+                font-size: 1.9rem;
+                font-weight: 800;
+                letter-spacing: -.02em;
+                color: var(--wb-navy);
+                /* Sécurité sur écran étroit (320px) : le montant passe
+                   plutôt en ellipsis que de faire déborder la barre. */
+                display: block;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+
+            .wb-cart .wb-actionbar__btn {
+                flex: 1 1 auto;
+                min-width: 0;
+                overflow: hidden;
+                white-space: nowrap;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+                padding: 14px 16px;
+                border-radius: 12px;
+                background: var(--wb-navy);
+                color: #fff;
+                font-size: 1.5rem;
+                font-weight: 700;
+                text-decoration: none;
+            }
+
+            .wb-cart .wb-actionbar__btn:active {
+                background: var(--wb-navy-soft);
+            }
+
+            /* La barre porte déjà le CTA : on n'affiche pas deux fois
+               le même bouton dans le récapitulatif. L'état vide garde
+               le sien (.wb-cart-empty), lui n'a pas de barre. */
+            .wb-cart-summary .wb-cart-cta {
+                display: none;
+            }
+
+            /* Le bouton WhatsApp (base.html.twig, fixe en bas à droite)
+               remonte au-dessus de la barre au lieu d'être masqué.
+
+               `html body` n'est pas décoratif : le bloc
+               « stylesheets » de base.html.twig est rendu AVANT
+               tous les <style> de la page de base, donc la règle
+               `.whatsapp-sticky-btn { bottom: 20px }` de base arrive
+               plus tard dans le document. À spécificité égale elle
+               l'emporterait et le bouton resterait au sol, sous la
+               barre fixe. html body porte la spécificité à (0,1,2) et
+               l'emporte donc quel que soit l'ordre. */
+            html body .whatsapp-sticky-btn {
+                bottom: calc(84px + env(safe-area-inset-bottom));
+            }
+        }
+
+        /* ------------------------------------------------------
+           Mobile : le tableau devient une fiche par article
+           ------------------------------------------------------ */
+        @media (max-width: 767px) {
+            .wb-cart-table thead {
+                display: none;
+            }
+
+            .wb-cart-table,
+            .wb-cart-table tbody {
+                display: block;
+            }
+
+            .wb-cart-table tbody tr {
+                display: grid;
+                grid-template-columns: auto minmax(0, 1fr);
+                gap: 14px;
+                padding: 16px;
+            }
+
+            .wb-cart-table tbody tr:not(:first-child) {
+                border-top: 1px solid var(--wb-line);
+            }
+
+            .wb-cart-table td {
+                display: block;
+                padding: 0;
+            }
+
+            .wb-cart-cell--product {
+                grid-column: 1 / -1;
+            }
+
+            .wb-cart-cell--qty {
+                text-align: left;
+            }
+
+            .wb-cart-cell--total {
+                align-self: end;
+                text-align: right;
+            }
+
+            .wb-cart-cell--qty::before,
+            .wb-cart-cell--total::before {
+                content: attr(data-label);
+                display: block;
+                margin-bottom: 6px;
+                font-size: 1.15rem;
+                font-weight: 700;
+                letter-spacing: .07em;
+                text-transform: uppercase;
+                color: var(--wb-muted);
+            }
+
+            .wb-cart-img {
+                width: 64px;
+                height: 64px;
+            }
         }
     </style>
 {% endblock %}
 
 {% block body %}
-    <!--------------- blog-tittle-section---------------->
-    {#    <section class="blog about-blog"> #}
-    {#        <div class="container"> #}
-    {#            <div class="blog-bradcrum"> #}
-    {#                <span><a href="index.html">Accueil</a></span> #}
-    {#                <span class="devider">/</span> #}
-    {#                <span><a href="#">Panier</a></span> #}
-    {#            </div> #}
-    {#            <div class="blog-heading about-heading"> #}
-    {#                <h1 class="heading">Mon Panier</h1> #}
-    {#            </div> #}
-    {#        </div> #}
-    {#    </section> #}
+    <div class="wb-cart">
+        <header class="wb-cart-head">
+            <h1>Mon panier</h1>
+        </header>
 
-    <!--------------- blog-tittle-section-end---------------->
-    <div class="row d-flex justify-content-center">
-        {#        <div class="col-md-10"> #}
-        <div class="col-md-10">
-            <!--------------- cart-section---------------->
-            <section class="product-cart product footer-padding">
-                <div class="container">
-                    {# templates/cart/index.html.twig #}
-
-                    <section class="product-cart product footer-padding">
-                        <div class="container">
-
-                            {# Inclure le composant parent, en lui passant les données initiales #}
-                            {{ component('CartComponent', {
-                                cartItems: cart
-                            }) }}
-
-                        </div>
-                    </section>
-
-                    {#                    <div class="cart-section"> #}
-                    {#                        {{ component('RamdomNumber') }} #}
-                    {#                        <table> #}
-                    {#                            <tbody> #}
-                    {#                            <tr class="table-row table-top-row"> #}
-                    {#                                <td class="table-wrapper wrapper-product"> #}
-                    {#                                    <h5 class="table-heading">PRODUIT</h5> #}
-                    {#                                </td> #}
-                    {#                                <td class="table-wrapper"> #}
-                    {#                                    <div class="table-wrapper-center"> #}
-                    {#                                        <h5 class="table-heading">PRIX</h5> #}
-                    {#                                    </div> #}
-                    {#                                </td> #}
-                    {#                                <td class="table-wrapper"> #}
-                    {#                                    <div class="table-wrapper-center"> #}
-                    {#                                        <h5 class="table-heading">QUANTITÉ</h5> #}
-                    {#                                    </div> #}
-                    {#                                </td> #}
-                    {#                                <td class="table-wrapper wrapper-total"> #}
-                    {#                                    <div class="table-wrapper-center"> #}
-                    {#                                        <h5 class="table-heading">TOTAL</h5> #}
-                    {#                                    </div> #}
-                    {#                                </td> #}
-                    {#                                <td class="table-wrapper"> #}
-                    {#                                    <div class="table-wrapper-center"> #}
-                    {#                                        <h5 class="table-heading">ACTION</h5> #}
-                    {#                                    </div> #}
-                    {#                                </td> #}
-                    {#                            </tr> #}
-                    {#                            <turbo-frame id="cart-content"> #}
-                    {#                                {% set total = null %} #}
-                    {#                                {% for cart in cart %} #}
-                    {#                                    <tr class="table-row ticket-row"> #}
-                    {#                                        <td class="table-wrapper wrapper-product"> #}
-                    {#                                            <div class="wrapper"> #}
-                    {#                                                <div class="wrapper-img"> #}
-                    {#                                                    <img #}
-                    {#                                                        src="{{ asset('images/products/')~ cart.product.illustration }}" #}
-                    {#                                                        alt="img"> #}
-                    {#                                                </div> #}
-                    {#                                                <div class="wrapper-content"> #}
-                    {#                                                    <h5 class="heading">{{ cart.product.name }}</h5> #}
-                    {#                                                </div> #}
-                    {#                                            </div> #}
-                    {#                                        </td> #}
-                    {#                                        <td class="table-wrapper"> #}
-                    {#                                            <div class="table-wrapper-center"> #}
-                    {#                                                <div class="price"> #}
-                    {#                                                    {% if cart.product.isPromotion %} #}
-                    {#                                                        <span #}
-                    {#                                                            class="price-cut">{{ (cart.product.price/100)|format_currency('XOF') }}</span> #}
-                    {#                                                        <span #}
-                    {#                                                            class="new-price">{{ ((cart.product.price/100) * (1 - (cart.product.offPercent / 100))) | format_currency('XOF') }}</span> #}
-                    {#                                                    {% else %} #}
-                    {#                                                        <span #}
-                    {#                                                            class="new-price">{{ (cart.product.price/100)|format_currency('XOF') }}</span> #}
-                    {#                                                    {% endif %} #}
-                    {#                                                </div> #}
-                    {#                                            </div> #}
-                    {#                                        </td> #}
-                    {#                                        <td class="table-wrapper"> #}
-                    {#                                            <div class="table-wrapper-center"> #}
-                    {#                                                <div class="quantity"> #}
-                    {#                                                    <a class="btn btn-primary" #}
-                    {#                                                       href="{{ path('decrease_to_cart', {'id':cart.product.id}) }}" #}
-                    {#                                                       data-turbo-frame="cart-content"> #}
-                    {#                                                        <span class="minus">-</span> #}
-                    {#                                                    </a> #}
-                    {#                                                    <span class="number">{{ cart.quantity }}</span> #}
-                    {#                                                    <a href="{{ path('add_to_cart', {'id':cart.product.id}) }}" #}
-                    {#                                                       class="btn btn-primary" #}
-                    {#                                                       data-turbo-frame="cart-content"> #}
-                    {#                                                        <span class="plus">+</span> #}
-                    {#                                                    </a> #}
-                    {#                                                </div> #}
-                    {#                                            </div> #}
-                    {#                                        </td> #}
-                    {#                                        <td class="table-wrapper wrapper-total"> #}
-                    {#                                            <div class="table-wrapper-center"> #}
-                    {#                                                <h5 class="heading"> #}
-                    {#                                                    {% if cart.product.isPromotion %} #}
-                    {#                                                        {{ ((cart.product.price/100) * (1 - (cart.product.offPercent / 100)))*cart.quantity }} #}
-                    {#                                                    {% else %} #}
-                    {#                                                        {{ (cart.product.price/100)*cart.quantity }} #}
-                    {#                                                    {% endif %} #}
-                    {#                                                </h5> #}
-                    {#                                            </div> #}
-                    {#                                        </td> #}
-                    {#                                        <td class="table-wrapper"> #}
-                    {#                                            <div class="table-wrapper-center"> #}
-                    {#                                                <a href="{{ path('delete_to_cart', {'id':cart.product.id}) }}" #}
-                    {#                                                   class="btn btn-dark"> <span>x</span></a> #}
-                    {#                                            </div> #}
-                    {#                                        </td> #}
-                    {#                                    </tr> #}
-                    {#                                    {% set total = total + (cart.product.price * cart.quantity) %} #}
-                    {#                                {% endfor %} #}
-                    {#                            </turbo-frame> #}
-
-                    {#                            </tbody> #}
-                    {#                        </table> #}
-                    {#                    </div> #}
-                    {#                    <div class="wishlist-btn cart-btn"> #}
-                    {#                        <a href="{{ path('app_order') }}" class="shop-btn">Passer à la caisse</a> #}
-                    {#                    </div> #}
-
-                </div>
-            </section>
-            <!--------------- cart-section-end---------------->
-        </div>
-        {#            <div class="col-md-3"> #}
-        {#                <div class="checkout-wrapper"> #}
-        {#                    <div class="account-section billing-section"> #}
-        {#                        <h5 class="wrapper-heading">Récapitulatif de la commande</h5> #}
-        {#                        <div class="order-summery"> #}
-        {#                            <div class="subtotal product-total"> #}
-        {#                                <h5 class="wrapper-heading">SOUS TOTAL</h5> #}
-        {#                                <h5 class="wrapper-heading">{{ (total/100) | number_format('0', ',', '.') }} #}
-        {#                                    F.cfa</h5> #}
-        {#                            </div> #}
-        {#                            <div class="subtotal product-total"> #}
-        {#                                <ul class="product-list"> #}
-        {#                                    <li> #}
-        {#                                        <div class="product-info"> #}
-        {#                                            <p class="paragraph">Livraison</p> #}
-        {#                                            #}{#                                        <h5 class="wrapper-heading">Free Shipping</h5> #}
-
-        {#                                        </div> #}
-        {#                                        <div class="price"> #}
-        {#                                            <h5 class="wrapper-heading">0 F.cfa</h5> #}
-        {#                                        </div> #}
-        {#                                    </li> #}
-        {#                                </ul> #}
-        {#                            </div> #}
-        {#                            <hr> #}
-        {#                            <div class="subtotal total"> #}
-        {#                                <h5 class="wrapper-heading">TOTAL</h5> #}
-        {#                                <h5 class="wrapper-heading price">{{ (total/100) | number_format('0', ',', '.') }} #}
-        {#                                    F.cfa</h5> #}
-        {#                            </div> #}
-        {#                                                    <div class="subtotal payment-type"> #}
-        {#                                                        <div class="checkbox-item"> #}
-        {#                                                            <input type="radio" id="bank" name="bank"> #}
-        {#                                                            <div class="bank"> #}
-        {#                                                                <h5 class="wrapper-heading">Direct Bank Transfer</h5> #}
-        {#                                                                <p class="paragraph">Make your payment directly into our bank account. #}
-        {#                                                                    Please use #}
-        {#                                                                    <span class="inner-text"> #}
-        {#                                                                                    your Order ID as the payment reference. #}
-        {#                                                                                </span> #}
-        {#                                                                </p> #}
-        {#                                                            </div> #}
-        {#                                                        </div> #}
-        {#                                                        <div class="checkbox-item"> #}
-        {#                                                            <input type="radio" id="cash" name="bank"> #}
-        {#                                                            <div class="cash"> #}
-        {#                                                                <h5 class="wrapper-heading">Cash on Delivery</h5> #}
-        {#                                                            </div> #}
-        {#                                                        </div> #}
-        {#                                                        <div class="checkbox-item"> #}
-        {#                                                            <input type="radio" id="credit" name="bank"> #}
-        {#                                                            <div class="credit"> #}
-        {#                                                                <h5 class="wrapper-heading">Credit/Debit Cards or Paypal</h5> #}
-
-        {#                                                            </div> #}
-        {#                                                        </div> #}
-        {#                                                    </div> #}
-        {#                            <a href="#" class="shop-btn">Entrez le Code Coupon</a> #}
-        {#                            <div class="wishlist-btn cart-btn"> #}
-        {#                                <a href="empty-cart.html" class="clean-btn">Supprimer le panier</a> #}
-        {#                                <a href="#" class="shop-btn update-btn">Update Cart</a> #}
-        {#                                <a href="checkout.html" class="shop-btn">Proceed to Checkout</a> #}
-        {#                            </div> #}
-        {#                        </div> #}
-        {#                    </div> #}
-        {#                </div> #}
-        {#            </div> #}
-        {#        </div> #}
+        {# Le composant Live rafraîchit seul le tableau et le récapitulatif. #}
+        {{ component('CartComponent', {
+            cartItems: cart
+        }) }}
     </div>
-
 {% endblock %}
-

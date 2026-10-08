@@ -16,15 +16,21 @@ class Cart
         $this->requestStack = $requestStack;
     }
 
-    public function add($id)
+    /**
+     * Ajoute un produit au panier.
+     *
+     * @param int|string $quantity Quantité demandée (bornée à >= 1).
+     *                              Rétrocompatible : les appels existants
+     *                              `add($id)` continuent d'ajouter 1.
+     */
+    public function add($id, $quantity = 1)
     {
         $session = $this->requestStack->getSession();
         $cart = $session->get('cart', []);
-        if (!empty($cart[$id])) {
-            $cart[$id]++;
-        } else {
-            $cart[$id] = 1;
-        }
+
+        $quantity = max(1, (int) $quantity);
+        $cart[$id] = (int) ($cart[$id] ?? 0) + $quantity;
+
         $session->set('cart', $cart);
     }
 

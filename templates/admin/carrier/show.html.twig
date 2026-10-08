@@ -1,0 +1,48 @@
+{% extends 'base_admin.html.twig' %}
+
+{% block title %}{{ carrier.name }}{% endblock %}
+{% block page_title %}Fiche transporteur{% endblock %}
+
+{% import 'admin/_macros.html.twig' as ui %}
+
+{% block body %}
+
+    <div class="admin-card-header">
+        <div>
+            <h2 class="admin-card-title mb-1" style="font-size:1.1rem;">{{ carrier.name }}</h2>
+            <p class="admin-card-sub mb-0">{{ carrier.price|fcfa }}</p>
+        </div>
+        <div class="d-flex gap-2 flex-wrap">
+            {{ ui.back(path('admin_carrier_index'), 'Retour à la liste') }}
+            {% if admin_scope.isSuperAdmin %}
+                <a href="{{ path('admin_carrier_edit', {id: carrier.id}) }}" class="btn btn-admin">
+                    <i class="fas fa-pen"></i> Modifier
+                </a>
+                {{ ui.delete_button(
+                    path('admin_carrier_delete', {id: carrier.id}),
+                    'Supprimer',
+                    'Supprimer définitivement le transporteur « ' ~ carrier.name ~ ' » ?'
+                ) }}
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="admin-card" style="max-width: 760px;">
+        <dl class="admin-meta">
+            <div>
+                <dt>Nom</dt>
+                <dd>{{ carrier.name }}</dd>
+            </div>
+            <div>
+                <dt>Tarif</dt>
+                <dd>{{ ui.amount(carrier.price) }}</dd>
+            </div>
+        </dl>
+
+        <div class="admin-section-title">Description</div>
+        <p style="white-space: pre-line; font-size:.87rem; color: var(--adm-muted);">
+            {{ carrier.description }}
+        </p>
+    </div>
+
+{% endblock %}

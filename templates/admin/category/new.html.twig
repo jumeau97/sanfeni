@@ -1,0 +1,24 @@
+{% extends 'base_admin.html.twig' %}
+
+{% block title %}Nouvelle catégorie{% endblock %}
+{% block page_title %}Nouvelle catégorie{% endblock %}
+
+{% import 'admin/_macros.html.twig' as ui %}
+
+{% block body %}
+    <div class="admin-card" style="max-width: 760px;">
+        <div class="admin-card-header">
+            <div>
+                <h2 class="admin-card-title">Créer une catégorie</h2>
+                <p class="admin-card-sub mb-0">La catégorie sera visible par toutes les boutiques.</p>
+            </div>
+            {{ ui.back(path('admin_category_index')) }}
+        </div>
+
+        {% include 'admin/category/_form.html.twig' with {
+            'form': form,
+            'submit_label': 'Créer la catégorie',
+            'back_url': path('admin_category_index')
+        } %}
+    </div>
+{% endblock %}

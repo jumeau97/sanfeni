@@ -1,0 +1,87 @@
+{% extends 'base_admin.html.twig' %}
+
+{% block title %}Catégories{% endblock %}
+{% block page_title %}Catégories{% endblock %}
+
+{% import 'admin/_macros.html.twig' as ui %}
+
+{% block body %}
+
+    <form method="get" action="{{ path('admin_category_index') }}" class="admin-filters">
+        <div class="admin-filter-field" style="flex: 2 1 260px;">
+            <label for="f-q">Recherche</label>
+            <input class="form-control" type="search" id="f-q" name="q"
+                   value="{{ filters.q }}" placeholder="Nom de la catégorie…">
+        </div>
+        <div class="admin-filters-actions">
+            <button type="submit" class="btn btn-admin"><i class="fas fa-filter"></i> Filtrer</button>
+            <a href="{{ path('admin_category_index') }}" class="btn btn-admin btn-admin-light" title="Réinitialiser">
+                <i class="fas fa-undo"></i>
+            </a>
+        </div>
+    </form>
+
+    <div class="admin-card">
+        <div class="admin-card-header">
+            <div>
+                <h2 class="admin-card-title">Arborescence du catalogue</h2>
+                <p class="admin-card-sub mb-0">
+                    {{ pagination.totalItemCount }} catégorie{{ pagination.totalItemCount > 1 ? 's' : '' }}
+                    · référentiel partagé par toutes les boutiques
+                </p>
+            </div>
+            {% if admin_scope.isSuperAdmin %}
+                <a href="{{ path('admin_category_new') }}" class="btn btn-admin btn-admin-accent">
+                    <i class="fas fa-plus"></i> Nouvelle catégorie
+                </a>
+            {% endif %}
+        </div>
+
+        <div class="admin-table-wrap">
+            <table class="admin-table">
+                <thead>
+                <tr>
+                    <th>Catégorie</th>
+                    <th>Parente</th>
+                    <th>Produits</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for category in pagination %}
+                    <tr>
+                        <td>
+                            <a class="admin-cell-main" href="{{ path('admin_category_show', {id: category.id}) }}">
+                                {{ category.name }}
+                            </a>
+                            {% if category.description %}
+                                <span class="admin-cell-sub">{{ category.description|length > 70 ? category.description|slice(0, 70) ~ '…' : category.description }}</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ category.parentCateg ? category.parentCateg.name : '<span class="admin-cell-sub">— racine —</span>'|raw }}</td>
+                        <td><span class="admin-badge-soft">{{ productCounts[category.id]|default(0) }}</span></td>
+                        <td>
+                            <div class="admin-row-actions">
+                                {{ ui.action(path('admin_category_show', {id: category.id}), 'fa-eye', 'Voir') }}
+                                {% if admin_scope.isSuperAdmin %}
+                                    {{ ui.action(path('admin_category_edit', {id: category.id}), 'fa-pen', 'Modifier') }}
+                                    {{ ui.delete_button(
+                                        path('admin_category_delete', {id: category.id}),
+                                        'Supprimer',
+                                        'Supprimer la catégorie « ' ~ category.name ~ ' » ?'
+                                    ) }}
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                {% else %}
+                    {{ ui.empty(4, 'Aucune catégorie', admin_scope.isSuperAdmin ? 'Créez votre première catégorie.' : 'Modifiez vos filtres.') }}
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        {% include 'admin/_pagination.html.twig' %}
+    </div>
+
+{% endblock %}

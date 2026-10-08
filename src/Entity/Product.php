@@ -82,8 +82,11 @@ class Product
 
     /**
      * @var Collection<int, ProductVariation>
+     *
+     * cascade persist : les déclinaisons ajoutées depuis le formulaire
+     * d'administration sont enregistrées avec le produit.
      */
-    #[ORM\OneToMany(targetEntity: ProductVariation::class, mappedBy: 'product')]
+    #[ORM\OneToMany(targetEntity: ProductVariation::class, mappedBy: 'product', cascade: ['persist'])]
     private Collection $productVariations;
 
     #[ORM\Column(length: 255)]
@@ -106,6 +109,16 @@ class Product
     #[ORM\Column(length: 255, nullable: true)]
     #[Groups(['getProducts'])]
     private ?string $state = "actif";
+
+    /**
+     * Stock du produit SIMPLE (sans déclinaison).
+     * null = stock non géré (n'affiche aucune mention de disponibilité).
+     * 0    = rupture.
+     * Pour un produit variable, la vérité est sur ProductVariation::$stock.
+     */
+    #[ORM\Column(nullable: true)]
+    #[Groups(['getProducts'])]
+    private ?int $stock = null;
 
     public function __construct()
     {
@@ -172,7 +185,7 @@ class Product
         return $this->price;
     }
 
-    public function setPrice(float $price): static
+    public function setPrice(?float $price): static
     {
         $this->price = $price;
 
@@ -349,7 +362,7 @@ class Product
         return $this->offPercent;
     }
 
-    public function setOffPercent(int $offPercent): static
+    public function setOffPercent(?int $offPercent): static
     {
         $this->offPercent = $offPercent;
 
@@ -402,6 +415,18 @@ class Product
     public function setState(?string $state): static
     {
         $this->state = $state;
+
+        return $this;
+    }
+
+    public function getStock(): ?int
+    {
+        return $this->stock;
+    }
+
+    public function setStock(?int $stock): static
+    {
+        $this->stock = $stock;
 
         return $this;
     }

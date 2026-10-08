@@ -1,0 +1,109 @@
+{% extends 'base_admin.html.twig' %}
+
+{% block title %}Utilisateurs{% endblock %}
+{% block page_title %}Utilisateurs{% endblock %}
+
+{% import 'admin/_macros.html.twig' as ui %}
+
+{% block body %}
+
+    <form method="get" action="{{ path('admin_user_index') }}" class="admin-filters">
+        <div class="admin-filter-field" style="flex: 2 1 260px;">
+            <label for="f-q">Recherche</label>
+            <input class="form-control" type="search" id="f-q" name="q"
+                   value="{{ filters.q }}" placeholder="Nom, prénom ou e-mail…">
+        </div>
+
+        {% if boutiques is defined and boutiques|length > 0 %}
+            <div class="admin-filter-field">
+                <label for="f-shop">Boutique</label>
+                <select class="form-select" id="f-shop" name="boutique">
+                    <option value="">— Toutes —</option>
+                    {% for shop in boutiques %}
+                        <option value="{{ shop.id }}" {{ filters.boutique == shop.id ? 'selected' }}>
+                            {{ shop.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+        {% endif %}
+
+        <div class="admin-filters-actions">
+            <button type="submit" class="btn btn-admin"><i class="fas fa-filter"></i> Filtrer</button>
+            <a href="{{ path('admin_user_index') }}" class="btn btn-admin btn-admin-light" title="Réinitialiser">
+                <i class="fas fa-undo"></i>
+            </a>
+        </div>
+    </form>
+
+    <div class="admin-card">
+        <div class="admin-card-header">
+            <div>
+                <h2 class="admin-card-title">Comptes</h2>
+                <p class="admin-card-sub mb-0">
+                    {{ pagination.totalItemCount }} compte{{ pagination.totalItemCount > 1 ? 's' : '' }}
+                    {% if admin_scope.isVendor %} · équipe de votre boutique uniquement{% endif %}
+                </p>
+            </div>
+            <a href="{{ path('admin_user_new') }}" class="btn btn-admin btn-admin-accent">
+                <i class="fas fa-user-plus"></i> Nouveau compte
+            </a>
+        </div>
+
+        <div class="admin-table-wrap">
+            <table class="admin-table">
+                <thead>
+                <tr>
+                    <th>Utilisateur</th>
+                    <th>Boutique</th>
+                    <th>Rôles</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for account in pagination %}
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center gap-2">
+                                <span class="admin-avatar">
+                                    {{ (account.firstname|default(account.email))|first|upper }}
+                                </span>
+                                <span>
+                                    <a class="admin-cell-main" href="{{ path('admin_user_show', {id: account.id}) }}">
+                                        {{ (account.firstname ~ ' ' ~ account.lastname)|trim|default(account.email) }}
+                                    </a>
+                                    <span class="admin-cell-sub">{{ account.email }}</span>
+                                </span>
+                            </div>
+                        </td>
+                        <td>{{ account.shop ? account.shop.name : '—' }}</td>
+                        <td>
+                            {% for role in account.roles %}
+                                <span class="admin-badge-soft">{{ role|replace({'ROLE_': ''}) }}</span>
+                            {% endfor %}
+                        </td>
+                        <td>
+                            <div class="admin-row-actions">
+                                {{ ui.action(path('admin_user_show', {id: account.id}), 'fa-eye', 'Voir') }}
+                                {{ ui.action(path('admin_user_edit', {id: account.id}), 'fa-pen', 'Modifier') }}
+                                {% if account.id != app.user.id %}
+                                    {{ ui.delete_button(
+                                        path('admin_user_delete', {id: account.id}),
+                                        'Supprimer',
+                                        'Supprimer le compte ' ~ account.email ~ ' ?'
+                                    ) }}
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                {% else %}
+                    {{ ui.empty(4, 'Aucun compte', 'Aucun utilisateur ne correspond à vos filtres.') }}
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        {% include 'admin/_pagination.html.twig' %}
+    </div>
+
+{% endblock %}
