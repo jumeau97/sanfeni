@@ -52,7 +52,7 @@ final class ProductController extends AbstractAdminController
             $qb->andWhere('p.state = :state')->setParameter('state', $state);
         }
 
-        $categoryId = $request->query->getInt('categorie', 0);
+        $categoryId = $this->queryInt($request, 'categorie', 0);
         if ($categoryId > 0) {
             // Collection ManyToMany : MEMBER OF (et non « = ») — voir
             // CategoryController::show().
@@ -60,7 +60,7 @@ final class ProductController extends AbstractAdminController
         }
 
         if ($this->scope->isSuperAdmin()) {
-            $shopId = $request->query->getInt('boutique', 0);
+            $shopId = $this->queryInt($request, 'boutique', 0);
             if ($shopId > 0) {
                 $qb->andWhere('p.shop = :boutique')->setParameter('boutique', $shopId);
             }
@@ -71,7 +71,7 @@ final class ProductController extends AbstractAdminController
 
         $pagination = $this->paginator->paginate(
             $qb,
-            max(1, $request->query->getInt('page', 1)),
+            max(1, $this->queryInt($request, 'page', 1)),
             20
         );
 
@@ -93,7 +93,7 @@ final class ProductController extends AbstractAdminController
                 'q' => $q,
                 'state' => $state,
                 'categorie' => $categoryId,
-                'boutique' => $this->scope->isSuperAdmin() ? $request->query->getInt('boutique', 0) : 0,
+                'boutique' => $this->scope->isSuperAdmin() ? $this->queryInt($request, 'boutique', 0) : 0,
             ],
         ]);
     }

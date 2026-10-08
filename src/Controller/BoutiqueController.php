@@ -30,6 +30,7 @@ use Vich\UploaderBundle\Handler\UploadHandler;
 #[Route("dashboard")]
 final class BoutiqueController extends AbstractController
 {
+    use QueryIntTrait;
     public function __construct(
         private EntityManagerInterface $entityManager,
         private SerializerInterface    $serializer,
@@ -45,8 +46,8 @@ final class BoutiqueController extends AbstractController
     #[Route('/find-all-shop', name: 'find-all-shop', methods: ['POST'])]
     public function findAllByCriteria(Request $request,)
     {
-        $pageNumb = $request->query->getInt('page', 1);
-        $limit = $request->query->getInt('limit', 50);
+        $pageNumb = max(1, $this->queryInt($request, 'page', 1));
+        $limit = max(1, $this->queryInt($request, 'limit', 50));
         $data = $this->serializer->deserialize($request->getContent(), SearchShop::class, 'json');
 
         $result = $this->shopIterface->findAllByCriteria($pageNumb, $limit, $data);

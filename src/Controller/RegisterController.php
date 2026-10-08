@@ -30,6 +30,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 final class RegisterController extends AbstractController
 {
+    use QueryIntTrait;
     public function __construct(
         private EntityManagerInterface $entityManager,
         private SerializerInterface    $serializer,
@@ -112,8 +113,8 @@ final class RegisterController extends AbstractController
     #[Route('/dashboard/list-utilisateur', name: 'dashboard_list_utilisateurs')]
     public function findAll(Request $request): Response
     {
-        $pageNumb = $request->query->getInt('page', 1);
-        $limit = $request->query->getInt('limit', 50);
+        $pageNumb = max(1, $this->queryInt($request, 'page', 1));
+        $limit = max(1, $this->queryInt($request, 'limit', 50));
         $data = $this->serializer->deserialize($request->getContent(), SearchUser::class, 'json');
 
         $result = $this->userInterface->findAllByCriteria($pageNumb, $limit, $data);

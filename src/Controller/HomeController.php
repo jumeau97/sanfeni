@@ -19,6 +19,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 final class HomeController extends AbstractController
 {
+    use QueryIntTrait;
     public function __construct(
         private EntityManagerInterface $entityManager,
         private ProductInterface       $productInterface,
@@ -32,8 +33,8 @@ final class HomeController extends AbstractController
     public function index(Request $request, Cart $cart): Response
     {
 
-        $pageNumb = $request->query->getInt('page', 1);
-        $limit = $request->query->getInt('limit', 50);
+        $pageNumb = max(1, $this->queryInt($request, 'page', 1));
+        $limit = max(1, $this->queryInt($request, 'limit', 50));
         $search = new SearchProduct();
 
         $form = $this->createForm(SearchType::class, $search);

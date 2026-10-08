@@ -28,6 +28,7 @@ use Vich\UploaderBundle\Handler\UploadHandler;
 #[Route("")]
 final class ProductController extends AbstractController
 {
+    use QueryIntTrait;
     public function __construct(
         private EntityManagerInterface $entityManager,
         private SerializerInterface    $serializer,
@@ -141,8 +142,8 @@ final class ProductController extends AbstractController
     #[Route('dashboard/find-all-product', name: 'find-all-product', methods: ['POST'])]
     public function findAllByCriteria(Request $request,)
     {
-        $pageNumb = $request->query->getInt('page', 1);
-        $limit = $request->query->getInt('limit', 50);
+        $pageNumb = max(1, $this->queryInt($request, 'page', 1));
+        $limit = max(1, $this->queryInt($request, 'limit', 50));
         $data = $this->serializer->deserialize($request->getContent(), SearchProduct::class, 'json');
 
         $result = $this->productInterface->findAllByCriteria($pageNumb, $limit, $data);

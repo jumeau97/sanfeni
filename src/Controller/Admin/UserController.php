@@ -57,7 +57,7 @@ final class UserController extends AbstractAdminController
         }
 
         if ($this->scope->isSuperAdmin()) {
-            $shopId = $request->query->getInt('boutique', 0);
+            $shopId = $this->queryInt($request, 'boutique', 0);
             if ($shopId > 0) {
                 $qb->andWhere('u.shop = :boutique')->setParameter('boutique', $shopId);
             }
@@ -67,7 +67,7 @@ final class UserController extends AbstractAdminController
 
         $pagination = $this->paginator->paginate(
             $qb,
-            max(1, $request->query->getInt('page', 1)),
+            max(1, $this->queryInt($request, 'page', 1)),
             20
         );
 
@@ -82,7 +82,7 @@ final class UserController extends AbstractAdminController
                 : [],
             'filters' => [
                 'q' => $q,
-                'boutique' => $this->scope->isSuperAdmin() ? $request->query->getInt('boutique', 0) : 0,
+                'boutique' => $this->scope->isSuperAdmin() ? $this->queryInt($request, 'boutique', 0) : 0,
             ],
         ]);
     }

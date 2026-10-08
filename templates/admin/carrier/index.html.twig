@@ -7,12 +7,28 @@
 
 {% block body %}
 
+    {# ---------------- Barre de filtres (liste filtrable) ---------------- #}
+    <form method="get" action="{{ path('admin_carrier_index') }}" class="admin-filters">
+        <div class="admin-filter-field" style="flex: 2 1 260px;">
+            <label for="f-q">Recherche</label>
+            <input class="form-control" type="search" id="f-q" name="q"
+                   value="{{ filters.q }}" placeholder="Nom ou description…">
+        </div>
+        <div class="admin-filters-actions">
+            <button type="submit" class="btn btn-admin"><i class="fas fa-filter"></i> Filtrer</button>
+            <a href="{{ path('admin_carrier_index') }}" class="btn btn-admin btn-admin-light" title="Réinitialiser">
+                <i class="fas fa-undo"></i>
+            </a>
+        </div>
+    </form>
+
     <div class="admin-card">
         <div class="admin-card-header">
             <div>
                 <h2 class="admin-card-title">Options de livraison</h2>
                 <p class="admin-card-sub mb-0">
-                    Configuration globale de la marketplace
+                    {{ pagination.totalItemCount }} transporteur{{ pagination.totalItemCount > 1 ? 's' : '' }}
+                    · configuration globale de la marketplace
                     {% if not admin_scope.isSuperAdmin %} · consultation seule{% endif %}
                 </p>
             </div>
@@ -34,7 +50,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                {% for carrier in carriers %}
+                {% for carrier in pagination %}
                     <tr>
                         <td>
                             <a class="admin-cell-main" href="{{ path('admin_carrier_show', {id: carrier.id}) }}">
@@ -60,11 +76,17 @@
                         {% endif %}
                     </tr>
                 {% else %}
-                    {{ ui.empty(admin_scope.isSuperAdmin ? 4 : 3, 'Aucun transporteur', 'Ajoutez une première option de livraison.') }}
+                    {{ ui.empty(
+                        admin_scope.isSuperAdmin ? 4 : 3,
+                        'Aucun transporteur',
+                        filters.q ? 'Aucun résultat pour vos filtres.' : 'Ajoutez une première option de livraison.'
+                    ) }}
                 {% endfor %}
                 </tbody>
             </table>
         </div>
+
+        {% include 'admin/_pagination.html.twig' %}
     </div>
 
 {% endblock %}

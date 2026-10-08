@@ -30,6 +30,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 final class OrderController extends AbstractController
 {
+    use QueryIntTrait;
     public function __construct(
         private EntityManagerInterface $entityManager,
         private SerializerInterface    $serializer,
@@ -137,8 +138,8 @@ final class OrderController extends AbstractController
     #[Route('/dashboard/commande', name: 'dashboard_commande')]
     public function findAll(Request $request): Response
     {
-        $pageNumb = $request->query->getInt('page', 1);
-        $limit = $request->query->getInt('limit', 50);
+        $pageNumb = max(1, $this->queryInt($request, 'page', 1));
+        $limit = max(1, $this->queryInt($request, 'limit', 50));
         $data = $this->serializer->deserialize($request->getContent(), SearchOrder::class, 'json');
 
         $result = $this->orderInterface->findAllByCriteria($pageNumb, $limit, $data);
@@ -152,8 +153,8 @@ final class OrderController extends AbstractController
     #[Route('/dashboard/commande-details', name: 'dashboard_commande_details')]
     public function findAllOrderDetails(Request $request): Response
     {
-        $pageNumb = $request->query->getInt('page', 1);
-        $limit = $request->query->getInt('limit', 50);
+        $pageNumb = max(1, $this->queryInt($request, 'page', 1));
+        $limit = max(1, $this->queryInt($request, 'limit', 50));
         $data = $this->serializer->deserialize($request->getContent(), SearchOrderDetails::class, 'json');
 
         $result = $this->orderDetailsInterface->findAllByCriteria($pageNumb, $limit, $data);

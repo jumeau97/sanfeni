@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Controller\QueryIntTrait;
 use App\Service\Admin\AdminScope;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
@@ -24,6 +25,8 @@ use Symfony\Component\HttpFoundation\Response;
  */
 abstract class AbstractAdminController extends AbstractController
 {
+    use QueryIntTrait;
+
     public function __construct(
         protected readonly AdminScope $scope,
         protected readonly EntityManagerInterface $entityManager,

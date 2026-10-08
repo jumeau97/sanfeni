@@ -26,6 +26,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 #[Route("/dashboard")]
 final class CategoryController extends AbstractController
 {
+    use QueryIntTrait;
     public function __construct(
         private EntityManagerInterface $entityManager,
         private SerializerInterface    $serializer,
@@ -82,8 +83,8 @@ final class CategoryController extends AbstractController
     #[Route('/list-category', name: 'dashboard_list_category')]
     public function findAll(Request $request): Response
     {
-        $pageNumb = $request->query->getInt('page', 1);
-        $limit = $request->query->getInt('limit', 50);
+        $pageNumb = max(1, $this->queryInt($request, 'page', 1));
+        $limit = max(1, $this->queryInt($request, 'limit', 50));
         $data = $this->serializer->deserialize($request->getContent(), SearchCategory::class, 'json');
 
         $result = $this->categoryInterface->findAllByCriteria($pageNumb, $limit, $data);

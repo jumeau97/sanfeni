@@ -53,7 +53,7 @@ final class BoutiqueController extends AbstractAdminController
 
         $pagination = $this->paginator->paginate(
             $qb,
-            max(1, $request->query->getInt('page', 1)),
+            max(1, $this->queryInt($request, 'page', 1)),
             20
         );
 

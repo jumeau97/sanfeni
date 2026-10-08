@@ -27,14 +27,31 @@ final class CarrierController extends AbstractAdminController
     }
 
     #[Route('', name: 'index', methods: ['GET'])]
-    public function index(): Response
+    public function index(Request $request): Response
     {
         $this->guard();
 
-        $carriers = $this->entityManager->getRepository(Carrier::class)->findAll();
+        $qb = $this->entityManager->createQueryBuilder()
+            ->select('c')
+            ->from(Carrier::class, 'c')
+            ->orderBy('c.name', 'ASC');
+
+        // --- Filtres (liste filtrable) ---
+        $q = trim((string) $request->query->get('q', ''));
+        if ($q !== '') {
+            $qb->andWhere('c.name LIKE :q OR c.description LIKE :q')
+                ->setParameter('q', '%' . $q . '%');
+        }
+
+        $pagination = $this->paginator->paginate(
+            $qb,
+            max(1, $this->queryInt($request, 'page', 1)),
+            20
+        );
 
         return $this->renderAdmin('admin/carrier/index.html.twig', [
-            'carriers' => $carriers,
+            'pagination' => $pagination,
+            'filters' => ['q' => $q],
         ]);
     }
 
